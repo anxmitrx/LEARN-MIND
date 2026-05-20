@@ -117,7 +117,7 @@ function TrackPage() {
                     className="flex items-center gap-3 border-2 border-ink bg-surface px-3 py-3"
                   >
                     <span className="grid h-9 w-9 shrink-0 place-items-center border-2 border-ink bg-yellow">
-                      <tp.icon className="h-4 w-4 text-ink" strokeWidth={2.5} />
+                      <tp.icon className="h-4 w-4 text-ink" />
                     </span>
                     <span className="font-display text-sm font-extrabold text-ink">{tp.title}</span>
                   </motion.li>
