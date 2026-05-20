@@ -122,6 +122,8 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReservationProvider>
+        <CurtainReveal />
+        <ScrollProgress />
         <Outlet />
         <ReservationModal />
       </ReservationProvider>
