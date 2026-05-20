@@ -32,7 +32,7 @@ export const Route = createFileRoute("/tracks/$slug")({
 });
 
 function TrackPage() {
-  const { track } = Route.useLoaderData();
+  const { track } = Route.useLoaderData() as { track: Track };
   const { openModal } = useReservation();
 
   return (
