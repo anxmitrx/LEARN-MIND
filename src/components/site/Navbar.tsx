@@ -1,37 +1,80 @@
-import { ArrowRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import { useReservation } from "./ReservationContext";
 
 const links = [
-  { label: "Mentoring", href: "#mentoring" },
-  { label: "How it Works", href: "#how" },
-  { label: "Programs", href: "#programs" },
-  { label: "Mentors", href: "#mentors" },
+  { to: "/", label: "Home" },
+  { to: "/tracks", label: "Tracks" },
+  { to: "/mentors", label: "Mentors" },
+  { to: "/about", label: "About" },
 ];
 
 export function Navbar() {
+  const [open, setOpen] = useState(false);
+  const { openModal } = useReservation();
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg">
+    <header className="sticky top-0 z-40 border-b border-white/5 bg-background/80 backdrop-blur-xl">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <a href="#" className="flex items-center gap-2 font-display text-lg font-bold text-foreground">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary-gradient text-primary-foreground shadow-elegant">
+        <Link to="/" className="group flex items-center gap-2">
+          <span className="grid h-8 w-8 place-items-center rounded-md bg-yellow text-yellow-foreground font-display font-extrabold">
             IR
           </span>
-          IndustryReady
-        </a>
-        <nav className="hidden items-center gap-8 md:flex">
+          <span className="font-display text-base font-bold tracking-tight text-white">
+            Industry<span className="text-yellow">Ready</span>
+          </span>
+        </Link>
+
+        <nav className="hidden items-center gap-1 md:flex">
           {links.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <Link
+              key={l.to}
+              to={l.to}
+              activeOptions={{ exact: l.to === "/" }}
+              className="rounded-full px-4 py-2 text-sm font-medium text-zinc-300 transition-colors hover:text-yellow data-[status=active]:text-yellow"
+            >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
-        <a
-          href="#cta"
-          className="group inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-elegant transition-transform hover:scale-[1.02]"
-        >
-          Get Started
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-        </a>
+
+        <div className="hidden md:block">
+          <button
+            onClick={() => openModal()}
+            className="inline-flex items-center rounded-full bg-yellow px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-yellow-foreground transition-transform hover:scale-105 glow-yellow"
+          >
+            Reserve Seat
+          </button>
+        </div>
+
+        <button onClick={() => setOpen(!open)} className="text-white md:hidden">
+          {open ? <X /> : <Menu />}
+        </button>
       </div>
+
+      {open && (
+        <div className="border-t border-white/5 bg-surface md:hidden">
+          <nav className="flex flex-col p-4">
+            {links.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                onClick={() => setOpen(false)}
+                className="rounded-md px-3 py-3 text-sm font-medium text-zinc-200 hover:bg-white/5 hover:text-yellow"
+              >
+                {l.label}
+              </Link>
+            ))}
+            <button
+              onClick={() => { setOpen(false); openModal(); }}
+              className="mt-2 rounded-full bg-yellow px-5 py-3 text-xs font-bold uppercase tracking-wider text-yellow-foreground"
+            >
+              Reserve Seat
+            </button>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

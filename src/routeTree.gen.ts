@@ -9,38 +9,92 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MentorsRouteImport } from './routes/mentors'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TracksIndexRouteImport } from './routes/tracks.index'
+import { Route as TracksSlugRouteImport } from './routes/tracks.$slug'
 
+const MentorsRoute = MentorsRouteImport.update({
+  id: '/mentors',
+  path: '/mentors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TracksIndexRoute = TracksIndexRouteImport.update({
+  id: '/tracks/',
+  path: '/tracks/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TracksSlugRoute = TracksSlugRouteImport.update({
+  id: '/tracks/$slug',
+  path: '/tracks/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/mentors': typeof MentorsRoute
+  '/tracks/$slug': typeof TracksSlugRoute
+  '/tracks/': typeof TracksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/mentors': typeof MentorsRoute
+  '/tracks/$slug': typeof TracksSlugRoute
+  '/tracks': typeof TracksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/mentors': typeof MentorsRoute
+  '/tracks/$slug': typeof TracksSlugRoute
+  '/tracks/': typeof TracksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/about' | '/mentors' | '/tracks/$slug' | '/tracks/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/about' | '/mentors' | '/tracks/$slug' | '/tracks'
+  id: '__root__' | '/' | '/about' | '/mentors' | '/tracks/$slug' | '/tracks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  MentorsRoute: typeof MentorsRoute
+  TracksSlugRoute: typeof TracksSlugRoute
+  TracksIndexRoute: typeof TracksIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/mentors': {
+      id: '/mentors'
+      path: '/mentors'
+      fullPath: '/mentors'
+      preLoaderRoute: typeof MentorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +102,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tracks/': {
+      id: '/tracks/'
+      path: '/tracks'
+      fullPath: '/tracks/'
+      preLoaderRoute: typeof TracksIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tracks/$slug': {
+      id: '/tracks/$slug'
+      path: '/tracks/$slug'
+      fullPath: '/tracks/$slug'
+      preLoaderRoute: typeof TracksSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  MentorsRoute: MentorsRoute,
+  TracksSlugRoute: TracksSlugRoute,
+  TracksIndexRoute: TracksIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
