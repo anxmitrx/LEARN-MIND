@@ -1,54 +1,57 @@
-import { Briefcase, Users, Sparkles, Plane } from "lucide-react";
+import { motion } from "framer-motion";
+import { Briefcase, UserCog, Sparkles, Plane } from "lucide-react";
 
 const pillars = [
   {
     icon: Briefcase,
-    title: "Business Simulations & Real Case Studies",
-    desc: "Practice with industry-specific simulations — make decisions like a working professional, fail safely, learn fast.",
-    tone: "bg-primary-gradient text-primary-foreground",
+    title: "Business Simulations",
+    text: "Industry-specific real-life case studies. Run a D2C launch, debug a sprint, manage a P&L — before you ever clock in.",
   },
   {
-    icon: Users,
-    title: "Industry Leaders, In-Person",
-    desc: "With your institution's permission, we bring senior leaders into live sessions so you hear it from the source.",
-    tone: "bg-navy text-navy-foreground",
+    icon: UserCog,
+    title: "Industry Leader AMAs",
+    text: "Subject to institution permission, we host top executives and founders for live Ask-Me-Anything sessions.",
   },
   {
     icon: Sparkles,
-    title: "Professionalism Meets Spiritualism",
-    desc: "Inner Engineering & Inner Management principles woven into career growth — calm, grounded, focused work.",
-    tone: "bg-amber-gradient text-amber-foreground",
+    title: "Professionalism + Spiritualism",
+    text: "Inner Engineering. Inner Management. Sadhguru-inspired routines to keep you steady through your first storms.",
   },
   {
     icon: Plane,
     title: "Internships & Industry Visits",
-    desc: "We help students secure internships and arrange industry visits so theory meets the shop floor early.",
-    tone: "bg-card text-card-foreground border border-border",
+    text: "We actively help students with internship placements and curated industry visits across India.",
   },
 ];
 
 export function Pillars() {
   return (
-    <section id="programs" className="relative bg-secondary/60 py-24 sm:py-32">
+    <section id="beyond" className="relative py-24 sm:py-32">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-amber/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-foreground">
-            Beyond Workshops
-          </span>
-          <h2 className="mt-4 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Four pillars that make us <span className="text-gradient">different.</span>
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="eyebrow text-yellow">Beyond Workshops</span>
+          <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+            The full <span className="text-gradient-yellow">industry stack.</span>
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {pillars.map((p) => (
-            <div key={p.title} className={`relative overflow-hidden rounded-2xl p-8 shadow-card transition-transform hover:-translate-y-1 ${p.tone}`}>
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 backdrop-blur">
+        <div className="mt-16 grid gap-5 md:grid-cols-2">
+          {pillars.map((p, i) => (
+            <motion.div
+              key={p.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5, delay: (i % 2) * 0.1 }}
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-surface p-8 transition-all hover:-translate-y-1 hover:border-yellow"
+            >
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-yellow/10 text-yellow">
                 <p.icon className="h-6 w-6" />
               </div>
-              <h3 className="mt-5 font-display text-2xl font-semibold">{p.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed opacity-90">{p.desc}</p>
-            </div>
+              <h3 className="mt-5 font-display text-xl font-bold text-white">{p.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-400">{p.text}</p>
+              <div className="pointer-events-none absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-yellow/5 opacity-0 blur-3xl transition-opacity group-hover:opacity-100" />
+            </motion.div>
           ))}
         </div>
       </div>
