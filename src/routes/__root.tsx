@@ -11,6 +11,8 @@ import {
 import appCss from "../styles.css?url";
 import { ReservationProvider } from "@/components/site/ReservationContext";
 import { ReservationModal } from "@/components/site/ReservationModal";
+import { CurtainReveal } from "@/components/site/CurtainReveal";
+import { ScrollProgress } from "@/components/site/ScrollProgress";
 
 function NotFoundComponent() {
   return (
