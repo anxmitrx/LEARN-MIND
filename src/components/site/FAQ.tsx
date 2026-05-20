@@ -1,6 +1,6 @@
-import {
-  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Plus } from "lucide-react";
 
 const faqs = [
   {
@@ -24,38 +24,62 @@ const faqs = [
     a: "No. Most of our students come from Tier 2 and Tier 3 institutions. The whole point of IndustryReady is to give you what your campus placement cell can't.",
   },
   {
-    q: "What does the mentorship look like 1:1?",
+    q: "What does the 1:1 mentorship look like?",
     a: "After every track, you get scheduled 1:1 follow-ups with your track mentor for resume reviews, mock interviews, and personalised career planning.",
   },
 ];
 
 export function FAQ() {
+  const [open, setOpen] = useState<number | null>(0);
+
   return (
-    <section id="faq" className="relative border-t border-white/5 bg-background py-24 sm:py-28">
+    <section id="faq" className="relative border-b-2 border-ink bg-background py-24 sm:py-28">
       <div className="container mx-auto max-w-4xl px-4 sm:px-6">
-        <div className="text-center">
-          <span className="eyebrow text-yellow">FAQ</span>
-          <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            Quick answers, <span className="text-gradient-yellow">straight up.</span>
+        <div>
+          <span className="eyebrow text-ink">FAQ</span>
+          <h2 className="mt-3 font-display text-5xl font-black leading-[0.95] tracking-tight text-ink sm:text-6xl">
+            Quick answers, <span className="bg-yellow px-2">straight up.</span>
           </h2>
         </div>
 
-        <Accordion type="single" collapsible className="mt-12 space-y-3">
-          {faqs.map((f, i) => (
-            <AccordionItem
-              key={i}
-              value={`item-${i}`}
-              className="overflow-hidden rounded-xl border border-white/10 bg-surface px-5 transition-colors data-[state=open]:border-yellow/50"
-            >
-              <AccordionTrigger className="py-5 text-left font-display text-base font-bold text-white hover:no-underline">
-                {f.q}
-              </AccordionTrigger>
-              <AccordionContent className="pb-5 text-sm leading-relaxed text-zinc-400">
-                {f.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <div className="mt-12 space-y-4">
+          {faqs.map((f, i) => {
+            const isOpen = open === i;
+            return (
+              <div
+                key={i}
+                className="border-2 border-ink bg-background shadow-brutal-sm"
+              >
+                <button
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="flex w-full items-center justify-between gap-6 px-5 py-5 text-left"
+                >
+                  <span className="font-display text-base font-black text-ink sm:text-lg">{f.q}</span>
+                  <span
+                    className={`grid h-9 w-9 shrink-0 place-items-center border-2 border-ink transition-all duration-300 ${
+                      isOpen ? "rotate-45 bg-ink text-yellow" : "bg-yellow text-ink"
+                    }`}
+                  >
+                    <Plus className="h-5 w-5" strokeWidth={3} />
+                  </span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
+                      className="overflow-hidden border-t-2 border-ink"
+                    >
+                      <p className="px-5 py-5 text-sm leading-relaxed text-zinc-700">{f.a}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
