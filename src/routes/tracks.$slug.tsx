@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import type { Track } from "@/lib/tracks";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { SkillRadar } from "@/components/site/SkillRadar";
@@ -10,7 +11,7 @@ import { motion } from "framer-motion";
 
 export const Route = createFileRoute("/tracks/$slug")({
   component: TrackPage,
-  loader: ({ params }) => {
+  loader: ({ params }): { track: Track } => {
     const track = getTrack(params.slug);
     if (!track) throw notFound();
     return { track };

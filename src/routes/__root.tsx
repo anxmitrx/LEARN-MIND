@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { ReservationProvider } from "@/components/site/ReservationContext";
+import { ReservationModal } from "@/components/site/ReservationModal";
 
 function NotFoundComponent() {
   return (
@@ -117,7 +119,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <ReservationProvider>
+        <Outlet />
+        <ReservationModal />
+      </ReservationProvider>
     </QueryClientProvider>
   );
 }
