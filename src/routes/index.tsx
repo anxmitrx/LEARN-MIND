@@ -1,26 +1,48 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Navbar } from "@/components/site/Navbar";
+import { Hero } from "@/components/site/Hero";
+import { HowItWorks } from "@/components/site/HowItWorks";
+import { MentoringTopics } from "@/components/site/MentoringTopics";
+import { Pillars } from "@/components/site/Pillars";
+import { CtaFooter } from "@/components/site/CtaFooter";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: "IndustryReady — Your Career Starts Before Graduation" },
+      {
+        name: "description",
+        content:
+          "IndustryReady is a career readiness platform for Indian college students. Live workshops, real mentors, and the playbook your college never taught you.",
+      },
+      { property: "og:title", content: "IndustryReady — Your Career Starts Before Graduation" },
+      {
+        property: "og:description",
+        content:
+          "Live workshops, real mentors, and a step-by-step playbook to make you industry-ready before graduation.",
+      },
+    ],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap",
+      },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      <Navbar />
+      <Hero />
+      <HowItWorks />
+      <MentoringTopics />
+      <Pillars />
+      <CtaFooter />
+    </main>
+  );
 }
