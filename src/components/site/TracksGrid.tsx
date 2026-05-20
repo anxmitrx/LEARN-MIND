@@ -5,14 +5,14 @@ import { tracks } from "@/lib/tracks";
 
 export function TracksGrid() {
   return (
-    <section id="tracks" className="relative py-24 sm:py-32">
+    <section id="tracks" className="relative border-b-2 border-ink bg-surface py-24 sm:py-32">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="eyebrow text-yellow">5 Mentoring Tracks</span>
-          <h2 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            Everything you need to walk in <span className="text-gradient-yellow">ready.</span>
+        <div className="max-w-3xl">
+          <span className="eyebrow text-ink">5 Mentoring Tracks</span>
+          <h2 className="mt-4 font-display text-5xl font-black leading-[0.95] tracking-tight text-ink sm:text-6xl">
+            Everything you need <br /> to walk in <span className="bg-yellow px-2">ready.</span>
           </h2>
-          <p className="mt-4 text-lg text-zinc-400">
+          <p className="mt-5 max-w-2xl text-lg text-zinc-600">
             Structured tracks taught by working professionals — covering the personal, professional,
             technical, and human sides of your first career chapter.
           </p>
@@ -30,34 +30,34 @@ export function TracksGrid() {
               <Link
                 to="/tracks/$slug"
                 params={{ slug: t.slug }}
-                className="group relative block h-full overflow-hidden rounded-2xl border border-white/10 bg-surface p-7 transition-all duration-300 hover:-translate-y-2 hover:border-yellow hover:shadow-glow"
+                className="bento-card group block h-full border-2 border-ink bg-background p-7 shadow-brutal-sm"
               >
-                <div className="absolute right-6 top-6 text-zinc-700 transition-colors group-hover:text-yellow">
-                  <ArrowUpRight className="h-5 w-5 transition-transform group-hover:rotate-12" />
+                <div className="flex items-start justify-between">
+                  <div className="font-mono text-xs font-bold text-ink/60">// TRACK {t.number}</div>
+                  <ArrowUpRight className="h-5 w-5 text-ink transition-transform group-hover:rotate-12" />
                 </div>
-                <span className="eyebrow text-yellow">Track {t.number}</span>
-                <h3 className="mt-3 font-display text-2xl font-bold text-white">{t.title}</h3>
-                <p className="mt-3 text-sm text-zinc-400">{t.tagline}</p>
+                <h3 className="mt-4 font-display text-2xl font-black leading-tight text-ink">{t.title}</h3>
+                <p className="mt-3 text-sm text-zinc-600">{t.tagline}</p>
 
                 <div className="mt-6 flex flex-wrap gap-1.5">
                   {t.topics.slice(0, 3).map((tp) => (
                     <span
                       key={tp.title}
-                      className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-zinc-300"
+                      className="border-2 border-ink bg-background px-2 py-0.5 text-[11px] font-bold text-ink"
                     >
                       {tp.title}
                     </span>
                   ))}
                   {t.topics.length > 3 && (
-                    <span className="rounded-full bg-yellow/10 px-2.5 py-1 text-[11px] font-bold text-yellow">
-                      +{t.topics.length - 3} more
+                    <span className="border-2 border-ink bg-yellow px-2 py-0.5 text-[11px] font-extrabold text-ink">
+                      +{t.topics.length - 3}
                     </span>
                   )}
                 </div>
 
-                <div className="mt-7 flex items-center justify-between border-t border-white/5 pt-5">
-                  <span className="text-xs font-medium text-zinc-500">{t.short}</span>
-                  <span className="text-xs font-bold uppercase tracking-wider text-yellow opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="mt-7 flex items-center justify-between border-t-2 border-ink pt-4">
+                  <span className="text-xs font-bold uppercase tracking-wider text-ink">{t.short}</span>
+                  <span className="font-display text-xs font-extrabold uppercase tracking-wider text-ink opacity-0 transition-opacity group-hover:opacity-100">
                     Explore →
                   </span>
                 </div>

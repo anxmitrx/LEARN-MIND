@@ -11,6 +11,8 @@ import {
 import appCss from "../styles.css?url";
 import { ReservationProvider } from "@/components/site/ReservationContext";
 import { ReservationModal } from "@/components/site/ReservationModal";
+import { CurtainReveal } from "@/components/site/CurtainReveal";
+import { ScrollProgress } from "@/components/site/ScrollProgress";
 
 function NotFoundComponent() {
   return (
@@ -74,18 +76,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Career Catalyst Hub guides personal and professional development through comprehensive career pathing, skill enhancement, and industry insights." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Career Catalyst Hub guides personal and professional development through comprehensive career pathing, skill enhancement, and industry insights." },
+      { title: "IndustryReady" },
+      { name: "description", content: "Making college students industry-ready since day one. Live workshops, real mentors, 5 mentoring tracks." },
+      { name: "author", content: "IndustryReady" },
+      { property: "og:title", content: "IndustryReady" },
+      { property: "og:description", content: "Stop hoping you'll figure it out. Start training for the job you actually want." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Career Catalyst Hub guides personal and professional development through comprehensive career pathing, skill enhancement, and industry insights." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bcb31889-4985-4786-a704-6d49bfa7c5aa/id-preview-f4f0e4f8--66262aed-7d8d-4432-8382-739da50d88a5.lovable.app-1779265165429.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bcb31889-4985-4786-a704-6d49bfa7c5aa/id-preview-f4f0e4f8--66262aed-7d8d-4432-8382-739da50d88a5.lovable.app-1779265165429.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "IndustryReady" },
+      { name: "twitter:description", content: "Stop hoping. Start training." },
     ],
     links: [
       {
@@ -120,6 +119,8 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReservationProvider>
+        <CurtainReveal />
+        <ScrollProgress />
         <Outlet />
         <ReservationModal />
       </ReservationProvider>
