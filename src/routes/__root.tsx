@@ -13,6 +13,7 @@ import { ReservationProvider } from "@/components/site/ReservationContext";
 import { ReservationModal } from "@/components/site/ReservationModal";
 import { CurtainReveal } from "@/components/site/CurtainReveal";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
+import { AuthProvider } from "@/lib/AuthContext";
 
 function NotFoundComponent() {
   return (
@@ -76,14 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "IndustryReady" },
+      { title: "Learn & Mind" },
       { name: "description", content: "Making college students industry-ready since day one. Live workshops, real mentors, 5 mentoring tracks." },
-      { name: "author", content: "IndustryReady" },
-      { property: "og:title", content: "IndustryReady" },
+      { name: "author", content: "Learn & Mind" },
+      { property: "og:title", content: "Learn & Mind" },
       { property: "og:description", content: "Stop hoping you'll figure it out. Start training for the job you actually want." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "IndustryReady" },
+      { name: "twitter:title", content: "Learn & Mind" },
       { name: "twitter:description", content: "Stop hoping. Start training." },
     ],
     links: [
@@ -118,12 +119,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReservationProvider>
-        <CurtainReveal />
-        <ScrollProgress />
-        <Outlet />
-        <ReservationModal />
-      </ReservationProvider>
+      <AuthProvider>
+        <ReservationProvider>
+          <CurtainReveal />
+          <ScrollProgress />
+          <Outlet />
+          <ReservationModal />
+        </ReservationProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

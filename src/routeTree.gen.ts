@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MentorsRouteImport } from './routes/mentors'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TracksIndexRouteImport } from './routes/tracks.index'
@@ -18,6 +19,11 @@ import { Route as TracksSlugRouteImport } from './routes/tracks.$slug'
 const MentorsRoute = MentorsRouteImport.update({
   id: '/mentors',
   path: '/mentors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -44,6 +50,7 @@ const TracksSlugRoute = TracksSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/tracks/$slug': typeof TracksSlugRoute
   '/tracks/': typeof TracksIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/tracks/$slug': typeof TracksSlugRoute
   '/tracks': typeof TracksIndexRoute
@@ -59,21 +67,36 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/tracks/$slug': typeof TracksSlugRoute
   '/tracks/': typeof TracksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/mentors' | '/tracks/$slug' | '/tracks/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/dashboard'
+    | '/mentors'
+    | '/tracks/$slug'
+    | '/tracks/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/mentors' | '/tracks/$slug' | '/tracks'
-  id: '__root__' | '/' | '/about' | '/mentors' | '/tracks/$slug' | '/tracks/'
+  to: '/' | '/about' | '/dashboard' | '/mentors' | '/tracks/$slug' | '/tracks'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/dashboard'
+    | '/mentors'
+    | '/tracks/$slug'
+    | '/tracks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  DashboardRoute: typeof DashboardRoute
   MentorsRoute: typeof MentorsRoute
   TracksSlugRoute: typeof TracksSlugRoute
   TracksIndexRoute: typeof TracksIndexRoute
@@ -86,6 +109,13 @@ declare module '@tanstack/react-router' {
       path: '/mentors'
       fullPath: '/mentors'
       preLoaderRoute: typeof MentorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -122,6 +152,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  DashboardRoute: DashboardRoute,
   MentorsRoute: MentorsRoute,
   TracksSlugRoute: TracksSlugRoute,
   TracksIndexRoute: TracksIndexRoute,
@@ -129,3 +160,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

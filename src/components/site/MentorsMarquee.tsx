@@ -35,7 +35,7 @@ export function MentorsMarquee() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <span className="eyebrow text-ink">Premium Mentors</span>
-            <h2 className="mt-3 max-w-2xl font-display text-5xl font-black leading-[0.95] tracking-tight text-ink sm:text-6xl">
+            <h2 className="mt-3 max-w-2xl font-display text-5xl font-black leading-[1.15] md:leading-tight tracking-tight text-ink sm:text-6xl">
               Learn from people <br /> who <span className="bg-yellow px-2">hire people.</span>
             </h2>
           </div>

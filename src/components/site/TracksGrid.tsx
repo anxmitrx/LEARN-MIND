@@ -9,7 +9,7 @@ export function TracksGrid() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="max-w-3xl">
           <span className="eyebrow text-ink">5 Mentoring Tracks</span>
-          <h2 className="mt-4 font-display text-5xl font-black leading-[0.95] tracking-tight text-ink sm:text-6xl">
+          <h2 className="mt-4 font-display text-5xl font-black leading-[1.1] md:leading-tight tracking-tight text-ink sm:text-6xl">
             Everything you need <br /> to walk in <span className="bg-yellow px-2">ready.</span>
           </h2>
           <p className="mt-5 max-w-2xl text-lg text-zinc-600">

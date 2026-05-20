@@ -17,12 +17,12 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b-2 border-ink bg-background/90 backdrop-blur-md">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link to="/" className="group flex items-center gap-2">
+        <Link to="/" className="group flex items-center gap-2 whitespace-nowrap">
           <span className="grid h-9 w-9 place-items-center border-2 border-ink bg-yellow font-display text-sm font-black text-ink shadow-brutal-sm">
-            IR
+            L&M
           </span>
           <span className="font-display text-base font-black tracking-tight text-ink">
-            Industry<span className="bg-yellow px-1">Ready</span>
+            Learn <span className="text-[#FFCC00]">&</span> Mind
           </span>
         </Link>
 

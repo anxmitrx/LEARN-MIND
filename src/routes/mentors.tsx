@@ -7,9 +7,9 @@ export const Route = createFileRoute("/mentors")({
   component: MentorsPage,
   head: () => ({
     meta: [
-      { title: "Mentors — IndustryReady" },
+      { title: "Mentors — Learn & Mind" },
       { name: "description", content: "Premium mentors from MNCs, IIMs, IITs, and Indian startups — guiding college students through their first career chapter." },
-      { property: "og:title", content: "Mentors — IndustryReady" },
+      { property: "og:title", content: "Mentors — Learn & Mind" },
       { property: "og:description", content: "Learn from people who hire people." },
     ],
   }),
@@ -22,7 +22,7 @@ function MentorsPage() {
       <section className="border-b-2 border-ink bg-background py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
           <span className="eyebrow text-ink">Premium Mentors</span>
-          <h1 className="mt-4 max-w-3xl font-display text-5xl font-black leading-[0.95] tracking-tight text-ink sm:text-6xl">
+          <h1 className="mt-4 max-w-3xl font-display text-5xl font-black leading-[1.15] md:leading-tight tracking-tight text-ink sm:text-6xl">
             Learn from people who <span className="bg-yellow px-2">hire people.</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-zinc-600">

@@ -4,8 +4,8 @@ import { Plus } from "lucide-react";
 
 const faqs = [
   {
-    q: "What are the eligibility requirements?",
-    a: "IndustryReady is open to 2nd to final-year students across Engineering, Commerce, and Management streams. If you're serious about being industry-ready, you're in.",
+    q: "Who is Learn & Mind for?",
+    a: "Learn & Mind is open to 2nd to final-year students across Engineering, Commerce, and Management streams. If you're serious about being industry-ready, you're in.",
   },
   {
     q: "How does the workshop schedule work?",
@@ -20,8 +20,8 @@ const faqs = [
     a: "Yes. We actively help students with internship placements and industry visit arrangements through our partner network of startups, MNCs, and growth-stage companies.",
   },
   {
-    q: "Is this only for premier college students?",
-    a: "No. Most of our students come from Tier 2 and Tier 3 institutions. The whole point of IndustryReady is to give you what your campus placement cell can't.",
+    q: "Is this only for Tier 1 colleges?",
+    a: "No. Most of our students come from Tier 2 and Tier 3 institutions. The whole point of Learn & Mind is to give you what your campus placement cell can't.",
   },
   {
     q: "What does the 1:1 mentorship look like?",

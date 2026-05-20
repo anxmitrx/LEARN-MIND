@@ -1,30 +1,32 @@
 import { motion } from "framer-motion";
 import { Briefcase, UserCog, Sparkles, Plane } from "lucide-react";
 
+type PillarTone = "white" | "yellow" | "ink";
+
 const pillars = [
   {
     icon: Briefcase,
     title: "Business Simulations",
     text: "Industry-specific real-life case studies. Run a D2C launch, debug a sprint, manage a P&L — before you ever clock in.",
-    tone: "white" as const,
+    tone: "white" as PillarTone,
   },
   {
     icon: UserCog,
     title: "Industry Leader AMAs",
     text: "Subject to institution permission, we host top executives and founders for live Ask-Me-Anything sessions.",
-    tone: "yellow" as const,
+    tone: "yellow" as PillarTone,
   },
   {
     icon: Sparkles,
     title: "Professionalism + Spiritualism",
     text: "Inner Engineering. Inner Management. Sadhguru-inspired routines to keep you steady through your first storms.",
-    tone: "ink" as const,
+    tone: "yellow" as PillarTone,
   },
   {
     icon: Plane,
     title: "Internships & Industry Visits",
     text: "We actively help students with internship placements and curated industry visits across India.",
-    tone: "white" as const,
+    tone: "white" as PillarTone,
   },
 ];
 

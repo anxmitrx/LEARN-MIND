@@ -8,9 +8,9 @@ export const Route = createFileRoute("/tracks/")({
   component: TracksIndex,
   head: () => ({
     meta: [
-      { title: "Mentoring Tracks — IndustryReady" },
-      { name: "description", content: "5 mentoring tracks for Indian college students: personal & professional, soft skills, engineering, management, and practical situations." },
-      { property: "og:title", content: "Mentoring Tracks — IndustryReady" },
+      { title: "Mentoring Tracks — Learn & Mind" },
+      { name: "description", content: "5 structured tracks for Engineering and Management students." },
+      { property: "og:title", content: "Mentoring Tracks — Learn & Mind" },
       { property: "og:description", content: "Pick your track. Train with mentors. Walk in ready." },
     ],
   }),
