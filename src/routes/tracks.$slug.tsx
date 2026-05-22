@@ -20,8 +20,8 @@ export const Route = createFileRoute("/tracks/$slug")({
   },
   head: ({ params }) => {
     const t = getTrack(params.slug);
-    const title = t ? `${t.title} — Learn & Mind` : "Track — Learn & Mind";
-    const desc = t?.description ?? "Learn & Mind mentoring track.";
+    const title = t ? `${t.title} — Learn & Shine` : "Track — Learn & Shine";
+    const desc = t?.description ?? "Learn & Shine mentoring track.";
     return {
       meta: [
         { title },

@@ -7,9 +7,9 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
   head: () => ({
     meta: [
-      { title: "About — Learn & Mind" },
-      { name: "description", content: "Learn & Mind is a career readiness platform making Indian college students industry-ready since day one." },
-      { property: "og:title", content: "About — Learn & Mind" },
+      { title: "About — Learn & Shine" },
+      { name: "description", content: "Learn & Shine is a career readiness platform making Indian college students industry-ready since day one." },
+      { property: "og:title", content: "About — Learn & Shine" },
       { property: "og:description", content: "The mission, the method, and why we exist." },
     ],
   }),
@@ -27,7 +27,7 @@ function AboutPage() {
           </h1>
           <p className="mt-8 text-lg leading-relaxed text-zinc-600">
             Indian colleges produce millions of degree-holders every year. The industry hires very few of them
-            ready to contribute from day one. Learn & Mind bridges that gap with structured mentoring tracks,
+            ready to contribute from day one. Learn & Shine bridges that gap with structured mentoring tracks,
             live workshops from working professionals, and the practical playbook your campus placement cell
             simply can't deliver.
           </p>

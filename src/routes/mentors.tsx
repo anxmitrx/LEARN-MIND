@@ -7,9 +7,9 @@ export const Route = createFileRoute("/mentors")({
   component: MentorsPage,
   head: () => ({
     meta: [
-      { title: "Mentors — Learn & Mind" },
+      { title: "Mentors — Learn & Shine" },
       { name: "description", content: "Premium mentors from MNCs, IIMs, IITs, and Indian startups — guiding college students through their first career chapter." },
-      { property: "og:title", content: "Mentors — Learn & Mind" },
+      { property: "og:title", content: "Mentors — Learn & Shine" },
       { property: "og:description", content: "Learn from people who hire people." },
     ],
   }),

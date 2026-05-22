@@ -77,14 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Learn & Mind" },
+      { title: "Learn & Shine" },
       { name: "description", content: "Making college students industry-ready since day one. Live workshops, real mentors, 5 mentoring tracks." },
-      { name: "author", content: "Learn & Mind" },
-      { property: "og:title", content: "Learn & Mind" },
+      { name: "author", content: "Learn & Shine" },
+      { property: "og:title", content: "Learn & Shine" },
       { property: "og:description", content: "Stop hoping you'll figure it out. Start training for the job you actually want." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Learn & Mind" },
+      { name: "twitter:title", content: "Learn & Shine" },
       { name: "twitter:description", content: "Stop hoping. Start training." },
     ],
     links: [

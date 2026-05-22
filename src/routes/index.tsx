@@ -12,13 +12,13 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Learn & Mind — Stop hoping. Start training." },
+      { title: "Learn & Shine — Stop hoping. Start training." },
       {
         name: "description",
         content:
-          "Learn & Mind makes Indian college students industry-ready since day one. Live workshops, real mentors from MNCs and IIMs, and 5 mentoring tracks built for engineering and management students.",
+          "Learn & Shine makes Indian college students industry-ready since day one. Live workshops, real mentors from MNCs and IIMs, and 5 mentoring tracks built for engineering and management students.",
       },
-      { property: "og:title", content: "Learn & Mind — Stop hoping. Start training." },
+      { property: "og:title", content: "Learn & Shine — Stop hoping. Start training." },
       {
         property: "og:description",
         content:

@@ -27,12 +27,13 @@ export function CtaFooter() {
       <footer className="bg-ink text-background">
         <div className="container mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 whitespace-nowrap">
-              <span className="grid h-9 w-9 place-items-center border-2 border-background bg-yellow font-display text-sm font-black text-ink">L&M</span>
-              <span className="font-display text-lg font-black text-background">
-                Learn <span className="text-[#FFCC00]">&</span> Mind
-              </span>
-            </div>
+            <Link to="/" className="flex items-center gap-2 whitespace-nowrap">
+              <img
+                src="/assets/logo.png"
+                alt="Learn & Shine Logo"
+                className="h-8 w-auto md:h-10"
+              />
+            </Link>
             <p className="mt-5 max-w-sm text-sm text-zinc-400">
               Making college students industry-ready since day one. Stop hoping. Start training.
             </p>
@@ -50,13 +51,13 @@ export function CtaFooter() {
           <div>
             <div className="eyebrow text-yellow">Contact</div>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><a href="mailto:hello@industryready.in" className="text-zinc-300 hover:text-yellow">hello@industryready.in</a></li>
+              <li><a href="mailto:hello@learnandshine.in" className="text-zinc-300 hover:text-yellow">hello@learnandshine.in</a></li>
               <li className="text-zinc-500">Bengaluru · Online cohorts</li>
             </ul>
           </div>
         </div>
         <div className="border-t border-zinc-800 px-4 py-5 text-center text-xs text-zinc-500 sm:px-6">
-          © {new Date().getFullYear()} Learn & Mind. All rights reserved.
+          © {new Date().getFullYear()} Learn & Shine. All rights reserved.
         </div>
       </footer>
     </>

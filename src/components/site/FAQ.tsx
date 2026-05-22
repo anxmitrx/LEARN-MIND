@@ -4,8 +4,8 @@ import { Plus } from "lucide-react";
 
 const faqs = [
   {
-    q: "Who is Learn & Mind for?",
-    a: "Learn & Mind is open to 2nd to final-year students across Engineering, Commerce, and Management streams. If you're serious about being industry-ready, you're in.",
+    q: "Who is Learn & Shine for?",
+    a: "Learn & Shine is open to 2nd to final-year students across Engineering, Commerce, and Management streams. If you're serious about being industry-ready, you're in.",
   },
   {
     q: "How does the workshop schedule work?",
@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "Is this only for Tier 1 colleges?",
-    a: "No. Most of our students come from Tier 2 and Tier 3 institutions. The whole point of Learn & Mind is to give you what your campus placement cell can't.",
+    a: "No. Most of our students come from Tier 2 and Tier 3 institutions. The whole point of Learn & Shine is to give you what your campus placement cell can't.",
   },
   {
     q: "What does the 1:1 mentorship look like?",
