@@ -14,6 +14,7 @@ import { ReservationModal } from "@/components/site/ReservationModal";
 import { CurtainReveal } from "@/components/site/CurtainReveal";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
 import { AuthProvider } from "@/lib/AuthContext";
+import { TopBanner } from "@/components/site/TopBanner";
 
 function NotFoundComponent() {
   return (
@@ -123,6 +124,7 @@ function RootComponent() {
         <ReservationProvider>
           <CurtainReveal />
           <ScrollProgress />
+          <TopBanner />
           <Outlet />
           <ReservationModal />
         </ReservationProvider>
