@@ -32,30 +32,30 @@ function MentorsPage() {
         </div>
       </section>
 
-      <section className="border-b-2 border-ink bg-surface py-16">
+      <section className="border-b-2 border-ink bg-surface py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2 max-w-4xl mx-auto">
             {mentors.map((m) => (
               <div
                 key={m.name}
-                className="bento-card group border-2 border-ink bg-background p-5 shadow-brutal-sm"
+                className="bento-card group border-2 border-ink bg-background p-8 md:p-10 shadow-brutal transition-transform hover:scale-[1.02]"
               >
                 <div
-                  className="relative h-44 overflow-hidden border-2 border-ink"
+                  className="relative h-52 md:h-64 overflow-hidden border-2 border-ink"
                   style={{ background: `linear-gradient(135deg, hsl(${m.hue}, 70%, 88%), hsl(${m.hue}, 60%, 75%))` }}
                 >
                   <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
-                    <span className="font-display text-7xl font-black text-ink/40 transition-transform duration-500 group-hover:scale-110">
+                    <span className="font-display text-7xl md:text-8xl font-black text-ink/40 transition-transform duration-500 group-hover:scale-110">
                       {m.initials}
                     </span>
                   </div>
                 </div>
-                <h3 className="mt-4 font-display text-lg font-black text-ink">{m.name}</h3>
-                <p className="text-sm font-bold text-ink">{m.title}</p>
-                <p className="mt-1 text-xs text-zinc-600">{m.qualifications}</p>
-                <div className="mt-3 flex flex-wrap gap-1">
+                <h3 className="mt-6 font-display text-xl md:text-2xl font-black text-ink">{m.name}</h3>
+                <p className="text-sm md:text-base font-bold text-ink mt-1">{m.title}</p>
+                <p className="mt-1.5 text-xs md:text-sm text-zinc-600">{m.qualifications}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
                   {m.topics.map((t) => (
-                    <span key={t} className="border border-ink bg-yellow px-1.5 py-0.5 text-[10px] font-bold text-ink">
+                    <span key={t} className="border border-ink bg-yellow px-2 py-1 text-xs font-bold text-ink">
                       {t}
                     </span>
                   ))}
