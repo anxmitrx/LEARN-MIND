@@ -1,0 +1,65 @@
+import { Link } from "@tanstack/react-router";
+import { MagneticButton } from "./MagneticButton";
+import { useReservation } from "./ReservationContext";
+
+export function CtaFooter() {
+  const { openModal } = useReservation();
+  return (
+    <>
+      <section className="relative overflow-hidden bg-yellow py-24 sm:py-32">
+        <div className="absolute inset-0 grid-bg opacity-50" />
+        <div className="container relative mx-auto max-w-4xl px-4 text-center sm:px-6">
+          <h2 className="font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-7xl">
+            Be ready <span className="bg-ink px-4 py-1 text-yellow rounded-full">before</span> <br /> the offer drops.
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-lg font-medium text-ink/80">
+            Join 1,000+ students training weekly for the careers they actually want.
+            Limited seats per cohort.
+          </p>
+          <div className="mt-10 flex justify-center">
+            <MagneticButton variant="ghost" size="lg" onClick={() => openModal()}>
+              Reserve Your Seat
+            </MagneticButton>
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-ink text-background">
+        <div className="container mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-4">
+          <div className="md:col-span-2">
+            <Link to="/" className="flex items-center gap-2 whitespace-nowrap">
+              <img
+                src="/assets/logo.png"
+                alt="Learn & Shine Logo"
+                className="h-8 w-auto md:h-10"
+              />
+            </Link>
+            <p className="mt-5 max-w-sm text-sm text-zinc-400">
+              Making college students industry-ready since day one. Stop hoping. Start training.
+            </p>
+          </div>
+
+          <div>
+            <div className="eyebrow text-yellow">Explore</div>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li><Link to="/tracks" className="text-zinc-300 hover:text-yellow">Tracks</Link></li>
+              <li><Link to="/mentors" className="text-zinc-300 hover:text-yellow">Mentors</Link></li>
+              <li><Link to="/about" className="text-zinc-300 hover:text-yellow">About</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="eyebrow text-yellow">Contact</div>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li><a href="mailto:hello@learnandshine.in" className="text-zinc-300 hover:text-yellow">hello@learnandshine.in</a></li>
+              <li className="text-zinc-500">Bengaluru · Online cohorts</li>
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-zinc-800 px-4 py-5 text-center text-xs text-zinc-500 sm:px-6">
+          © {new Date().getFullYear()} Learn & Shine. All rights reserved.
+        </div>
+      </footer>
+    </>
+  );
+}
