@@ -47,10 +47,10 @@ export function Pillars() {
             const isYellow = p.tone === "yellow";
             
             const bg = isInk 
-              ? "bg-indigo-950/50 backdrop-blur-xl border border-white/20 text-white shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-indigo-950/65 hover:border-indigo-500/50" 
+              ? "bg-indigo-950/50 backdrop-blur-xl border border-white/30 text-white shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-indigo-950/65 hover:border-indigo-500/80" 
               : isYellow 
-              ? "bg-[#F8EDEB]/50 backdrop-blur-xl border border-[#F8EDEB]/70 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-[#F8EDEB]/60 hover:border-white" 
-              : "bg-white/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-white/60 hover:border-white";
+              ? "bg-[#F8EDEB]/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-[#F8EDEB]/60 hover:border-white/80" 
+              : "bg-white/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-white/60 hover:border-white/80";
               
             const iconBg = isInk 
               ? "bg-indigo-100 text-indigo-700 border border-indigo-200/50 shadow-sm" 

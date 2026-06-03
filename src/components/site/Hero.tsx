@@ -109,43 +109,43 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Visual card */}
+          {/* Visual card/image column */}
           <motion.div
             variants={item}
-            className="relative hidden lg:block"
+            className="relative w-full h-full flex items-center justify-center py-12 lg:py-0"
           >
-            <div className="animate-float-slow relative bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6">
+            {/* Base image layer */}
+            <img
+              src="/assets/WhatsApp Image 2026-06-03 at 7.48.00 PM.jpeg"
+              alt="Hiring Outcomes & Prep"
+              className="w-full max-w-md sm:max-w-lg aspect-[4/3] lg:aspect-[3/4] xl:aspect-[4/3] object-cover rounded-[2rem] shadow-2xl z-0"
+            />
+
+            {/* Top/Right Floating Card: Salary Negotiation Workshop */}
+            <div className="animate-float-slow absolute -right-4 top-8 sm:-right-8 sm:top-12 z-10 bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 max-w-[260px] sm:max-w-[320px]">
               <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-xs font-extrabold uppercase tracking-wider rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-full">
                   <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
                   Live
                 </span>
-                <span className="font-mono text-xs text-slate-600 font-semibold">SAT · 7:00 PM IST</span>
+                <span className="font-mono text-[10px] text-slate-600 font-semibold">SAT · 7:00 PM</span>
               </div>
-              <h3 className="mt-5 font-display text-2xl font-bold leading-tight text-ink">
-                Negotiating Your First Salary — Without Sounding Pushy
+              <h3 className="mt-4 font-display text-sm sm:text-base font-bold leading-snug text-ink">
+                Negotiating Your First Salary
               </h3>
-              <p className="mt-3 text-sm text-slate-700 leading-relaxed">
-                Live workshop with an MNC hiring manager. Real scripts, real numbers, real Indian context.
+              <p className="mt-2 text-xs text-slate-700 leading-relaxed">
+                Live workshop with an MNC hiring manager. Real scripts & context.
               </p>
-              <div className="mt-6 flex items-center gap-3">
-                <div className="flex -space-x-2">
-                  {[40, 50, 60].map((h, i) => (
-                    <div
-                      key={i}
-                      className="h-8 w-8 rounded-full border border-white/40"
-                      style={{ background: `hsl(${h}, 90%, 55%)` }}
-                    />
-                  ))}
-                </div>
-                <span className="text-xs font-semibold text-slate-600 font-bold">+412 students registered</span>
+              <div className="mt-4 flex items-center gap-2">
+                <span className="text-[10px] font-bold text-slate-600">+412 registered</span>
               </div>
             </div>
 
-            <div className="absolute -bottom-6 -left-8 bg-white/60 backdrop-blur-xl border border-white/80 p-6 rounded-3xl shadow-lg shadow-indigo-500/10">
-              <div className="eyebrow text-indigo-600">Outcome</div>
-              <div className="mt-1 font-display text-lg font-bold text-ink">Hired at Infosys</div>
-              <div className="text-xs font-bold text-slate-600 mt-1">— Arjun, B.Tech · 3 weeks after workshop</div>
+            {/* Bottom/Left Floating Card: Arjun Outcome */}
+            <div className="absolute -left-4 bottom-12 sm:-left-12 sm:bottom-20 z-20 bg-white/60 backdrop-blur-xl border border-white/80 p-5 sm:p-6 rounded-3xl shadow-xl max-w-[220px] sm:max-w-[280px]">
+              <div className="eyebrow text-indigo-600 text-[9px] font-bold tracking-wider">Outcome</div>
+              <div className="mt-1 font-display text-sm sm:text-base font-bold text-ink">Hired at Infosys</div>
+              <div className="text-[10px] font-bold text-slate-600 mt-1">— Arjun, B.Tech</div>
             </div>
           </motion.div>
         </motion.div>

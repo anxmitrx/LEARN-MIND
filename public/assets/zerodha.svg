@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 40" fill="none">
+  <path d="M10 20 L25 10 L40 20 L25 30 Z" fill="#0052FF" opacity="0.8"/>
+  <path d="M25 10 V30" stroke="#FFFFFF" stroke-width="1.5"/>
+  <path d="M10 20 H40" stroke="#FFFFFF" stroke-width="1.5"/>
+  <circle cx="25" cy="20" r="3" fill="#FF5722"/>
+  <text x="48" y="27" font-family="sans-serif" font-weight="bold" font-size="18" fill="#1E1B4B">ZERODHA</text>
+</svg>

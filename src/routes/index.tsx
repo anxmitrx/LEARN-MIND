@@ -7,6 +7,7 @@ import { MentorsMarquee } from "@/components/site/MentorsMarquee";
 import { Pillars } from "@/components/site/Pillars";
 import { FAQ } from "@/components/site/FAQ";
 import { CtaFooter } from "@/components/site/CtaFooter";
+import { TopBanner } from "@/components/site/TopBanner";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -43,6 +44,7 @@ function Index() {
       <Hero />
       <HowItWorks />
       <TracksGrid />
+      <TopBanner />
       <MentorsMarquee />
       <Pillars />
       <FAQ />

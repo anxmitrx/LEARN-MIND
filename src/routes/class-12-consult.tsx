@@ -132,7 +132,7 @@ function Class12ConsultPage() {
               
               {/* Value Cards Grid */}
               <div className="grid gap-6 sm:grid-cols-2">
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white will-change-transform">
+                <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform">
                   <div className="grid h-12 w-12 place-items-center bg-indigo-100 text-indigo-700 border border-indigo-200/50 mb-4 rounded-full shadow-sm">
                     <GraduationCap className="h-6 w-6" strokeWidth={2.5} />
                   </div>
@@ -142,7 +142,7 @@ function Class12ConsultPage() {
                   </p>
                 </div>
 
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white will-change-transform">
+                <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform">
                   <div className="grid h-12 w-12 place-items-center bg-indigo-100 text-indigo-700 border border-indigo-200/50 mb-4 rounded-full shadow-sm">
                     <Sparkles className="h-6 w-6" strokeWidth={2.5} />
                   </div>

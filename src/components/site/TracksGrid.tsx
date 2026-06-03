@@ -5,7 +5,7 @@ import { tracks } from "@/lib/tracks";
 
 export function TracksGrid() {
   return (
-    <section id="tracks" className="relative bg-surface py-24 sm:py-32">
+    <section id="tracks" className="relative bg-surface pt-12 sm:pt-16 pb-24 sm:pb-32">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="max-w-3xl">
           <span className="eyebrow text-ink">5 Mentoring Tracks</span>
@@ -30,7 +30,7 @@ export function TracksGrid() {
               <Link
                 to="/tracks/$slug"
                 params={{ slug: t.slug }}
-                className="bento-card group block h-full bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 md:p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white will-change-transform"
+                className="bento-card group block h-full bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 md:p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform"
               >
                 <div className="flex items-start justify-between">
                   <div className="font-mono text-xs font-bold text-indigo-600/60">// TRACK {t.number}</div>

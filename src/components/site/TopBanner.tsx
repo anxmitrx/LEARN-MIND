@@ -1,52 +1,28 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
 export function TopBanner() {
-  const bannerRef = useRef<HTMLAnchorElement>(null);
-
-  useEffect(() => {
-    if (!bannerRef.current) return;
-
-    const updateHeight = (el: HTMLElement) => {
-      document.documentElement.style.setProperty(
-        "--banner-height",
-        `${el.offsetHeight}px`
-      );
-    };
-
-    // Initial check
-    updateHeight(bannerRef.current);
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.target instanceof HTMLElement) {
-          updateHeight(entry.target);
-        }
-      }
-    });
-
-    resizeObserver.observe(bannerRef.current);
-
-    return () => {
-      resizeObserver.disconnect();
-      document.documentElement.style.removeProperty("--banner-height");
-    };
-  }, []);
-
   return (
-    <Link
-      ref={bannerRef}
-      to="/class-12-consult"
-      className="group sticky top-0 z-50 flex min-h-10 w-full items-center justify-center bg-white/40 backdrop-blur-xl border-b border-white/60 px-4 py-2.5 text-center text-xs font-bold text-ink hover:underline md:text-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+      className="my-16 px-4"
     >
-      <span className="flex items-center justify-center gap-1.5 leading-tight">
-        <span>
-          🎓 CLASS 12 STUDENTS: Confused about college? Book a 1-on-1 Roadmap Consultation at our lowest price ever.
+      <Link
+        to="/class-12-consult"
+        className="group mx-auto flex w-[92%] max-w-4xl items-center justify-center gap-3 py-4 px-6 sm:px-8 bg-white/40 backdrop-blur-md rounded-full border border-indigo-400/30 shadow-[0_10px_30px_-10px_rgba(31,38,135,0.2)] text-center flex-wrap transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_rgba(31,38,135,0.3)] hover:border-indigo-400/70 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+      >
+        <span className="flex items-center justify-center gap-3 text-indigo-950 font-semibold md:text-lg leading-tight">
+          <span>
+            🎓 CLASS 12 STUDENTS: Confused about college? Book a 1-on-1 Roadmap Consultation at our lowest price ever.
+          </span>
+          <span className="text-indigo-600 font-bold inline-block transition-transform duration-300 group-hover:translate-x-1">
+            →
+          </span>
         </span>
-        <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-          →
-        </span>
-      </span>
-    </Link>
+      </Link>
+    </motion.div>
   );
 }

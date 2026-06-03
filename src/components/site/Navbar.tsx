@@ -16,15 +16,15 @@ export function Navbar() {
   const { openModal } = useReservation();
 
   return (
-    <header className="sticky top-[var(--banner-height,0px)] z-40 bg-white/40 backdrop-blur-xl border-b border-white/60 transition-[top] duration-200">
-      <div className="container mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 py-2 sm:px-6">
+    <header className="fixed top-[calc(var(--banner-height,0px)+1.5rem)] left-1/2 -translate-x-1/2 w-[92%] max-w-5xl z-50 rounded-full px-6 py-2 bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_20px_40px_-15px_rgba(31,38,135,0.15)] transition-[top] duration-200">
+      <div className="flex w-full min-h-12 items-center justify-between gap-8">
         {/* Zone 1: Left - Logo */}
         <div className="flex-1 flex justify-start">
-          <Link to="/" className="group flex items-center gap-3 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-2xl">
+          <Link to="/" className="group flex items-center gap-3 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-full">
             <img
               src="/assets/logo.png"
               alt="Learn & Shine Logo"
-              className="h-12 md:h-16 lg:h-20 w-auto object-contain"
+              className="h-8 md:h-10 lg:h-12 w-auto object-contain"
             />
           </Link>
         </div>
@@ -51,11 +51,11 @@ export function Navbar() {
         </div>
 
         {/* Zone 3: Right - CTA & Mobile Toggle */}
-        <div className="flex-1 flex justify-end items-center">
+        <div className="flex-1 flex justify-end items-center gap-3">
           <div className="hidden md:block">
             <button
               onClick={() => openModal()}
-              className="inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-2.5 text-xs font-display font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+              className="inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-2.5 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             >
               Reserve Seat
             </button>
@@ -64,7 +64,7 @@ export function Navbar() {
           <button
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
-            className="grid h-10 w-10 place-items-center bg-white/20 backdrop-blur-md text-ink md:hidden rounded-full shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+            className="grid h-10 w-10 place-items-center bg-white/20 backdrop-blur-md text-ink md:hidden rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
           >
             {open ? <X /> : <Menu />}
           </button>
@@ -72,8 +72,8 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t border-white/20 bg-white/60 backdrop-blur-xl md:hidden">
-          <nav className="flex flex-col p-4">
+        <div className="absolute top-[calc(100%+0.75rem)] left-0 right-0 z-50 bg-white/40 backdrop-blur-xl border border-white/60 p-4 rounded-3xl shadow-[0_12px_40px_-6px_rgba(31,38,135,0.15)] md:hidden">
+          <nav className="flex flex-col gap-1">
             {links.map((l) => (
               <Link
                 key={l.to}
@@ -91,7 +91,7 @@ export function Navbar() {
             ))}
             <button
               onClick={() => { setOpen(false); openModal(); }}
-              className="mt-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-3 text-xs font-display font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 text-center flex justify-center items-center cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+              className="mt-2 w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-3 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 text-center flex justify-center items-center cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             >
               Reserve Seat
             </button>
