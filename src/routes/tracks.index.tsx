@@ -18,49 +18,49 @@ export const Route = createFileRoute("/tracks/")({
 
 function TracksIndex() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-transparent text-slate-800">
       <Navbar />
-      <section className="bg-background py-20">
+      <section className="bg-transparent py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
           <span className="eyebrow text-ink">5 Tracks · 40+ Topics</span>
           <h1 className="mt-4 max-w-3xl font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-7xl">
-            Pick your <span className="bg-yellow px-2 rounded-lg">track.</span>
+            Pick your <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">track.</span>
           </h1>
-          <p className="mt-5 max-w-2xl text-lg text-zinc-600">
+          <p className="mt-5 max-w-2xl text-lg text-slate-600 font-semibold">
             Each track is a season of live workshops, mentor 1:1s, simulations, and outcomes
             you can show a recruiter.
           </p>
         </div>
       </section>
 
-      <section className="bg-surface py-16">
+      <section className="bg-transparent py-16">
         <div className="container mx-auto max-w-7xl space-y-5 px-4 sm:px-6">
           {tracks.map((t) => (
             <Link
               key={t.slug}
               to="/tracks/$slug"
               params={{ slug: t.slug }}
-              className="bento-card group block bg-background p-8 rounded-3xl shadow-md shadow-[#3A3532]/5"
+              className="bento-card group block bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white will-change-transform focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
             >
               <div className="flex flex-wrap items-start justify-between gap-6">
                 <div className="max-w-2xl">
-                  <span className="font-mono text-xs font-bold text-ink/60">// TRACK {t.number}</span>
+                  <span className="font-mono text-xs font-bold text-indigo-600/60">// TRACK {t.number}</span>
                   <h2 className="mt-2 font-display text-3xl font-bold leading-tight text-ink">{t.title}</h2>
-                  <p className="mt-3 text-zinc-600">{t.description}</p>
+                  <p className="mt-3 text-slate-600 font-semibold">{t.description}</p>
                   <div className="mt-5 flex flex-wrap gap-1.5">
                     {t.topics.slice(0, 5).map((tp) => (
-                      <span key={tp.title} className="bg-zinc-100 px-3 py-1 text-[11px] font-bold text-ink rounded-full">
+                      <span key={tp.title} className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-[11px] font-bold rounded-full shadow-sm">
                         {tp.title}
                       </span>
                     ))}
                     {t.topics.length > 5 && (
-                      <span className="bg-yellow px-3 py-1 text-[11px] font-extrabold text-ink rounded-full">
+                      <span className="bg-indigo-500/20 backdrop-blur-md text-indigo-700 border border-indigo-500/30 px-3 py-1 text-[11px] font-extrabold rounded-full shadow-sm">
                         +{t.topics.length - 5}
                       </span>
                     )}
                   </div>
                 </div>
-                <ArrowUpRight className="h-10 w-10 text-ink transition-transform group-hover:rotate-12" />
+                <ArrowUpRight className="h-10 w-10 text-indigo-600 transition-transform group-hover:rotate-12" />
               </div>
             </Link>
           ))}

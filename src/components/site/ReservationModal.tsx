@@ -8,7 +8,7 @@ import { signInWithGoogle } from "@/lib/firebase";
 import { useNavigate } from "@tanstack/react-router";
 
 const inputCls =
-  "w-full border border-[#3A3532]/20 bg-background px-4 py-3 text-sm font-medium text-ink placeholder:text-zinc-400 outline-none transition-all rounded-full focus:border-[#3A3532]/60 focus:shadow-md focus:shadow-[#3A3532]/5";
+  "w-full border border-white/50 bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
 
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
@@ -109,19 +109,19 @@ export function ReservationModal() {
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 220, damping: 24 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md overflow-hidden bg-white/50 backdrop-blur-xl border border-white/40 p-8 shadow-2xl rounded-3xl"
+            className="relative w-full max-w-md overflow-hidden bg-white/60 backdrop-blur-xl border border-white/50 p-6 sm:p-8 shadow-2xl rounded-3xl"
           >
             <button
               onClick={closeModal}
               aria-label="Close"
-              className="absolute right-4 top-4 grid h-9 w-9 place-items-center bg-background text-ink transition-colors hover:bg-yellow rounded-full shadow-sm cursor-pointer"
+              className="absolute right-4 top-4 grid h-9 w-9 place-items-center bg-white/20 backdrop-blur-md text-indigo-600 border border-white/40 transition-all hover:scale-105 active:scale-95 hover:bg-white/40 hover:border-white rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             >
               <X className="h-4 w-4" strokeWidth={3} />
             </button>
 
             {step < 3 && (
               <>
-                <div className="eyebrow text-ink">Reserve Your Seat · {step + 1}/3</div>
+                <div className="eyebrow text-indigo-600">Reserve Your Seat · {step + 1}/3</div>
                 <h3 className="mt-2 font-display text-2xl font-bold text-ink">
                   {step === 0 && "Tell us who you are"}
                   {step === 1 && "How can we reach you?"}
@@ -129,9 +129,9 @@ export function ReservationModal() {
                 </h3>
 
                 {/* progress */}
-                <div className="mt-5 flex h-2 overflow-hidden rounded-full bg-zinc-200">
+                <div className="mt-5 flex h-2 overflow-hidden rounded-full bg-white/20 border border-white/40">
                   <div
-                    className="bg-yellow transition-all duration-500"
+                    className="bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
                     style={{ width: `${((step + 1) / 3) * 100}%` }}
                   />
                 </div>
@@ -181,8 +181,8 @@ export function ReservationModal() {
                         label="WhatsApp number"
                         error={touched.phone && !phoneOk ? "Enter a 10-digit number" : undefined}
                       >
-                        <div className="flex border border-[#3A3532]/20 rounded-full overflow-hidden focus-within:border-[#3A3532]/60">
-                          <span className="grid place-items-center bg-yellow px-4 font-mono text-sm font-extrabold text-ink">
+                        <div className="flex border border-white/50 bg-white/25 rounded-full overflow-hidden focus-within:bg-white/45 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:outline-none transition-all">
+                          <span className="grid place-items-center bg-white/60 px-4 font-mono text-sm font-extrabold text-indigo-600 border-r border-white/40">
                             +91
                           </span>
                           <input
@@ -190,7 +190,7 @@ export function ReservationModal() {
                             value={data.phone}
                             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
                             onChange={(e) => setData({ ...data, phone: formatPhone(e.target.value) })}
-                            className="w-full bg-background px-4 py-3 text-sm font-medium text-ink placeholder:text-zinc-400 outline-none"
+                            className="w-full bg-transparent px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none"
                             placeholder="98765 43210"
                           />
                         </div>
@@ -220,7 +220,7 @@ export function ReservationModal() {
                       <button
                         type="button"
                         onClick={back}
-                        className="inline-flex items-center gap-1 text-sm font-bold text-ink hover:underline"
+                        className="inline-flex items-center gap-1 text-sm font-bold text-indigo-600 hover:underline rounded focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none cursor-pointer px-1"
                       >
                         <ArrowLeft className="h-4 w-4" /> Back
                       </button>
@@ -231,7 +231,7 @@ export function ReservationModal() {
                         type="button"
                         onClick={next}
                         disabled={step === 0 ? !canNext0 : !canNext1}
-                        className="inline-flex items-center gap-2 bg-yellow px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider text-ink rounded-3xl shadow-md shadow-[#3A3532]/5 transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40 disabled:translate-y-0 disabled:shadow-none cursor-pointer"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
                       >
                         Continue <ArrowRight className="h-4 w-4" />
                       </button>
@@ -239,7 +239,7 @@ export function ReservationModal() {
                       <button
                         type="submit"
                         disabled={!canSubmit}
-                        className="inline-flex items-center gap-2 bg-yellow px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider text-ink rounded-3xl shadow-md shadow-[#3A3532]/5 transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-40 disabled:translate-y-0 disabled:shadow-none cursor-pointer"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
                       >
                         Reserve Seat <Check className="h-4 w-4" />
                       </button>
@@ -247,12 +247,12 @@ export function ReservationModal() {
                   </div>
                   
                   {step === 0 && (
-                    <div className="mt-6 border-t border-[#3A3532]/10 pt-6">
+                    <div className="mt-6 border-t border-white/40 pt-6">
                       <button
                         type="button"
                         onClick={handleGoogleSignIn}
                         disabled={isAuthenticating}
-                        className="flex w-full items-center justify-center gap-2 border border-[#3A3532]/20 bg-background px-6 py-3 font-display text-sm font-extrabold text-ink rounded-3xl shadow-sm hover:bg-zinc-50 transition-all duration-200 disabled:opacity-50 cursor-pointer"
+                        className="flex w-full items-center justify-center gap-2 border border-white/50 bg-white/20 px-6 py-3 font-display text-sm font-extrabold text-indigo-600 rounded-3xl shadow-sm hover:bg-white/30 hover:scale-105 active:scale-95 transition-all duration-300 disabled:opacity-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
                       >
                         <svg className="h-5 w-5" viewBox="0 0 24 24">
                           <path
@@ -286,8 +286,8 @@ export function ReservationModal() {
                 animate={{ opacity: 1, y: 0 }}
                 className="py-6 text-center"
               >
-                <div className="mx-auto grid h-20 w-20 place-items-center bg-yellow rounded-full shadow-md shadow-[#3A3532]/5">
-                  <svg viewBox="0 0 24 24" className="h-10 w-10 text-ink">
+                <div className="mx-auto grid h-20 w-20 place-items-center bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-md">
+                  <svg viewBox="0 0 24 24" className="h-10 w-10 text-indigo-600">
                     <motion.path
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
@@ -304,7 +304,7 @@ export function ReservationModal() {
                 <h3 className="mt-6 font-display text-3xl font-bold leading-tight text-ink">
                   Seat Reserved!
                 </h3>
-                <p className="mt-3 text-sm text-zinc-600">
+                <p className="mt-3 text-sm text-slate-600 font-semibold">
                   You're one step closer to being Industry-Ready. Check your email for next steps.
                 </p>
                 <button
@@ -312,7 +312,7 @@ export function ReservationModal() {
                      closeModal();
                      navigate({ to: "/dashboard" });
                    }}
-                  className="mt-7 inline-flex items-center bg-ink px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider text-background rounded-3xl shadow-md shadow-[#3A3532]/10 transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                  className="mt-7 inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
                 >
                   Go to Dashboard
                 </button>

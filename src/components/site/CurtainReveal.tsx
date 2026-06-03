@@ -10,7 +10,7 @@ export function CurtainReveal() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-[100] bg-yellow animate-curtain"
+      className="pointer-events-none fixed inset-0 z-[100] bg-[#F8EDEB] animate-curtain"
       style={{ willChange: "transform" }}
     />
   );

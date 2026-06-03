@@ -27,9 +27,9 @@ export const tracks: Track[] = [
     number: "01",
     title: "Develop Personally & Professionally",
     short: "Career Compass",
-    tagline: "The career compass your college never gave you.",
+    tagline: "Build a rock-solid foundation and gain career clarity.",
     description:
-      "Build the foundation of a career — clarity on where you're going, a network that opens doors, and the personal operating system to get there.",
+      "Build a rock-solid foundation. Gain clarity on your goals and build a network that opens doors.",
     topics: [
       { title: "Career Pathing", icon: Compass },
       { title: "Goal Setting", icon: Target },
@@ -62,9 +62,9 @@ export const tracks: Track[] = [
     number: "02",
     title: "Soft Skills & Workplace Competencies",
     short: "Workplace OS",
-    tagline: "How professionals actually behave at work.",
+    tagline: "Master the unwritten rules of the workplace.",
     description:
-      "Most freshers fail not on the work — but on the workplace. Learn to read rooms, manage managers, and own your time like a senior.",
+      "Master the unwritten rules of the workplace. Learn to communicate effectively and manage your time like a seasoned pro.",
     topics: [
       { title: "Effective Communication", icon: Mic },
       { title: "Navigating Corporate Culture", icon: Building2 },
@@ -97,9 +97,9 @@ export const tracks: Track[] = [
     number: "03",
     title: "Engineering Specific Topics",
     short: "Build & Ship",
-    tagline: "From SDLC to AI — bridge the classroom-to-industry gap.",
+    tagline: "Bridge the gap between passing exams and shipping products.",
     description:
-      "Engineering school teaches you to pass. Industry needs you to ship. This track is the missing semester on how real software gets built.",
+      "Bridge the gap between passing exams and shipping real products. Learn the frameworks modern tech companies actually use.",
     topics: [
       { title: "Project Management & Lifecycle (SDLC)", icon: Cog },
       { title: "Technical Problem Solving", icon: Wrench },
@@ -133,9 +133,9 @@ export const tracks: Track[] = [
     number: "04",
     title: "Management Specific Topics",
     short: "Frameworks Live",
-    tagline: "Frameworks made real with industry case studies.",
+    tagline: "Move beyond theoretical frameworks to real business decisions.",
     description:
-      "Stop memorising frameworks for exams. Apply them to live business problems and learn how managers actually decide.",
+      "Move beyond theoretical frameworks. Apply data-driven decision-making to real business scenarios.",
     topics: [
       { title: "Data-Driven Decision Making", icon: LineChart },
       { title: "Operational Excellence", icon: Gauge },
@@ -170,9 +170,9 @@ export const tracks: Track[] = [
     number: "05",
     title: "Practical Situations & Guidance",
     short: "Real World Lab",
-    tagline: "The unspoken transitions every fresher faces.",
+    tagline: "Rehearse for reality and handle professional setbacks.",
     description:
-      "Salary negotiation, interview nerves, your first failed project, your first PIP scare — we rehearse the moments your friends won't talk about.",
+      "Rehearse for reality. From salary negotiations to handling your first professional setback, we'll guide you through it.",
     topics: [
       { title: "Negotiating Salaries & Offers", icon: HandCoins },
       { title: "Interview Preparation", icon: MessageSquare },

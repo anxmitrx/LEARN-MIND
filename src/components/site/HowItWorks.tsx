@@ -15,7 +15,7 @@ export function HowItWorks() {
         <div className="max-w-3xl">
           <span className="eyebrow text-ink">How it works · 04 Steps</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            Four steps from <br /> classroom to <span className="bg-yellow px-2 rounded-lg">career.</span>
+            Four steps from <br /> classroom to <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">career.</span>
           </h2>
         </div>
 
@@ -26,17 +26,17 @@ export function HowItWorks() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bento-card relative bg-background p-7 rounded-3xl shadow-md shadow-[#3A3532]/5"
+              transition={{ duration: 0.5, delay: i * 0.05 }}
+              className="bento-card relative bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 md:p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white will-change-transform"
             >
               <div className="font-display text-6xl font-bold text-ink/10">
                 {String(i + 1).padStart(2, "0")}
               </div>
-              <div className="mt-2 inline-grid h-12 w-12 place-items-center bg-yellow text-ink rounded-full">
+              <div className="mt-2 inline-grid h-12 w-12 place-items-center bg-indigo-100 text-indigo-700 rounded-full border border-indigo-200/50 shadow-sm">
                 <s.icon className="h-5 w-5" strokeWidth={2.5} />
               </div>
               <h3 className="mt-5 font-display text-xl font-bold text-ink">{s.title}</h3>
-              <p className="mt-2 text-sm text-zinc-600">{s.text}</p>
+              <p className="mt-2 text-sm text-slate-600 font-semibold">{s.text}</p>
             </motion.div>
           ))}
         </div>

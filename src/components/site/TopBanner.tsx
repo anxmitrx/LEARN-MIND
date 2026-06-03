@@ -37,7 +37,7 @@ export function TopBanner() {
     <Link
       ref={bannerRef}
       to="/class-12-consult"
-      className="group sticky top-0 z-50 flex min-h-10 w-full items-center justify-center bg-[#FDFBF7]/70 backdrop-blur-md border-b border-white/40 px-4 py-2.5 text-center text-xs font-bold text-ink hover:underline md:text-sm"
+      className="group sticky top-0 z-50 flex min-h-10 w-full items-center justify-center bg-white/40 backdrop-blur-xl border-b border-white/60 px-4 py-2.5 text-center text-xs font-bold text-ink hover:underline md:text-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
     >
       <span className="flex items-center justify-center gap-1.5 leading-tight">
         <span>

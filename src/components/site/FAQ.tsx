@@ -38,7 +38,7 @@ export function FAQ() {
         <div>
           <span className="eyebrow text-ink">FAQ</span>
           <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            Quick answers, <span className="bg-yellow px-2 rounded-lg">straight up.</span>
+            Quick answers, <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">straight up.</span>
           </h2>
         </div>
 
@@ -48,16 +48,16 @@ export function FAQ() {
             return (
               <div
                 key={i}
-                className="bg-background rounded-3xl shadow-md shadow-[#3A3532]/5 overflow-hidden"
+                className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white will-change-transform"
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left cursor-pointer"
+                  className="flex w-full items-center justify-between gap-6 p-4 md:p-8 text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20 rounded-t-3xl"
                 >
                   <span className="font-display text-base font-bold text-ink sm:text-lg tracking-wide">{f.q}</span>
                   <span
                     className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition-all duration-300 ${
-                      isOpen ? "rotate-45 bg-ink text-yellow" : "bg-yellow text-ink"
+                      isOpen ? "rotate-45 bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50"
                     }`}
                   >
                     <Plus className="h-5 w-5" strokeWidth={3} />
@@ -70,9 +70,9 @@ export function FAQ() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25, ease: "easeOut" }}
-                      className="overflow-hidden border-t border-[#3A3532]/10"
+                      className="overflow-hidden border-t border-white/40"
                     >
-                      <p className="px-6 py-5 text-sm leading-relaxed text-zinc-700">{f.a}</p>
+                      <p className="p-4 md:px-8 md:pb-8 md:pt-6 text-sm leading-relaxed text-slate-700 font-semibold">{f.a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

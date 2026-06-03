@@ -16,11 +16,11 @@ export function Navbar() {
   const { openModal } = useReservation();
 
   return (
-    <header className="sticky top-[var(--banner-height,0px)] z-40 bg-[#FDFBF7]/70 backdrop-blur-md border-b border-white/40 transition-[top] duration-200">
+    <header className="sticky top-[var(--banner-height,0px)] z-40 bg-white/40 backdrop-blur-xl border-b border-white/60 transition-[top] duration-200">
       <div className="container mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 py-2 sm:px-6">
         {/* Zone 1: Left - Logo */}
         <div className="flex-1 flex justify-start">
-          <Link to="/" className="group flex items-center gap-3 whitespace-nowrap">
+          <Link to="/" className="group flex items-center gap-3 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-2xl">
             <img
               src="/assets/logo.png"
               alt="Learn & Shine Logo"
@@ -37,11 +37,11 @@ export function Navbar() {
                 key={l.to}
                 to={l.to}
                 activeOptions={{ exact: l.to === "/" }}
-                className="relative flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold text-ink transition-colors hover:bg-yellow data-[status=active]:bg-ink data-[status=active]:text-background"
+                className="relative flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold text-ink transition-all hover:bg-white/60 hover:shadow-sm data-[status=active]:bg-indigo-600 data-[status=active]:text-white focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
               >
                 <span>{l.label}</span>
                 {l.badge && (
-                  <span className="inline-flex shrink-0 items-center rounded-full bg-yellow px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-ink animate-pulse group-data-[status=active]:bg-ink group-data-[status=active]:text-background">
+                  <span className="inline-flex shrink-0 items-center rounded-full bg-indigo-600 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white animate-pulse group-data-[status=active]:bg-white group-data-[status=active]:text-indigo-600">
                     {l.badge}
                   </span>
                 )}
@@ -55,7 +55,7 @@ export function Navbar() {
           <div className="hidden md:block">
             <button
               onClick={() => openModal()}
-              className="inline-flex items-center bg-yellow px-5 py-2.5 text-xs font-display font-extrabold uppercase tracking-wider text-ink rounded-3xl shadow-md shadow-[#3A3532]/5 transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+              className="inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-2.5 text-xs font-display font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             >
               Reserve Seat
             </button>
@@ -64,7 +64,7 @@ export function Navbar() {
           <button
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
-            className="grid h-10 w-10 place-items-center bg-background text-ink md:hidden rounded-full shadow-sm"
+            className="grid h-10 w-10 place-items-center bg-white/20 backdrop-blur-md text-ink md:hidden rounded-full shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
           >
             {open ? <X /> : <Menu />}
           </button>
@@ -72,18 +72,18 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="border-t border-white/20 bg-[#FDFBF7]/95 backdrop-blur-md md:hidden">
+        <div className="border-t border-white/20 bg-white/60 backdrop-blur-xl md:hidden">
           <nav className="flex flex-col p-4">
             {links.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-between rounded-full px-4 py-3 text-sm font-bold text-ink hover:bg-yellow"
+                className="flex items-center justify-between rounded-full px-4 py-3 text-sm font-bold text-ink hover:bg-white/60 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
               >
                 <span>{l.label}</span>
                 {l.badge && (
-                  <span className="inline-flex items-center rounded-full bg-yellow px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-ink">
+                  <span className="inline-flex items-center rounded-full bg-indigo-600 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white">
                     {l.badge}
                   </span>
                 )}
@@ -91,7 +91,7 @@ export function Navbar() {
             ))}
             <button
               onClick={() => { setOpen(false); openModal(); }}
-              className="mt-2 bg-yellow px-5 py-3 text-xs font-display font-extrabold uppercase tracking-wider text-ink rounded-3xl shadow-md shadow-[#3A3532]/5 text-center flex justify-center items-center cursor-pointer"
+              className="mt-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-3 text-xs font-display font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 text-center flex justify-center items-center cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             >
               Reserve Seat
             </button>
