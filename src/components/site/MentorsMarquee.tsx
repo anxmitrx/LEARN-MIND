@@ -48,14 +48,14 @@ export function MentorsMarquee() {
   return (
     <section id="mentors" className="relative bg-background pt-28 md:pt-36 pb-24 sm:pb-28">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex flex-wrap items-end justify-between gap-6 border-b border-white/40 pb-10">
+        <div className="flex flex-col items-start gap-4 md:gap-6 border-b border-white/40 pb-10">
           <div>
             <span className="eyebrow text-ink">Premium Mentors</span>
             <h2 className="mt-3 max-w-2xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-6xl">
               Learn from people <br /> who <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">hire people.</span>
             </h2>
           </div>
-          <p className="max-w-md text-sm md:text-base font-medium text-zinc-600">
+          <p className="max-w-2xl text-lg text-slate-700 leading-relaxed">
             MNC managers, IIM/IIT alumni, startup founders, and senior engineers — mentoring you
             weekly, in cohorts and 1:1.
           </p>
