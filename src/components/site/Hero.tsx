@@ -179,7 +179,7 @@ export function Hero() {
               title="Mastering Python & AI Basics"
               description="Live session on bridging the gap between C/Python syntax and real-world AI applications."
               time="SUN • 5:00 PM"
-              positionClasses="-left-4 top-[35%] sm:-left-16 sm:top-[30%] max-w-[280px] scale-90 sm:scale-95"
+              positionClasses="-left-16 top-12 sm:-left-24 sm:top-8 md:-left-32 md:top-16 z-30 max-w-[260px] scale-90 origin-top-right sm:scale-95"
               registeredCount="+215 registered"
             />
 
