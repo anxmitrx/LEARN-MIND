@@ -105,17 +105,23 @@ function Class12ConsultPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative bg-white/40 backdrop-blur-xl border-b border-white/60 py-16 md:py-24">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="max-w-3xl">
+      <section className="relative w-full overflow-hidden border-b border-white/60 pt-28 pb-20 md:pt-36 md:pb-28 min-h-[65vh] flex items-center">
+        <img
+          src="/assets/WhatsApp Image 2026-06-03 at 7.45.22 PM.jpeg"
+          alt="Students studying"
+          className="absolute inset-0 w-full h-full object-cover object-center z-0 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]"
+        />
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#F8EDEB] via-[#F8EDEB]/40 via-20% to-transparent sm:bg-gradient-to-r sm:from-[#f8f5ff]/95 sm:via-[#f8f5ff]/60 sm:via-35% sm:to-transparent sm:to-70%"></div>
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 relative z-20">
+          <div className="max-w-2xl">
             <span className="eyebrow inline-block bg-white/60 backdrop-blur-md px-4 py-1.5 font-bold text-indigo-600 border border-white/50 rounded-full shadow-sm">
               ✨ Limited Subsidy Slots Available
             </span>
-            <h1 className="mt-6 font-display text-4xl font-bold leading-[1.1] tracking-wide text-ink sm:text-6xl md:text-7xl">
+            <h1 className="mt-6 font-display text-4xl font-bold leading-[1.1] tracking-wide text-ink sm:text-6xl md:text-7xl drop-shadow-sm">
               The Ultimate <br className="hidden sm:inline" />
               Class 12 <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg box-decoration-slice">Roadmap.</span>
             </h1>
-            <p className="mt-6 text-base font-bold leading-relaxed text-slate-700 sm:text-lg max-w-2xl">
+            <p className="mt-6 text-base font-bold leading-relaxed text-slate-700 sm:text-lg">
               Stop guessing your future. Get expert, personalized guidance on choosing the right college courses, entrance exams, and high-growth careers at a price that actually makes sense.
             </p>
           </div>

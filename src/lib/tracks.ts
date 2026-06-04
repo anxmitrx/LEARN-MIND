@@ -19,6 +19,11 @@ export type Track = {
   outcomes: string[];
   agenda: { time: string; title: string; detail: string }[];
   radar: { label: string; value: number }[];
+  oneLinerPromise: string;
+  whoItsFor: string[];
+  youWillLearn: string[];
+  exampleSessions: string[];
+  timeCommitment: string;
 };
 
 export const tracks: Track[] = [
@@ -38,10 +43,9 @@ export const tracks: Track[] = [
       { title: "Work–Life Balance", icon: Scale },
     ],
     outcomes: [
-      "Map a 3-year career trajectory with concrete milestones",
-      "Build a LinkedIn profile that recruiters actually open",
-      "Set quarterly goals with measurable outcomes",
-      "Form authentic professional connections — not just contacts",
+      "A customized 3-year career roadmap detailing milestone metrics",
+      "An optimized LinkedIn profile ranking in the top 1% of your peer group",
+      "A Personal Relationship Management system tracking 50+ warm industry connections"
     ],
     agenda: [
       { time: "00:00", title: "Career Diagnostic", detail: "Identify your strengths, gaps, and target roles." },
@@ -56,6 +60,27 @@ export const tracks: Track[] = [
       { label: "Visibility", value: 80 },
       { label: "Confidence", value: 88 },
     ],
+    oneLinerPromise: "Define your career trajectory, polish your LinkedIn presence, and establish a high-leverage professional network.",
+    whoItsFor: [
+      "Engineering & business candidates looking to define their ideal industry domains.",
+      "Undergraduates hoping to build a credible, stand-out personal brand before graduation.",
+      "Students wanting to establish actionable goals and maintain daily productivity routines."
+    ],
+    youWillLearn: [
+      "Career trajectory charting & reverse-engineering premium role profiles",
+      "Optimizing your LinkedIn headline, bio, and content creation structure",
+      "Networking frameworks for engaging alumni, talent acquisition professionals, and leaders",
+      "Translating abstract goals into specific quarterly Objectives and Key Results (OKRs)",
+      "Building self-discipline routines to balance academics, work search, and personal health"
+    ],
+    exampleSessions: [
+      "Career Blueprinting: Identifying Strengths and Industry Realities",
+      "Headline & Banner Optimization: Crafting Your Digital Pitch",
+      "Outreach Engineering: Templates & Etiquette for Professional Networking",
+      "Personal OKRs: Building a High-Performance Weekly Routine",
+      "Stress Management: Balance Frameworks for Competitive Environments"
+    ],
+    timeCommitment: "4 hours/week (2h Live Workshop + 2h Application Project)"
   },
   {
     slug: "soft-skills",
@@ -73,10 +98,9 @@ export const tracks: Track[] = [
       { title: "Time Management & Productivity", icon: Clock },
     ],
     outcomes: [
-      "Write emails and Slack messages that get instant replies",
-      "Read team dynamics and avoid political landmines",
-      "Manage your manager — set expectations and deliver",
-      "Run your week with a productivity system that actually sticks",
+      "A curated toolkit of communication templates for project updates, escalations, and status reviews",
+      "A time-blocking scheduler layout resulting in a documented productivity boost",
+      "A personal communication profile diagnostic highlighting core growth areas"
     ],
     agenda: [
       { time: "00:00", title: "The Corporate Decoder", detail: "Unspoken rules of MNCs, startups, and consulting firms." },
@@ -91,6 +115,27 @@ export const tracks: Track[] = [
       { label: "Focus", value: 82 },
       { label: "Resilience", value: 80 },
     ],
+    oneLinerPromise: "Master corporate communication dynamics, emotional intelligence (EQ), and structured time management.",
+    whoItsFor: [
+      "Technical students wanting to translate complex engineering logic into clear business updates.",
+      "Candidates aiming to navigate corporate structures and peer conflicts constructively.",
+      "Students preparing to lead group projects or coordinate multi-disciplinary teams."
+    ],
+    youWillLearn: [
+      "Writing professional, response-focused emails and project status updates on Slack",
+      "Managing Up: Proactively aligning workloads and expectations with your manager",
+      "Active listening and handling critical design or performance feedback with maturity",
+      "Understanding organizational dynamics, corporate culture differences, and power grids",
+      "Structuring focus blocks to isolate deep work and limit daily context-switching"
+    ],
+    exampleSessions: [
+      "Slack & Email Clinic: Live Writing and Tone Modification Exercises",
+      "The Art of Managing Up: Setting Boundaries and Demonstrating Accountability",
+      "Conflict Resolution Scenarios: Simulating Hard Peer Discussions",
+      "Productivity Engineering: Establishing Your Weekly Time-Blocking Blueprint",
+      "Deciphering Corporate DNA: Enterprise Workflows vs. Startup Agility"
+    ],
+    timeCommitment: "4 hours/week (2.5h Live Session + 1.5h Application Work)"
   },
   {
     slug: "engineering",
@@ -109,10 +154,9 @@ export const tracks: Track[] = [
       { title: "Data Science", icon: BarChart3 },
     ],
     outcomes: [
-      "Speak fluently about Agile, sprints, and the SDLC in interviews",
-      "Use AI tools to multiply your output as a junior engineer",
-      "Reason through technical tradeoffs out loud — not just on paper",
-      "Spot ethical red flags before they become career risks",
+      "An architectural spec sheet outlining database choices, system models, and design trade-offs",
+      "Practical experience running agile sprint structures inside a mock Jira ecosystem",
+      "An AI-assisted code portfolio showing test suite additions and optimized refactoring"
     ],
     agenda: [
       { time: "00:00", title: "SDLC Walkthrough", detail: "From discovery → deploy with a real product." },
@@ -127,6 +171,27 @@ export const tracks: Track[] = [
       { label: "Systems", value: 78 },
       { label: "Ethics", value: 75 },
     ],
+    oneLinerPromise: "Bridge the gap between academic code and building, deploying, and maintaining enterprise-scale products.",
+    whoItsFor: [
+      "Computer science and engineering majors seeking industry-standard project experience.",
+      "Junior software developers wanting to master full lifecycle architectures.",
+      "Tech candidates looking to harness AI tools to accelerate code generation and refactoring safely."
+    ],
+    youWillLearn: [
+      "The Software Development Life Cycle (SDLC): Sprints, CI/CD pipelines, and Version Control",
+      "Structured technical problem-solving and talking through architectural trade-offs",
+      "Practical application of modern office suites (Jira, Git, databases, advanced scripting)",
+      "Integrating AI assistants (Cursor, Copilot, ChatGPT) safely into local codebases",
+      "Core safety, scalability, and ethical responsibilities of modern software engineers"
+    ],
+    exampleSessions: [
+      "Sprint Diagnostics: Simulating an Agile Workspace from Backlog to Demo",
+      "Architectural Decisions: Monoliths vs. Microservices and NoSQL vs. SQL",
+      "Enterprise Dev Setup: Working with Git, Docker, and Basic Deployments",
+      "AI-Driven Development: Optimizing Code with Generative Assistants",
+      "Engineering Ethics & Security: Protecting User Privacy and Mitigating Vulnerabilities"
+    ],
+    timeCommitment: "5 hours/week (3h Live Labs + 2h Independent Projects)"
   },
   {
     slug: "management",
@@ -146,10 +211,9 @@ export const tracks: Track[] = [
       { title: "Sales & Distribution — Retail / B2B / B2C", icon: Store },
     ],
     outcomes: [
-      "Defend a business decision with data — not just intuition",
-      "Walk through a real product roadmap from launch to sunset",
-      "Read a P&L and a unit economics sheet without freezing",
-      "Pitch a sales motion for B2B and B2C contexts",
+      "A comprehensive Product Requirements Document (PRD) detailing feature iterations",
+      "A customized cohort retention model and unit economics analysis spreadsheet",
+      "A structured slideset analyzing the offline and online logistics of a consumer brand"
     ],
     agenda: [
       { time: "00:00", title: "Live Case Crack", detail: "Tear apart a real Indian D2C brand's growth model." },
@@ -164,6 +228,27 @@ export const tracks: Track[] = [
       { label: "Finance", value: 78 },
       { label: "Sales", value: 80 },
     ],
+    oneLinerPromise: "Acquire data-driven decision capabilities, roadmap structures, and unit economics tools used by product managers.",
+    whoItsFor: [
+      "Business, management, and MBA candidates seeking structured analytical roles.",
+      "Engineering students looking to pivot into Product Management or business strategy.",
+      "Aspiring founders who need to master corporate finance and user-growth mechanics."
+    ],
+    youWillLearn: [
+      "Structuring complex business problems and defining key performance indicators (KPIs)",
+      "Product roadmapping, user persona mapping, and detailing MVP spec outlines",
+      "Financial analysis basics, understanding P&L sheets, and analyzing unit economics",
+      "Operational workflows, distribution logistics, and customer acquisition funnels",
+      "Organizational design frameworks to guide teams and run operations smoothly"
+    ],
+    exampleSessions: [
+      "Market Case Challenge: Analyzing D2C Brands and Growth Drivers",
+      "Executive Dashboards: Using Data to Make Multi-million Dollar Decisions",
+      "PRD Blueprint: Mapping User Journeys and Drafting Feature Scope",
+      "Corporate Finance: Cohorts, LTV, CAC, and Operational Runway",
+      "Sales Execution: Building Enterprise Sales Pipelines and Customer Journeys"
+    ],
+    timeCommitment: "5 hours/week (3h Case Sessions + 2h Business Modeling)"
   },
   {
     slug: "practical",
@@ -186,10 +271,9 @@ export const tracks: Track[] = [
       { title: "Internship & Industry Visits", icon: Rocket },
     ],
     outcomes: [
-      "Negotiate ₹1–4 LPA more on your first offer — with scripts",
-      "Walk into HR + technical rounds with rehearsed answers",
-      "Recover gracefully from your first big mistake at work",
-      "Build inner stability with Inner Engineering principles",
+      "An ATS-compliant, recruiter-vetted professional resume",
+      "A personal negotiation playbook featuring script variations for local market ranges",
+      "A customized 90-day onboarding blueprint detailing career-launch milestones"
     ],
     agenda: [
       { time: "00:00", title: "Salary Negotiation Live", detail: "Real Indian offer letters, real counter-scripts." },
@@ -204,6 +288,29 @@ export const tracks: Track[] = [
       { label: "Awareness", value: 80 },
       { label: "Inner Calm", value: 78 },
     ],
+    oneLinerPromise: "Simulate real-world compensation discussions, ace interviews, and cultivate stability for professional growth.",
+    whoItsFor: [
+      "Graduating students preparing to enter intense placement and recruiting cycles.",
+      "Candidates holding initial offers who want to negotiate better compensation scripts.",
+      "Students wanting to build long-term focus, clarity, and stress management."
+    ],
+    youWillLearn: [
+      "Negotiating compensation packages and evaluating competing job offers",
+      "Perfecting behavioral (STAR framework) and technical screening rounds",
+      "ATS-optimized resume formats and tailoring profiles to match target descriptions",
+      "Cognitive approaches to bounce back from interview rejections or early team mistakes",
+      "Transition planning to move smoothly from academic schedules to full-time work",
+      "Mindfulness frameworks to handle stress and improve daily focus and stability"
+    ],
+    exampleSessions: [
+      "Offer Optimization: Live Compensation Dialogue Simulations",
+      "Interview Prep: Mastering Behavioral Scenarios under Panel pressure",
+      "Resume Clinic: Restructuring Bullets for Maximum Impact and Flow",
+      "Recovery Tactics: Handling Mistakes and Production Faults Gracefully",
+      "The Onboarding Blueprint: Navigating Your First 90 Days with High Authority",
+      "Mindfulness for Builders: Stress Management and Focus Techniques"
+    ],
+    timeCommitment: "6 hours/week (3h Interactive Workshops + 3h Practical Labs)"
   },
 ];
 

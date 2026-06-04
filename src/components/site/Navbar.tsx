@@ -6,7 +6,7 @@ import { useReservation } from "./ReservationContext";
 const links = [
   { to: "/", label: "Home" },
   { to: "/tracks", label: "Tracks" },
-  { to: "/class-12-consult", label: "Class 12 Consult", badge: "NEW" },
+  { to: "/class-12-consult", label: "Class 12 Consultation", badge: "NEW" },
   { to: "/mentors", label: "Mentors" },
   { to: "/about", label: "About" },
 ];
@@ -17,7 +17,7 @@ export function Navbar() {
 
   return (
     <header className="fixed top-[calc(var(--banner-height,0px)+1.5rem)] left-1/2 -translate-x-1/2 w-[92%] max-w-5xl z-50 rounded-full px-6 py-2 bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_20px_40px_-15px_rgba(31,38,135,0.15)] transition-[top] duration-200">
-      <div className="flex w-full min-h-12 items-center justify-between gap-8">
+      <div className="flex w-full min-h-12 items-center justify-between gap-6">
         {/* Zone 1: Left - Logo */}
         <div className="flex-1 flex justify-start">
           <Link to="/" className="group flex items-center gap-3 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-full">
@@ -30,7 +30,7 @@ export function Navbar() {
         </div>
 
         {/* Zone 2: Center - Nav Links */}
-        <div className="hidden md:flex justify-center gap-8 items-center">
+        <div className="hidden md:flex justify-center gap-6 items-center">
           <nav className="flex items-center gap-1">
             {links.map((l) => (
               <Link

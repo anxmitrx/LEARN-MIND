@@ -2,6 +2,47 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, PlayCircle } from "lucide-react";
 import { MagneticButton } from "./MagneticButton";
 import { useReservation } from "./ReservationContext";
+import { Link } from "@tanstack/react-router";
+
+type FloatingWorkshopCardProps = {
+  title: string;
+  description: string;
+  time: string;
+  positionClasses: string;
+  registeredCount: string;
+};
+
+function FloatingWorkshopCard({
+  title,
+  description,
+  time,
+  positionClasses,
+  registeredCount,
+}: FloatingWorkshopCardProps) {
+  return (
+    <Link
+      to="/tracks"
+      className={`absolute z-30 block bg-white/40 backdrop-blur-xl border border-white/60 rounded-3xl p-4 sm:p-5 shadow-[0_15px_35px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_25px_50px_rgba(31,38,135,0.15)] hover:border-indigo-400/50 group cursor-pointer animate-float-slow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 ${positionClasses}`}
+    >
+      <div className="flex items-center justify-between mb-3 gap-2">
+        <div className="flex items-center gap-2 bg-white rounded-full px-3 py-1 shadow-sm">
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          <span className="text-xs font-bold text-indigo-900 tracking-wide uppercase">Live</span>
+        </div>
+        <span className="text-xs font-semibold text-slate-600 tracking-wider">{time}</span>
+      </div>
+      <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-tight mb-2 group-hover:text-indigo-700 transition-colors duration-300 font-display">
+        {title}
+      </h3>
+      <p className="text-xs sm:text-sm text-slate-700 mb-3 sm:mb-4 line-clamp-2 font-medium">
+        {description}
+      </p>
+      <div className="text-xs font-bold text-slate-600">
+        {registeredCount}
+      </div>
+    </Link>
+  );
+}
 
 export function Hero() {
   const { openModal } = useReservation();
@@ -39,20 +80,23 @@ export function Hero() {
             {/* Glass Overlay Layer */}
             <div className="absolute inset-0 z-[-1] bg-white/25 backdrop-blur-[3px]" />
 
-            <motion.span
-              variants={item}
-              className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-md px-4 py-1.5 text-xs font-display font-extrabold uppercase tracking-wider text-indigo-600 rounded-full border border-white/50 shadow-sm"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              Industry-Ready Since Day One
-            </motion.span>
-
-            {/* STUCK? Badge */}
+            {/* Top Badges Parent Wrapper */}
             <motion.div
               variants={item}
-              className="block sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/55 backdrop-blur-md border border-white/65 text-indigo-700 text-xs sm:text-sm font-bold tracking-widest uppercase shadow-sm mb-6 mt-4 w-fit"
+              className="flex flex-wrap items-center gap-3 mb-6"
             >
-              STUCK? WE ARE HERE TO HELP YOU
+              <div className="flex items-center justify-center h-8 px-4 rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm">
+                <Sparkles className="w-4 h-4 mr-2 text-indigo-700 shrink-0" />
+                <span className="text-xs sm:text-sm font-bold text-indigo-700 tracking-wide uppercase leading-none">
+                  Industry-Ready Since Day One
+                </span>
+              </div>
+
+              <div className="flex items-center justify-center h-8 px-4 rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm">
+                <span className="text-xs sm:text-sm font-bold text-indigo-700 tracking-wide uppercase leading-none">
+                  STUCK? WE ARE HERE TO HELP YOU
+                </span>
+              </div>
             </motion.div>
 
             <motion.h1
@@ -122,31 +166,49 @@ export function Hero() {
             />
 
             {/* Top/Right Floating Card: Salary Negotiation Workshop */}
-            <div className="animate-float-slow absolute -right-4 top-8 sm:-right-8 sm:top-12 z-10 bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 max-w-[260px] sm:max-w-[320px]">
-              <div className="flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider rounded-full">
-                  <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
-                  Live
-                </span>
-                <span className="font-mono text-[10px] text-slate-600 font-semibold">SAT · 7:00 PM</span>
-              </div>
-              <h3 className="mt-4 font-display text-sm sm:text-base font-bold leading-snug text-ink">
-                Negotiating Your First Salary
-              </h3>
-              <p className="mt-2 text-xs text-slate-700 leading-relaxed">
-                Live workshop with an MNC hiring manager. Real scripts & context.
-              </p>
-              <div className="mt-4 flex items-center gap-2">
-                <span className="text-[10px] font-bold text-slate-600">+412 registered</span>
-              </div>
-            </div>
+            <FloatingWorkshopCard
+              title="Negotiating Your First Salary"
+              description="Live workshop with an MNC hiring manager. Real scripts & context."
+              time="SAT • 7:00 PM"
+              positionClasses="-right-4 -top-8 sm:-right-12 sm:-top-6 w-[90%] max-w-[340px]"
+              registeredCount="+412 registered"
+            />
+
+            {/* Mid-Left Floating Card: Python & AI Basics */}
+            <FloatingWorkshopCard
+              title="Mastering Python & AI Basics"
+              description="Live session on bridging the gap between C/Python syntax and real-world AI applications."
+              time="SUN • 5:00 PM"
+              positionClasses="-left-4 top-[35%] sm:-left-16 sm:top-[30%] max-w-[280px] scale-90 sm:scale-95"
+              registeredCount="+215 registered"
+            />
+
+            {/* Bottom-Right Floating Card: Core Engineering */}
+            <FloatingWorkshopCard
+              title="Cracking Core Engineering"
+              description="Deep dive into circuit analysis, Op-amps, and thermodynamics for tech roles."
+              time="TUE • 6:30 PM"
+              positionClasses="-right-2 -bottom-6 sm:-right-12 sm:bottom-4 max-w-[280px] scale-90 sm:scale-95 hidden sm:block"
+              registeredCount="+189 registered"
+            />
 
             {/* Bottom/Left Floating Card: Arjun Outcome */}
-            <div className="absolute -left-4 bottom-12 sm:-left-12 sm:bottom-20 z-20 bg-white/60 backdrop-blur-xl border border-white/80 p-5 sm:p-6 rounded-3xl shadow-xl max-w-[220px] sm:max-w-[280px]">
-              <div className="eyebrow text-indigo-600 text-[9px] font-bold tracking-wider">Outcome</div>
-              <div className="mt-1 font-display text-sm sm:text-base font-bold text-ink">Hired at Infosys</div>
-              <div className="text-[10px] font-bold text-slate-600 mt-1">— Arjun, B.Tech</div>
-            </div>
+            <Link
+              to="/tracks"
+              className="absolute -left-4 -bottom-6 sm:-left-10 sm:bottom-10 z-20 max-w-[260px] block bg-white/40 backdrop-blur-xl border border-white/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_25px_50px_rgba(31,38,135,0.15)] hover:border-indigo-400/50 group cursor-pointer animate-float-slow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-1.5 bg-indigo-50 text-indigo-700 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide">
+                  Outcome
+                </div>
+              </div>
+              <h3 className="text-base font-bold text-slate-900 leading-tight mb-1 group-hover:text-indigo-700 transition-colors duration-300 font-display">
+                Hired at Infosys
+              </h3>
+              <p className="text-xs font-semibold text-slate-600">
+                — Arjun, B.Tech
+              </p>
+            </Link>
           </motion.div>
         </motion.div>
       </div>

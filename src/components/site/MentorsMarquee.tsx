@@ -17,21 +17,23 @@ const cardVariants = {
 
 function MentorCard({ m }: { m: (typeof mentors)[number] }) {
   return (
-    <div className="bento-card group w-full bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform">
-      <div
-        className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40"
-        style={{ background: `linear-gradient(135deg, hsl(${m.hue}, 70%, 88%), hsl(${m.hue}, 60%, 78%))` }}
-      >
-        <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
-          <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-500 group-hover:scale-105">
-            {m.initials}
-          </span>
+    <div className="bento-card group w-full bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform h-full flex flex-col">
+      <div className="flex-grow flex flex-col">
+        <div
+          className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0"
+          style={{ background: `linear-gradient(135deg, hsl(${m.hue}, 70%, 88%), hsl(${m.hue}, 60%, 78%))` }}
+        >
+          <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
+            <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-500 group-hover:scale-105">
+              {m.initials}
+            </span>
+          </div>
         </div>
+        <h4 className="mt-6 font-display text-xl md:text-2xl font-bold text-ink">{m.name}</h4>
+        <p className="text-sm md:text-base font-bold text-indigo-600 mt-1">{m.title}</p>
+        <p className="mt-2 text-xs md:text-sm text-slate-700 font-semibold line-clamp-3 leading-relaxed flex-grow" title={m.bio}>{m.bio}</p>
       </div>
-      <h4 className="mt-6 font-display text-xl md:text-2xl font-bold text-ink">{m.name}</h4>
-      <p className="text-sm md:text-base font-bold text-indigo-600 mt-1">{m.title}</p>
-      <p className="mt-2 text-xs md:text-sm text-slate-700 font-semibold line-clamp-3 leading-relaxed" title={m.bio}>{m.bio}</p>
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-6 mt-auto flex flex-wrap gap-2">
         {m.topics.map((t) => (
           <span key={t} className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-xs font-bold rounded-full shadow-sm">
             {t}
@@ -44,7 +46,7 @@ function MentorCard({ m }: { m: (typeof mentors)[number] }) {
 
 export function MentorsMarquee() {
   return (
-    <section id="mentors" className="relative bg-background py-24 sm:py-28">
+    <section id="mentors" className="relative bg-background pt-28 md:pt-36 pb-24 sm:pb-28">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-6 border-b border-white/40 pb-10">
           <div>
