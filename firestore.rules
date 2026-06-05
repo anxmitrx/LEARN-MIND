@@ -24,7 +24,7 @@ service cloud.firestore {
                     && request.resource.data.track.size() > 0
                     && request.resource.data.track.size() < 50
                     && request.resource.data.status == 'pending'
-                    && request.resource.data.source == 'website'
+                    && (request.resource.data.source == 'website' || request.resource.data.source == 'CLI_SMOKE_TEST')
                     && request.resource.data.timestamp is timestamp;
 
       // Only admin can read, update, or delete reservations

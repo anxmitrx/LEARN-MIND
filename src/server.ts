@@ -68,6 +68,95 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const url = new URL(request.url);
+
+    // Handle OPTIONS requests (CORS preflight) for /api/reserve
+    if (url.pathname === "/api/reserve" && request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+        }
+      });
+    }
+
+    // Intercept POST request for waitlist reservation
+    if (url.pathname === "/api/reserve" && request.method === "POST") {
+      const corsHeaders = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      };
+
+      try {
+        const body = await request.json() as any;
+        const email = body.email;
+        if (!email) {
+          return new Response(JSON.stringify({ success: false, error: "Missing email address" }), {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" }
+          });
+        }
+
+        const source = body.source || "CLI_SMOKE_TEST";
+        const name = body.name || "Edge API User";
+        const phone = body.phone || "+91 00000 00000";
+        const track = body.track || "general";
+        const status = "pending";
+        const timestampIso = new Date().toISOString();
+
+        const projectId = (env as any)?.FIREBASE_PROJECT_ID || "learn-and-shine-dbf4d";
+        const firestoreUrl = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/reservations`;
+
+        const firestorePayload = {
+          fields: {
+            name: { stringValue: name },
+            email: { stringValue: email },
+            phone: { stringValue: phone },
+            track: { stringValue: track },
+            status: { stringValue: status },
+            source: { stringValue: source },
+            timestamp: { timestampValue: timestampIso }
+          }
+        };
+
+        const firestoreResponse = await fetch(firestoreUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(firestorePayload)
+        });
+
+        const responseData = await firestoreResponse.json() as any;
+
+        if (!firestoreResponse.ok) {
+          return new Response(JSON.stringify({ 
+            success: false, 
+            error: responseData.error?.message || "Firestore REST API error" 
+          }), {
+            status: firestoreResponse.status,
+            headers: { ...corsHeaders, "Content-Type": "application/json" }
+          });
+        }
+
+        return new Response(JSON.stringify({ 
+          success: true, 
+          documentId: responseData.name ? responseData.name.split("/").pop() : null 
+        }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      } catch (err: any) {
+        return new Response(JSON.stringify({ success: false, error: err.message }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+    }
+
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
