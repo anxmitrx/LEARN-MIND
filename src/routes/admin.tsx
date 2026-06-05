@@ -1,7 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/AuthContext";
-import { db } from "@/lib/firebase";
+import { db, auth } from "@/lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { 
   Sparkles, 
@@ -46,17 +47,6 @@ function AdminComponent() {
   const [activeTab, setActiveTab] = useState<"waitlist" | "quiz">("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Navigation Guard: Redirect unauthorized users
-  useEffect(() => {
-    if (!authLoading) {
-      if (!user) {
-        navigate({ to: "/" });
-      } else if (user.email && !ADMIN_EMAILS.includes(user.email)) {
-        navigate({ to: "/" });
-      }
-    }
-  }, [user, authLoading, navigate]);
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -84,11 +74,19 @@ function AdminComponent() {
     }
   };
 
+  // Navigation Guard: Redirect unauthorized users using onAuthStateChanged
   useEffect(() => {
-    if (user && user.email && ADMIN_EMAILS.includes(user.email)) {
-      fetchData();
-    }
-  }, [user]);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) {
+        navigate({ to: "/" });
+      } else if (currentUser.email && !ADMIN_EMAILS.includes(currentUser.email)) {
+        navigate({ to: "/" });
+      } else {
+        fetchData();
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
 
   // Loading/Authorization State Guard
   if (authLoading || !user || (user.email && !ADMIN_EMAILS.includes(user.email))) {
