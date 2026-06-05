@@ -1,7 +1,7 @@
 const fetch = globalThis.fetch;
 
 async function runSmokeTest() {
-  const targetUrl = "https://learnmind.aboywithacam.workers.dev/api/reserve";
+  const targetUrl = process.argv[2] || "https://learnmind.aboywithacam.workers.dev/api/reserve";
   const payload = {
     email: "api-test-worker@student.com",
     source: "CLI_SMOKE_TEST"
