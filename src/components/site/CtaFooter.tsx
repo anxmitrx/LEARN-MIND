@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { MagneticButton } from "./MagneticButton";
 import { useReservation } from "./ReservationContext";
+import { AdminLoginModal } from "./AdminLoginModal";
 
 export function CtaFooter() {
   const { openModal } = useReservation();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   return (
     <>
       <section className="relative overflow-hidden bg-white/40 backdrop-blur-xl border-y border-white/60 py-24 sm:py-32">
@@ -56,10 +59,19 @@ export function CtaFooter() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-white/40 px-4 py-5 text-center text-xs text-slate-500 sm:px-6 font-bold">
-          © {new Date().getFullYear()} Learn & Shine. All rights reserved.
+        <div className="border-t border-white/40 px-4 py-5 text-center text-xs text-slate-500 sm:px-6 font-bold flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span>© {new Date().getFullYear()} Learn & Shine. All rights reserved.</span>
+          <button
+            type="button"
+            onClick={() => setIsLoginModalOpen(true)}
+            className="text-xs text-slate-400 hover:text-indigo-650 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1"
+          >
+            Admin Panel
+          </button>
         </div>
       </footer>
+
+      <AdminLoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </>
   );
 }
