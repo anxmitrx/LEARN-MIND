@@ -104,19 +104,23 @@ export function PathfinderQuiz() {
       setStep((prev) => prev + 1);
     } else {
       setStep(3);
-      try {
-        const step1Label = steps[1].options.find(o => o.value === newAnswers[1])?.label || newAnswers[1];
-        const step2Label = steps[2].options.find(o => o.value === optionValue)?.label || optionValue;
-        const recommendedTrackObj = tracks.find((t) => t.slug === optionValue) || tracks[0];
-        
-        await addDoc(collection(db, "quiz_results"), {
-          educationLevel: step1Label,
-          challenge: step2Label,
-          recommendedTrack: recommendedTrackObj.title,
-          timestamp: serverTimestamp()
-        });
-      } catch (err) {
-        console.error("Error writing quiz result to Firestore:", err);
+      if (db) {
+        try {
+          const step1Label = steps[1].options.find(o => o.value === newAnswers[1])?.label || newAnswers[1];
+          const step2Label = steps[2].options.find(o => o.value === optionValue)?.label || optionValue;
+          const recommendedTrackObj = tracks.find((t) => t.slug === optionValue) || tracks[0];
+          
+          await addDoc(collection(db, "quiz_results"), {
+            educationLevel: step1Label,
+            challenge: step2Label,
+            recommendedTrack: recommendedTrackObj.title,
+            timestamp: serverTimestamp()
+          });
+        } catch (err) {
+          console.error("Error writing quiz result to Firestore:", err);
+        }
+      } else {
+        console.error("Firestore database is not initialized.");
       }
     }
   };

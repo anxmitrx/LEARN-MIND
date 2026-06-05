@@ -64,7 +64,7 @@ function DashboardComponent() {
           </div>
           
           <button
-            onClick={() => auth.signOut()}
+            onClick={() => auth && auth.signOut()}
             className="grid h-10 w-10 place-items-center bg-white/20 backdrop-blur-md border border-white/50 rounded-full hover:scale-105 active:scale-95 text-indigo-600 hover:bg-white/40 hover:border-white transition-all cursor-pointer shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
             title="Log out"
           >

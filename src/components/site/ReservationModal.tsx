@@ -77,6 +77,12 @@ export function ReservationModal() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
+    if (!db) {
+      console.error("Firestore database is not initialized.");
+      setStep(3);
+      setTimeout(fireConfetti, 120);
+      return;
+    }
     try {
       await addDoc(collection(db, "reservations"), {
         name: data.name,

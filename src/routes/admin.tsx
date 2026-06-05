@@ -41,8 +41,12 @@ function AdminComponent() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"waitlist" | "quiz">("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
-
   const fetchData = async () => {
+    if (!db) {
+      console.warn("Firestore db is not initialized.");
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       // Fetch reservations ordered by timestamp descending
@@ -71,10 +75,14 @@ function AdminComponent() {
 
   // Navigation Guard: Redirect unauthorized users using onAuthStateChanged
   useEffect(() => {
+    if (!auth) {
+      navigate({ to: "/" });
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser || currentUser.email !== MASTER_ADMIN_EMAIL) {
-        if (currentUser) {
-          auth.signOut();
+        if (currentUser && auth) {
+          auth.signOut().catch(err => console.error("Error signing out:", err));
         }
         navigate({ to: "/" });
       } else {

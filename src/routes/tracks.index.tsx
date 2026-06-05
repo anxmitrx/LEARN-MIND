@@ -156,12 +156,16 @@ function TracksIndex() {
       const gapLabel = gapLabels[gap] || gap;
       const recommendedTrackObj = tracks.find((t) => t.slug === match) || tracks[0];
 
-      await addDoc(collection(db, "quiz_results"), {
-        educationLevel: focusLabel,
-        challenge: gapLabel,
-        recommendedTrack: recommendedTrackObj.title,
-        timestamp: serverTimestamp()
-      });
+      if (db) {
+        await addDoc(collection(db, "quiz_results"), {
+          educationLevel: focusLabel,
+          challenge: gapLabel,
+          recommendedTrack: recommendedTrackObj.title,
+          timestamp: serverTimestamp()
+        });
+      } else {
+        console.warn("Firestore db instance is null. Skipping quiz result log.");
+      }
     } catch (err) {
       console.error("Error writing quiz result to Firestore:", err);
     }

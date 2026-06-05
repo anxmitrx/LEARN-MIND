@@ -23,14 +23,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      if (currentUser) {
-        // Fetch extra user data like XP, Level
-        const docRef = doc(db, "users", currentUser.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
+      if (currentUser && db) {
+        try {
+          // Fetch extra user data like XP, Level
+          const docRef = doc(db, "users", currentUser.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setUserData(docSnap.data());
+          }
+        } catch (err) {
+          console.error("Error fetching user data from Firestore:", err);
         }
       } else {
         setUserData(null);

@@ -41,6 +41,12 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
     setError(null);
     setLoading(true);
 
+    if (!auth) {
+      setError("Firebase Authentication is not available.");
+      setLoading(false);
+      return;
+    }
+
     try {
       // Attempt Firebase Login
       await signInWithEmailAndPassword(auth, email, password);
@@ -101,6 +107,12 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
             </div>
 
             <form onSubmit={handleLogin} className="mt-7 space-y-4">
+              <div className="mb-4 p-3 bg-slate-800 text-[10px] text-green-400 rounded-lg border border-slate-700 font-mono break-all text-left">
+                // ENV DIAGNOSTICS:
+                <br/>API_KEY: {import.meta.env.VITE_FIREBASE_API_KEY ? "✅ LOADED" : "❌ MISSING"}
+                <br/>AUTH_OBJ: {auth ? "✅ READY" : "❌ UNDEFINED"}
+              </div>
+
               {/* Email Field */}
               <div>
                 <label className="block mb-1.5">
