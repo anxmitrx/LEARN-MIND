@@ -4,6 +4,8 @@ import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { tracks } from "@/lib/tracks";
 import { useReservation } from "@/components/site/ReservationContext";
+import { db } from "@/lib/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -110,7 +112,7 @@ function TracksIndex() {
   };
 
   // Quiz Matchmaker calculations
-  const runQuizEvaluation = (focus: string, gap: string) => {
+  const runQuizEvaluation = async (focus: string, gap: string) => {
     let match = "practical"; // fallback
 
     if (gap === "technical") {
@@ -135,6 +137,34 @@ function TracksIndex() {
     }
 
     setRecommendedTrack(match);
+
+    try {
+      const focusLabels: Record<string, string> = {
+        tech: "Tech & Engineering",
+        mgmt: "Management & Consulting",
+        general: "Open-Ended Professional prep"
+      };
+      const gapLabels: Record<string, string> = {
+        brand: "Building networking skills & high-converting LinkedIn profiles",
+        communication: "Perfecting verbal pitching, workplace reports, and email loops",
+        technical: "Bridging academic coding gaps to ship clean enterprise software",
+        business: "Mastering roadmap cycles, product specs, and spreadsheet math",
+        placement: "Acing recruiters AMAs, ATS resumes, and salary negotiations"
+      };
+
+      const focusLabel = focusLabels[focus] || focus;
+      const gapLabel = gapLabels[gap] || gap;
+      const recommendedTrackObj = tracks.find((t) => t.slug === match) || tracks[0];
+
+      await addDoc(collection(db, "quiz_results"), {
+        educationLevel: focusLabel,
+        challenge: gapLabel,
+        recommendedTrack: recommendedTrackObj.title,
+        timestamp: serverTimestamp()
+      });
+    } catch (err) {
+      console.error("Error writing quiz result to Firestore:", err);
+    }
   };
 
   const applyQuizRecommendation = () => {

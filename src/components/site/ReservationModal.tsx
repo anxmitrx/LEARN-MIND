@@ -4,7 +4,8 @@ import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useReservation } from "./ReservationContext";
 import { tracks } from "@/lib/tracks";
-import { signInWithGoogle } from "@/lib/firebase";
+import { signInWithGoogle, db } from "@/lib/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "@tanstack/react-router";
 
 const inputCls =
@@ -73,9 +74,23 @@ export function ReservationModal() {
     })();
   };
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
+    try {
+      await addDoc(collection(db, "reservations"), {
+        name: data.name,
+        college: data.college,
+        email: data.email,
+        phone: data.phone,
+        track: data.track,
+        status: "pending",
+        source: "website",
+        timestamp: serverTimestamp()
+      });
+    } catch (err) {
+      console.error("Error writing reservation to Firestore:", err);
+    }
     setStep(3);
     setTimeout(fireConfetti, 120);
   };
