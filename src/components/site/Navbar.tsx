@@ -16,11 +16,14 @@ export function Navbar() {
   const { openModal } = useReservation();
 
   return (
-    <header className="fixed top-[calc(var(--banner-height,0px)+1.5rem)] left-1/2 -translate-x-1/2 w-[92%] max-w-5xl z-50 rounded-full px-6 py-2 bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_20px_40px_-15px_rgba(31,38,135,0.15)] transition-[top] duration-200">
+    <header className="fixed top-[calc(var(--banner-height,0px)+1.5rem)] left-1/2 -translate-x-1/2 w-[92%] max-w-5xl z-50 rounded-full px-6 py-2 bg-white/20 backdrop-blur-lg border border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-[top] duration-200">
       <div className="flex w-full min-h-12 items-center justify-between gap-6">
         {/* Zone 1: Left - Logo */}
         <div className="flex-1 flex justify-start">
-          <Link to="/" className="group flex items-center gap-3 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-full">
+          <Link
+            to="/"
+            className="group flex items-center gap-3 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-full"
+          >
             <img
               src="/assets/logo.png"
               alt="Learn & Shine Logo"
@@ -90,7 +93,10 @@ export function Navbar() {
               </Link>
             ))}
             <button
-              onClick={() => { setOpen(false); openModal(); }}
+              onClick={() => {
+                setOpen(false);
+                openModal();
+              }}
               className="mt-2 w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-3 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 text-center flex justify-center items-center cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             >
               Reserve Seat
