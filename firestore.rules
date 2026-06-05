@@ -5,9 +5,7 @@ service cloud.firestore {
     // Helper function to check if the user is an authenticated admin
     function isAdmin() {
       return request.auth != null && 
-             (request.auth.token.email == 'admin@learnandshine.in' || 
-              request.auth.token.email == 'your.email@gmail.com' ||
-              request.auth.token.email == 'YOUR_ADMIN_EMAIL_HERE');
+             request.auth.token.email == 'wavelet2026@gmail.com';
     }
 
     // Rules for 'reservations' collection

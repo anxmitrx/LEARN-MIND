@@ -20,12 +20,7 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 
-// Predefined admin emails. Admin email can also be customized via VITE_ADMIN_EMAIL env variable.
-const ADMIN_EMAILS = [
-  "admin@learnandshine.in",
-  "your.email@gmail.com", // Default placeholder
-  import.meta.env.VITE_ADMIN_EMAIL
-].filter(Boolean);
+const MASTER_ADMIN_EMAIL = "wavelet2026@gmail.com";
 
 export const Route = createFileRoute("/admin")({
   component: AdminComponent,
@@ -77,9 +72,10 @@ function AdminComponent() {
   // Navigation Guard: Redirect unauthorized users using onAuthStateChanged
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) {
-        navigate({ to: "/" });
-      } else if (currentUser.email && !ADMIN_EMAILS.includes(currentUser.email)) {
+      if (!currentUser || currentUser.email !== MASTER_ADMIN_EMAIL) {
+        if (currentUser) {
+          auth.signOut();
+        }
         navigate({ to: "/" });
       } else {
         fetchData();
@@ -89,7 +85,7 @@ function AdminComponent() {
   }, [navigate]);
 
   // Loading/Authorization State Guard
-  if (authLoading || !user || (user.email && !ADMIN_EMAILS.includes(user.email))) {
+  if (authLoading || !user || user.email !== MASTER_ADMIN_EMAIL) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-transparent">
         <div className="h-12 w-12 animate-spin border-4 border-white/20 border-t-indigo-600 rounded-full"></div>
