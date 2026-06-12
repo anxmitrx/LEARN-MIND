@@ -34,3 +34,9 @@ dist-ssr
 # Local environment variables / Secrets
 .env
 .env.*
+
+# Local agents and firebase cache
+.agents/
+skills-lock.json
+.firebase/
+test-api.js
