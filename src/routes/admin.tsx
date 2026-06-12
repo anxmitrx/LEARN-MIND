@@ -75,10 +75,9 @@ function AdminComponent() {
 
   // Navigation Guard: Redirect unauthorized users using onAuthStateChanged
   useEffect(() => {
-    const isOverrideActive = typeof window !== "undefined" && localStorage.getItem("DEV_ADMIN_OVERRIDE") === "active";
-    if (isOverrideActive) {
-      fetchData();
-      return;
+    // FORCE CLEAR OVERRIDE JUST IN CASE
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("DEV_ADMIN_OVERRIDE");
     }
 
     if (!auth) {
@@ -99,8 +98,7 @@ function AdminComponent() {
   }, [navigate]);
 
   // Loading/Authorization State Guard
-  const isOverrideActive = typeof window !== "undefined" && localStorage.getItem("DEV_ADMIN_OVERRIDE") === "active";
-  if (!isOverrideActive && (authLoading || !user || user.email !== MASTER_ADMIN_EMAIL)) {
+  if (authLoading || !user || user.email !== MASTER_ADMIN_EMAIL) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-transparent">
         <div className="h-12 w-12 animate-spin border-4 border-white/20 border-t-indigo-600 rounded-full"></div>

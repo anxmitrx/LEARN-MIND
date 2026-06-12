@@ -41,13 +41,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
     setError(null);
     setLoading(true);
 
-    // GOD MODE OVERRIDE
-    if (email.trim() === "wavelet2026@gmail.com" && password === "wavelet2026") {
-      localStorage.setItem("DEV_ADMIN_OVERRIDE", "active");
-      onClose();
-      navigate({ to: "/admin" });
-      return;
-    }
+    // Ensure standard authentication flow
 
     if (!auth) {
       setError("Firebase Authentication is not available.");
