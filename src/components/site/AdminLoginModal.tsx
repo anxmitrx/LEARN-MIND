@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Lock, Mail, ShieldAlert } from "lucide-react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { X, ShieldAlert } from "lucide-react";
+import { auth, signInWithGoogle } from "@/lib/firebase";
 import { useNavigate } from "@tanstack/react-router";
 
 const inputCls =
@@ -15,16 +14,12 @@ interface AdminLoginModalProps {
 
 export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen) {
-      setEmail("");
-      setPassword("");
       setError(null);
       setLoading(false);
     }
@@ -36,12 +31,9 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, onClose]);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleGoogleSignIn = async () => {
     setError(null);
     setLoading(true);
-
-    // Ensure standard authentication flow
 
     if (!auth) {
       setError("Firebase Authentication is not available.");
@@ -50,19 +42,12 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
     }
 
     try {
-      // Attempt Firebase Login
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithGoogle();
       onClose();
-      // Redirect to admin command center
       navigate({ to: "/admin" });
     } catch (err: any) {
-      console.error("Login failed:", err);
-      // Firebase auth error handling
-      if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
-        setError("Invalid admin credentials.");
-      } else {
-        setError(err.message || "An authentication error occurred.");
-      }
+      console.error("Google login failed:", err);
+      setError(err.message || "An authentication error occurred.");
     } finally {
       setLoading(false);
     }
@@ -108,49 +93,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
               </p>
             </div>
 
-            <form onSubmit={handleLogin} className="mt-7 space-y-4">
-
-              {/* Email Field */}
-              <div>
-                <label className="block mb-1.5">
-                  <span className="text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">Email Address</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                    <Mail className="h-4.5 w-4.5" />
-                  </span>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={inputCls}
-                    placeholder="admin@learnandshine.in"
-                  />
-                </div>
-              </div>
-
-              {/* Password Field */}
-              <div>
-                <label className="block mb-1.5">
-                  <span className="text-[10px] font-display font-extrabold uppercase tracking-wider text-slate-700">Security Password</span>
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                    <Lock className="h-4.5 w-4.5" />
-                  </span>
-                  <input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={inputCls}
-                    placeholder="••••••••••••"
-                  />
-                </div>
-              </div>
-
-              {/* Error Alert */}
+            <div className="mt-7 space-y-4">
               {error && (
                 <div className="p-3 bg-red-500/10 border border-red-500/25 rounded-2xl flex items-start gap-2 text-red-700 text-xs font-bold animate-shake">
                   <span className="mt-0.5">⚠️</span>
@@ -158,17 +101,19 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
                 </div>
               )}
 
-              {/* Action Buttons */}
-              <div className="mt-6">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/20 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 disabled:opacity-50 cursor-pointer"
-                >
-                  {loading ? "Authenticating..." : "Login Admin"}
-                </button>
-              </div>
-            </form>
+              <button
+                onClick={handleGoogleSignIn}
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-50 text-slate-700 px-6 py-3.5 font-display text-sm font-bold rounded-2xl shadow-sm border border-slate-200 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+              >
+                <img 
+                  src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
+                  alt="Google" 
+                  className="w-5 h-5" 
+                />
+                {loading ? "Authenticating..." : "Continue with Google"}
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       )}
