@@ -31,6 +31,22 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Rules for 'consultations' collection
+    match /consultations/{consultationId} {
+      allow create: if request.resource.data.name is string 
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() < 100
+                    && request.resource.data.phone is string
+                    && request.resource.data.phone.size() >= 8
+                    && request.resource.data.phone.size() <= 20
+                    && request.resource.data.stream is string
+                    && request.resource.data.stream.size() > 0
+                    && request.resource.data.stream.size() < 50
+                    && request.resource.data.timestamp is timestamp;
+
+      allow read, update, delete: if isAdmin();
+    }
+
     // Rules for 'quiz_results' collection
     match /quiz_results/{quizId} {
       // Allow anyone to submit quiz results with validation checks

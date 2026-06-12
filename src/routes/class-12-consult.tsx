@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, HelpCircle, Phone, User, Briefcase, GraduationCap, Plus, Sparkles, Send } from "lucide-react";
 import confetti from "canvas-confetti";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export const Route = createFileRoute("/class-12-consult")({
   component: Class12ConsultPage,
@@ -86,18 +88,33 @@ function Class12ConsultPage() {
     })();
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formValid) {
       setTouched({ name: true, phone: true, stream: true });
       return;
     }
     setIsSubmitting(true);
+
+    if (db) {
+      try {
+        await addDoc(collection(db, "consultations"), {
+          name: form.name.trim(),
+          phone: form.phone,
+          stream: form.stream,
+          career: form.career.trim(),
+          timestamp: serverTimestamp()
+        });
+      } catch (err) {
+        console.error("Error writing consultation:", err);
+      }
+    }
+
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
       fireConfetti();
-    }, 800);
+    }, 400);
   };
 
   return (

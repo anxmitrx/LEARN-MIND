@@ -38,8 +38,9 @@ function AdminComponent() {
   
   const [reservations, setReservations] = useState<any[]>([]);
   const [quizResults, setQuizResults] = useState<any[]>([]);
+  const [consultations, setConsultations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"waitlist" | "quiz">("waitlist");
+  const [activeTab, setActiveTab] = useState<"waitlist" | "quiz" | "consult">("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
   useEffect(() => {
     if (!db) {
@@ -75,10 +76,22 @@ function AdminComponent() {
       console.error("Error fetching quiz results:", err);
     });
 
+    const consultQuery = query(collection(db, "consultations"), orderBy("timestamp", "desc"));
+    const unsubscribeConsult = onSnapshot(consultQuery, (snap) => {
+      const consultList = snap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setConsultations(consultList);
+    }, (err) => {
+      console.error("Error fetching consultations:", err);
+    });
+
     // We store these unsubscribers to clean them up when auth changes
     return () => {
       unsubscribeRes();
       unsubscribeQuiz();
+      unsubscribeConsult();
     };
   }, [db]);
 
@@ -173,6 +186,13 @@ function AdminComponent() {
     q.educationLevel?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     q.challenge?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     q.recommendedTrack?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredConsultations = consultations.filter(c =>
+    c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.phone?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.stream?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.career?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -296,6 +316,16 @@ function AdminComponent() {
             >
               Quiz Diagnostics ({filteredQuizResults.length})
             </button>
+            <button
+              onClick={() => setActiveTab("consult")}
+              className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
+                activeTab === "consult"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+              }`}
+            >
+              Class 12 Consults ({filteredConsultations.length})
+            </button>
           </div>
 
           {/* Search bar */}
@@ -374,7 +404,7 @@ function AdminComponent() {
                 </table>
               )}
             </div>
-          ) : (
+          ) : activeTab === "quiz" ? (
             /* Quiz Diagnostics Table */
             <div className="w-full overflow-x-auto rounded-2xl">
               {filteredQuizResults.length === 0 ? (
@@ -405,6 +435,46 @@ function AdminComponent() {
                             {row.recommendedTrack || "N/A"}
                           </span>
                         </td>
+                        <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.timestamp)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ) : (
+            /* Consultations Table */
+            <div className="w-full overflow-x-auto rounded-2xl">
+              {filteredConsultations.length === 0 ? (
+                <div className="text-center py-20">
+                  <div className="text-slate-400 font-bold text-sm">No consultations found.</div>
+                  <p className="text-xs text-slate-500 mt-1">Class 12 consultation bookings will appear here.</p>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-indigo-100/50 bg-indigo-50/20">
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Name</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">WhatsApp</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Stream</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Target Career</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Date Booked</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredConsultations.map((row) => (
+                      <tr 
+                        key={row.id} 
+                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150"
+                      >
+                        <td className="p-4 text-xs font-bold text-slate-900">{row.name || "N/A"}</td>
+                        <td className="p-4 text-xs font-mono font-bold text-slate-600">{row.phone || "N/A"}</td>
+                        <td className="p-4 text-xs">
+                          <span className="px-2.5 py-1 bg-indigo-50 border border-indigo-100/50 text-indigo-700 font-bold rounded-lg text-[10px]">
+                            {row.stream || "N/A"}
+                          </span>
+                        </td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">{row.career || "N/A"}</td>
                         <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.timestamp)}</td>
                       </tr>
                     ))}
