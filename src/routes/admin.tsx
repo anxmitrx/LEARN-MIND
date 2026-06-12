@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/AuthContext";
 import { db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
 import { 
   Sparkles, 
   Users, 
@@ -41,39 +41,47 @@ function AdminComponent() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"waitlist" | "quiz">("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
-  const fetchData = async () => {
+  useEffect(() => {
     if (!db) {
       console.warn("Firestore db is not initialized.");
       setLoading(false);
       return;
     }
+
     setLoading(true);
-    try {
-      // Fetch reservations ordered by timestamp descending
-      const resQuery = query(collection(db, "reservations"), orderBy("timestamp", "desc"));
-      const resSnap = await getDocs(resQuery);
-      const resList = resSnap.docs.map(doc => ({
+
+    // Setup real-time listeners
+    const resQuery = query(collection(db, "reservations"), orderBy("timestamp", "desc"));
+    const unsubscribeRes = onSnapshot(resQuery, (snap) => {
+      const resList = snap.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
       setReservations(resList);
+      setLoading(false);
+    }, (err) => {
+      console.error("Error fetching reservations:", err);
+      setLoading(false);
+    });
 
-      // Fetch quiz results ordered by timestamp descending
-      const quizQuery = query(collection(db, "quiz_results"), orderBy("timestamp", "desc"));
-      const quizSnap = await getDocs(quizQuery);
-      const quizList = quizSnap.docs.map(doc => ({
+    const quizQuery = query(collection(db, "quiz_results"), orderBy("timestamp", "desc"));
+    const unsubscribeQuiz = onSnapshot(quizQuery, (snap) => {
+      const quizList = snap.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
       setQuizResults(quizList);
-    } catch (err) {
-      console.error("Error fetching admin dashboard data:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    }, (err) => {
+      console.error("Error fetching quiz results:", err);
+    });
 
-  // Navigation Guard: Redirect unauthorized users using onAuthStateChanged
+    // We store these unsubscribers to clean them up when auth changes
+    return () => {
+      unsubscribeRes();
+      unsubscribeQuiz();
+    };
+  }, [db]);
+
   useEffect(() => {
     // FORCE CLEAR OVERRIDE JUST IN CASE
     if (typeof window !== "undefined") {
@@ -90,8 +98,6 @@ function AdminComponent() {
           auth.signOut().catch(err => console.error("Error signing out:", err));
         }
         navigate({ to: "/" });
-      } else {
-        fetchData();
       }
     });
     return () => unsubscribe();
@@ -211,11 +217,14 @@ function AdminComponent() {
               <ArrowLeft className="h-4 w-4" /> Home Page
             </button>
             <button
-              onClick={fetchData}
-              disabled={loading}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 shadow-lg shadow-indigo-500/20 border border-white/20 hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50"
+              onClick={() => {
+                // The data will auto-update, but we can keep the button for visual feedback
+                setLoading(true);
+                setTimeout(() => setLoading(false), 500);
+              }}
+              className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 shadow-lg shadow-indigo-600/20 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
             >
-              <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} /> Refresh Data
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} /> Refresh Data
             </button>
           </div>
         </header>
