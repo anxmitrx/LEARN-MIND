@@ -5,7 +5,7 @@ import { MagneticButton } from "./MagneticButton";
 import { useReservation } from "./ReservationContext";
 import { Link } from "@tanstack/react-router";
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link as any) as any;
 
 type FloatingWorkshopCardProps = {
   title: string;
