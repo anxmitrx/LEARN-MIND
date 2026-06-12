@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/AuthContext";
 import { db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { 
   Sparkles, 
   Users, 
@@ -16,7 +16,10 @@ import {
   GraduationCap,
   Layers,
   CheckCircle2,
-  Trash2
+  Trash2,
+  Edit2,
+  X,
+  Save
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 
@@ -42,6 +45,35 @@ function AdminComponent() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"waitlist" | "quiz" | "consult">("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
+  
+  const [editingRow, setEditingRow] = useState<{ id: string, collection: string, data: any } | null>(null);
+  const [editFormData, setEditFormData] = useState<any>({});
+
+  const handleDelete = async (collectionName: string, id: string) => {
+    if (window.confirm(`Are you sure you want to delete this entry? This action cannot be undone.`)) {
+      try {
+        await deleteDoc(doc(db, collectionName, id));
+      } catch (err) {
+        console.error("Error deleting document:", err);
+        alert("Failed to delete the document. Check console for details.");
+      }
+    }
+  };
+
+  const handleEditSave = async () => {
+    if (!editingRow) return;
+    try {
+      // Create a copy and remove the ID so we don't write it as a field if it wasn't one
+      const dataToSave = { ...editFormData };
+      delete dataToSave.id;
+      
+      await updateDoc(doc(db, editingRow.collection, editingRow.id), dataToSave);
+      setEditingRow(null);
+    } catch (err) {
+      console.error("Error updating document:", err);
+      alert("Failed to update the document. Check console for details.");
+    }
+  };
   useEffect(() => {
     if (!db) {
       console.warn("Firestore db is not initialized.");
@@ -369,6 +401,7 @@ function AdminComponent() {
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Status</th>
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Source</th>
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Date Registered</th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -398,6 +431,25 @@ function AdminComponent() {
                         </td>
                         <td className="p-4 text-xs font-semibold text-slate-550 capitalize">{row.source || "website"}</td>
                         <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.timestamp)}</td>
+                        <td className="p-4 text-right whitespace-nowrap">
+                          <button
+                            onClick={() => {
+                              setEditingRow({ id: row.id, collection: "reservations", data: row });
+                              setEditFormData(row);
+                            }}
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-indigo-600 hover:bg-indigo-50 transition-colors mr-1"
+                            title="Edit"
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete("reservations", row.id)}
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -420,6 +472,7 @@ function AdminComponent() {
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Roadblock / Challenge</th>
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Recommended Track</th>
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Date Completed</th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -436,6 +489,25 @@ function AdminComponent() {
                           </span>
                         </td>
                         <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.timestamp)}</td>
+                        <td className="p-4 text-right whitespace-nowrap">
+                          <button
+                            onClick={() => {
+                              setEditingRow({ id: row.id, collection: "quiz_results", data: row });
+                              setEditFormData(row);
+                            }}
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-indigo-600 hover:bg-indigo-50 transition-colors mr-1"
+                            title="Edit"
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete("quiz_results", row.id)}
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -459,6 +531,7 @@ function AdminComponent() {
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Stream</th>
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Target Career</th>
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Date Booked</th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -476,6 +549,25 @@ function AdminComponent() {
                         </td>
                         <td className="p-4 text-xs font-semibold text-slate-700">{row.career || "N/A"}</td>
                         <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.timestamp)}</td>
+                        <td className="p-4 text-right whitespace-nowrap">
+                          <button
+                            onClick={() => {
+                              setEditingRow({ id: row.id, collection: "consultations", data: row });
+                              setEditFormData(row);
+                            }}
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-indigo-600 hover:bg-indigo-50 transition-colors mr-1"
+                            title="Edit"
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete("consultations", row.id)}
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -485,6 +577,56 @@ function AdminComponent() {
           )}
         </section>
       </div>
+
+      {/* Edit Modal Overlay */}
+      {editingRow && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm p-4" onClick={() => setEditingRow(null)}>
+          <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-slate-100 p-4 sm:p-6 bg-slate-50/50">
+              <h3 className="font-display text-lg font-bold text-slate-900">
+                Edit {editingRow.collection === "reservations" ? "Reservation" : editingRow.collection === "quiz_results" ? "Quiz Result" : "Consultation"}
+              </h3>
+              <button onClick={() => setEditingRow(null)} className="text-slate-400 hover:text-slate-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4">
+              {Object.keys(editFormData).map(key => {
+                // hide internal/complex fields
+                if (key === "timestamp" || key === "id") return null;
+                return (
+                  <div key={key}>
+                    <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-1.5">{key}</label>
+                    <input
+                      type="text"
+                      value={editFormData[key] || ""}
+                      onChange={(e) => setEditFormData({...editFormData, [key]: e.target.value})}
+                      className="w-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center justify-end gap-3 border-t border-slate-100 p-4 sm:p-6 bg-slate-50/50">
+              <button 
+                onClick={() => setEditingRow(null)}
+                className="px-4 py-2 text-xs font-extrabold text-slate-600 hover:text-slate-800 transition-colors uppercase tracking-wider focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleEditSave}
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-600"
+              >
+                <Save className="h-4 w-4" /> Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
