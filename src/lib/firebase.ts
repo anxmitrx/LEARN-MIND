@@ -3,12 +3,12 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  apiKey: "AIzaSyA191wT69wauFXqMbUEbqatsjRnM8g-HjA",
+  authDomain: "learn-and-shine-dbf4d.firebaseapp.com",
+  projectId: "learn-and-shine-dbf4d",
+  storageBucket: "learn-and-shine-dbf4d.firebasestorage.app",
+  messagingSenderId: "210311209668",
+  appId: "1:210311209668:web:a791d9458bd70cad2d9f91"
 };
 
 console.log("FIREBASE INIT CHECK:", { apiKeyExists: !!firebaseConfig.apiKey, domainExists: !!firebaseConfig.authDomain });
