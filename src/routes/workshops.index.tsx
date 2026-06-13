@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
-import { tracks } from "@/lib/tracks";
+import { useWorkshops } from "@/hooks/useWorkshops";
 import { useReservation } from "@/components/site/ReservationContext";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-export const Route = createFileRoute("/tracks/")({
+export const Route = createFileRoute("/workshops/")({
   component: TracksIndex,
   head: () => ({
     meta: [
@@ -55,6 +55,7 @@ const getTrackCategory = (slug: string) => {
 function TracksIndex() {
   const { openModal } = useReservation();
   const shouldReduceMotion = useReducedMotion();
+  const { workshops: tracks } = useWorkshops();
 
   // State
   const [selectedFilter, setSelectedFilter] = useState("All Tracks");
@@ -526,7 +527,7 @@ function TracksIndex() {
                         {/* Direct Detailed Page Link */}
                         <div className="mt-8 flex items-center justify-end">
                           <Link
-                            to="/tracks/$slug"
+                            to="/workshops/$slug"
                             params={{ slug: t.slug }}
                             onClick={(e) => e.stopPropagation()}
                             className="inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-600 hover:text-indigo-800 hover:underline"

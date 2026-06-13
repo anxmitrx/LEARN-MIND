@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { tracks } from "@/lib/tracks";
+import { useWorkshops } from "@/hooks/useWorkshops";
 import { useState } from "react";
 
 export function TracksGrid() {
   const [activeTab, setActiveTab] = useState("all");
+  const { workshops: tracks, loading } = useWorkshops();
 
   const tabs = [
     { id: "all", label: "All Tracks" },
@@ -65,7 +66,14 @@ export function TracksGrid() {
           })}
         </div>
 
-        <motion.div layout className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+
+
+        {loading ? (
+          <div className="mt-12 flex items-center justify-center py-20">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-600"></div>
+          </div>
+        ) : (
+          <motion.div layout className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filteredTracks.map((t) => (
               <motion.div
@@ -77,7 +85,7 @@ export function TracksGrid() {
                 transition={{ duration: 0.35, ease: "easeOut" }}
               >
                 <Link
-                  to="/tracks/$slug"
+                  to="/workshops/$slug"
                   params={{ slug: t.slug }}
                   className="bento-card group block h-full bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 md:p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform"
                 >
@@ -121,6 +129,7 @@ export function TracksGrid() {
             ))}
           </AnimatePresence>
         </motion.div>
+        )}
       </div>
     </section>
   );

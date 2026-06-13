@@ -9,15 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebinarsRouteImport } from './routes/webinars'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as Class12ConsultRouteImport } from './routes/class-12-consult'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TracksIndexRouteImport } from './routes/tracks.index'
-import { Route as TracksSlugRouteImport } from './routes/tracks.$slug'
+import { Route as WorkshopsIndexRouteImport } from './routes/workshops.index'
+import { Route as WorkshopsSlugRouteImport } from './routes/workshops.$slug'
 
+const WebinarsRoute = WebinarsRouteImport.update({
+  id: '/webinars',
+  path: '/webinars',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MentorsRoute = MentorsRouteImport.update({
   id: '/mentors',
   path: '/mentors',
@@ -48,14 +54,14 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TracksIndexRoute = TracksIndexRouteImport.update({
-  id: '/tracks/',
-  path: '/tracks/',
+const WorkshopsIndexRoute = WorkshopsIndexRouteImport.update({
+  id: '/workshops/',
+  path: '/workshops/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TracksSlugRoute = TracksSlugRouteImport.update({
-  id: '/tracks/$slug',
-  path: '/tracks/$slug',
+const WorkshopsSlugRoute = WorkshopsSlugRouteImport.update({
+  id: '/workshops/$slug',
+  path: '/workshops/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -66,8 +72,9 @@ export interface FileRoutesByFullPath {
   '/class-12-consult': typeof Class12ConsultRoute
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
-  '/tracks/$slug': typeof TracksSlugRoute
-  '/tracks/': typeof TracksIndexRoute
+  '/webinars': typeof WebinarsRoute
+  '/workshops/$slug': typeof WorkshopsSlugRoute
+  '/workshops/': typeof WorkshopsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,8 +83,9 @@ export interface FileRoutesByTo {
   '/class-12-consult': typeof Class12ConsultRoute
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
-  '/tracks/$slug': typeof TracksSlugRoute
-  '/tracks': typeof TracksIndexRoute
+  '/webinars': typeof WebinarsRoute
+  '/workshops/$slug': typeof WorkshopsSlugRoute
+  '/workshops': typeof WorkshopsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,8 +95,9 @@ export interface FileRoutesById {
   '/class-12-consult': typeof Class12ConsultRoute
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
-  '/tracks/$slug': typeof TracksSlugRoute
-  '/tracks/': typeof TracksIndexRoute
+  '/webinars': typeof WebinarsRoute
+  '/workshops/$slug': typeof WorkshopsSlugRoute
+  '/workshops/': typeof WorkshopsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -99,8 +108,9 @@ export interface FileRouteTypes {
     | '/class-12-consult'
     | '/dashboard'
     | '/mentors'
-    | '/tracks/$slug'
-    | '/tracks/'
+    | '/webinars'
+    | '/workshops/$slug'
+    | '/workshops/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,8 +119,9 @@ export interface FileRouteTypes {
     | '/class-12-consult'
     | '/dashboard'
     | '/mentors'
-    | '/tracks/$slug'
-    | '/tracks'
+    | '/webinars'
+    | '/workshops/$slug'
+    | '/workshops'
   id:
     | '__root__'
     | '/'
@@ -119,8 +130,9 @@ export interface FileRouteTypes {
     | '/class-12-consult'
     | '/dashboard'
     | '/mentors'
-    | '/tracks/$slug'
-    | '/tracks/'
+    | '/webinars'
+    | '/workshops/$slug'
+    | '/workshops/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -130,12 +142,20 @@ export interface RootRouteChildren {
   Class12ConsultRoute: typeof Class12ConsultRoute
   DashboardRoute: typeof DashboardRoute
   MentorsRoute: typeof MentorsRoute
-  TracksSlugRoute: typeof TracksSlugRoute
-  TracksIndexRoute: typeof TracksIndexRoute
+  WebinarsRoute: typeof WebinarsRoute
+  WorkshopsSlugRoute: typeof WorkshopsSlugRoute
+  WorkshopsIndexRoute: typeof WorkshopsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/webinars': {
+      id: '/webinars'
+      path: '/webinars'
+      fullPath: '/webinars'
+      preLoaderRoute: typeof WebinarsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mentors': {
       id: '/mentors'
       path: '/mentors'
@@ -178,18 +198,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tracks/': {
-      id: '/tracks/'
-      path: '/tracks'
-      fullPath: '/tracks/'
-      preLoaderRoute: typeof TracksIndexRouteImport
+    '/workshops/': {
+      id: '/workshops/'
+      path: '/workshops'
+      fullPath: '/workshops/'
+      preLoaderRoute: typeof WorkshopsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tracks/$slug': {
-      id: '/tracks/$slug'
-      path: '/tracks/$slug'
-      fullPath: '/tracks/$slug'
-      preLoaderRoute: typeof TracksSlugRouteImport
+    '/workshops/$slug': {
+      id: '/workshops/$slug'
+      path: '/workshops/$slug'
+      fullPath: '/workshops/$slug'
+      preLoaderRoute: typeof WorkshopsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -202,8 +222,9 @@ const rootRouteChildren: RootRouteChildren = {
   Class12ConsultRoute: Class12ConsultRoute,
   DashboardRoute: DashboardRoute,
   MentorsRoute: MentorsRoute,
-  TracksSlugRoute: TracksSlugRoute,
-  TracksIndexRoute: TracksIndexRoute,
+  WebinarsRoute: WebinarsRoute,
+  WorkshopsSlugRoute: WorkshopsSlugRoute,
+  WorkshopsIndexRoute: WorkshopsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

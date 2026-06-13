@@ -45,7 +45,7 @@ export function CtaFooter() {
           <div>
             <div className="eyebrow text-indigo-600">Explore</div>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><Link to="/tracks" className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">Tracks</Link></li>
+              <li><Link to="/workshops" className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">Workshops</Link></li>
               <li><Link to="/mentors" className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">Mentors</Link></li>
               <li><Link to="/about" className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">About</Link></li>
             </ul>

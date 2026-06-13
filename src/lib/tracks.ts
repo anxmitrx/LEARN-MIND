@@ -1,12 +1,4 @@
-import {
-  Compass, Target, Network, Users, Scale, HandCoins, MessageSquare, FileText,
-  Mic, Building2, ArrowUpRight, Heart, Clock,
-  Cog, Wrench, Cpu, ShieldAlert, Atom, BarChart3,
-  LineChart, Gauge, Package, Recycle, Users2, Wallet, Store,
-  RefreshCw, GitBranch, GraduationCap, Briefcase, Sparkles, Rocket,
-} from "lucide-react";
-
-export type Topic = { title: string; icon: React.ComponentType<{ className?: string }> };
+export type Topic = { title: string; icon: string };
 
 export type Track = {
   slug: string;
@@ -36,11 +28,11 @@ export const tracks: Track[] = [
     description:
       "Build a rock-solid foundation. Gain clarity on your goals and build a network that opens doors.",
     topics: [
-      { title: "Career Pathing", icon: Compass },
-      { title: "Goal Setting", icon: Target },
-      { title: "Network Building — LinkedIn Step-by-Step", icon: Network },
-      { title: "Creating Team Member Connections", icon: Users },
-      { title: "Work–Life Balance", icon: Scale },
+      { title: "Career Pathing", icon: "Compass" },
+      { title: "Goal Setting", icon: "Target" },
+      { title: "Network Building — LinkedIn Step-by-Step", icon: "Network" },
+      { title: "Creating Team Member Connections", icon: "Users" },
+      { title: "Work–Life Balance", icon: "Scale" },
     ],
     outcomes: [
       "A customized 3-year career roadmap detailing milestone metrics",
@@ -91,11 +83,11 @@ export const tracks: Track[] = [
     description:
       "Master the unwritten rules of the workplace. Learn to communicate effectively and manage your time like a seasoned pro.",
     topics: [
-      { title: "Effective Communication", icon: Mic },
-      { title: "Navigating Corporate Culture", icon: Building2 },
-      { title: "Managing Up", icon: ArrowUpRight },
-      { title: "Emotional Intelligence (EQ)", icon: Heart },
-      { title: "Time Management & Productivity", icon: Clock },
+      { title: "Effective Communication", icon: "Mic" },
+      { title: "Navigating Corporate Culture", icon: "Building2" },
+      { title: "Managing Up", icon: "ArrowUpRight" },
+      { title: "Emotional Intelligence (EQ)", icon: "Heart" },
+      { title: "Time Management & Productivity", icon: "Clock" },
     ],
     outcomes: [
       "A curated toolkit of communication templates for project updates, escalations, and status reviews",
@@ -146,12 +138,12 @@ export const tracks: Track[] = [
     description:
       "Bridge the gap between passing exams and shipping real products. Learn the frameworks modern tech companies actually use.",
     topics: [
-      { title: "Project Management & Lifecycle (SDLC)", icon: Cog },
-      { title: "Technical Problem Solving", icon: Wrench },
-      { title: "IT Industry Trends — Excel, Salesforce, AI, PPT", icon: Cpu },
-      { title: "Ethical Dilemmas in Engineering", icon: ShieldAlert },
-      { title: "Emerging Technologies", icon: Atom },
-      { title: "Data Science", icon: BarChart3 },
+      { title: "Project Management & Lifecycle (SDLC)", icon: "Cog" },
+      { title: "Technical Problem Solving", icon: "Wrench" },
+      { title: "IT Industry Trends — Excel, Salesforce, AI, PPT", icon: "Cpu" },
+      { title: "Ethical Dilemmas in Engineering", icon: "ShieldAlert" },
+      { title: "Emerging Technologies", icon: "Atom" },
+      { title: "Data Science", icon: "BarChart3" },
     ],
     outcomes: [
       "An architectural spec sheet outlining database choices, system models, and design trade-offs",
@@ -202,13 +194,13 @@ export const tracks: Track[] = [
     description:
       "Move beyond theoretical frameworks. Apply data-driven decision-making to real business scenarios.",
     topics: [
-      { title: "Data-Driven Decision Making", icon: LineChart },
-      { title: "Operational Excellence", icon: Gauge },
-      { title: "Product Management & Innovation", icon: Package },
-      { title: "Product Life Cycle", icon: Recycle },
-      { title: "Organizational Behaviour", icon: Users2 },
-      { title: "Financial Management", icon: Wallet },
-      { title: "Sales & Distribution — Retail / B2B / B2C", icon: Store },
+      { title: "Data-Driven Decision Making", icon: "LineChart" },
+      { title: "Operational Excellence", icon: "Gauge" },
+      { title: "Product Management & Innovation", icon: "Package" },
+      { title: "Product Life Cycle", icon: "Recycle" },
+      { title: "Organizational Behaviour", icon: "Users2" },
+      { title: "Financial Management", icon: "Wallet" },
+      { title: "Sales & Distribution — Retail / B2B / B2C", icon: "Store" },
     ],
     outcomes: [
       "A comprehensive Product Requirements Document (PRD) detailing feature iterations",
@@ -259,16 +251,16 @@ export const tracks: Track[] = [
     description:
       "Rehearse for reality. From salary negotiations to handling your first professional setback, we'll guide you through it.",
     topics: [
-      { title: "Negotiating Salaries & Offers", icon: HandCoins },
-      { title: "Interview Preparation", icon: MessageSquare },
-      { title: "Resume & LinkedIn Optimization", icon: FileText },
-      { title: "Handling Failure & Mistakes", icon: RefreshCw },
-      { title: "Work–Life Integration", icon: GitBranch },
-      { title: "Transition from Student to Employee", icon: GraduationCap },
-      { title: "Business Simulations & Case Studies", icon: Briefcase },
-      { title: "Industry Leader AMAs", icon: Sparkles },
-      { title: "Professionalism & Spiritualism", icon: Heart },
-      { title: "Internship & Industry Visits", icon: Rocket },
+      { title: "Negotiating Salaries & Offers", icon: "HandCoins" },
+      { title: "Interview Preparation", icon: "MessageSquare" },
+      { title: "Resume & LinkedIn Optimization", icon: "FileText" },
+      { title: "Handling Failure & Mistakes", icon: "RefreshCw" },
+      { title: "Work–Life Integration", icon: "GitBranch" },
+      { title: "Transition from Student to Employee", icon: "GraduationCap" },
+      { title: "Business Simulations & Case Studies", icon: "Briefcase" },
+      { title: "Industry Leader AMAs", icon: "Sparkles" },
+      { title: "Professionalism & Spiritualism", icon: "Heart" },
+      { title: "Internship & Industry Visits", icon: "Rocket" },
     ],
     outcomes: [
       "An ATS-compliant, recruiter-vetted professional resume",

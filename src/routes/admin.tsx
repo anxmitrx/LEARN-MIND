@@ -22,6 +22,11 @@ import {
   Save
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
+import { WorkshopEditor } from "@/components/admin/WorkshopEditor";
+import { WebinarEditor } from "@/components/admin/WebinarEditor";
+import { tracks as localTracks } from "@/lib/tracks";
+import { webinars as localWebinars } from "@/lib/webinars";
+import { addDoc } from "firebase/firestore";
 
 const MASTER_ADMIN_EMAIL = "wavelet2026@gmail.com";
 
@@ -42,8 +47,10 @@ function AdminComponent() {
   const [reservations, setReservations] = useState<any[]>([]);
   const [quizResults, setQuizResults] = useState<any[]>([]);
   const [consultations, setConsultations] = useState<any[]>([]);
+  const [workshops, setWorkshops] = useState<any[]>([]);
+  const [webinars, setWebinars] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"waitlist" | "quiz" | "consult">("waitlist");
+  const [activeTab, setActiveTab] = useState<"waitlist" | "quiz" | "consult" | "workshops" | "webinars">("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
   
   const [editingRow, setEditingRow] = useState<{ id: string, collection: string, data: any } | null>(null);
@@ -74,6 +81,37 @@ function AdminComponent() {
       alert("Failed to update the document. Check console for details.");
     }
   };
+
+  const seedWorkshops = async () => {
+    if (!window.confirm("Seed default tracks into Firestore?")) return;
+    setLoading(true);
+    try {
+      for (const t of localTracks) {
+        await addDoc(collection(db, "workshops"), { ...t, timestamp: new Date() });
+      }
+      alert("Seeded successfully!");
+    } catch (e) {
+      console.error(e);
+      alert("Failed to seed.");
+    }
+    setLoading(false);
+  };
+
+  const seedWebinars = async () => {
+    if (!window.confirm("Seed default webinars into Firestore?")) return;
+    setLoading(true);
+    try {
+      for (const w of localWebinars) {
+        await addDoc(collection(db, "webinars"), { ...w, timestamp: new Date() });
+      }
+      alert("Seeded successfully!");
+    } catch (e) {
+      console.error(e);
+      alert("Failed to seed.");
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (!db) {
       console.warn("Firestore db is not initialized.");
@@ -119,11 +157,43 @@ function AdminComponent() {
       console.error("Error fetching consultations:", err);
     });
 
+    const workshopsQuery = query(collection(db, "workshops"));
+    const unsubscribeWorkshops = onSnapshot(workshopsQuery, (snap) => {
+      if (snap.empty) {
+        setWorkshops(localTracks);
+      } else {
+        const wsList = snap.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setWorkshops(wsList);
+      }
+    }, (err) => {
+      console.error("Error fetching workshops:", err);
+    });
+
+    const webinarsQuery = query(collection(db, "webinars"));
+    const unsubscribeWebinars = onSnapshot(webinarsQuery, (snap) => {
+      if (snap.empty) {
+        setWebinars(localWebinars);
+      } else {
+        const webList = snap.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setWebinars(webList);
+      }
+    }, (err) => {
+      console.error("Error fetching webinars:", err);
+    });
+
     // We store these unsubscribers to clean them up when auth changes
     return () => {
       unsubscribeRes();
       unsubscribeQuiz();
       unsubscribeConsult();
+      unsubscribeWorkshops();
+      unsubscribeWebinars();
     };
   }, [db]);
 
@@ -225,6 +295,16 @@ function AdminComponent() {
     c.phone?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     c.stream?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     c.career?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredWorkshops = workshops.filter(w =>
+    w.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    w.slug?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredWebinars = webinars.filter(w =>
+    w.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    w.presenter?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -357,6 +437,26 @@ function AdminComponent() {
               }`}
             >
               Class 12 Consults ({filteredConsultations.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("workshops")}
+              className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
+                activeTab === "workshops"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+              }`}
+            >
+              Workshops ({filteredWorkshops.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("webinars")}
+              className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
+                activeTab === "webinars"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+              }`}
+            >
+              Webinars ({filteredWebinars.length})
             </button>
           </div>
 
@@ -514,7 +614,7 @@ function AdminComponent() {
                 </table>
               )}
             </div>
-          ) : (
+          ) : activeTab === "consult" ? (
             /* Consultations Table */
             <div className="w-full overflow-x-auto rounded-2xl">
               {filteredConsultations.length === 0 ? (
@@ -574,15 +674,256 @@ function AdminComponent() {
                 </table>
               )}
             </div>
-          )}
+          ) : activeTab === "workshops" ? (
+            /* Workshops Table */
+            <div className="w-full overflow-x-auto rounded-2xl">
+              <div className="p-4 flex justify-between items-center bg-indigo-50/20 border-b border-indigo-100/50">
+                <div>
+                  <h3 className="text-sm font-extrabold text-slate-800">Dynamic Workshops</h3>
+                  <p className="text-xs text-slate-500">Manage the content that appears on the website.</p>
+                </div>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={seedWorkshops}
+                    className="text-xs bg-amber-100 text-amber-700 hover:bg-amber-200 px-4 py-2 rounded-lg font-bold transition-colors"
+                  >
+                    Seed Initial Data
+                  </button>
+                  <button 
+                    onClick={() => {
+                      const newTrack = {
+                        slug: "", number: "", title: "", short: "", tagline: "", description: "", oneLinerPromise: "", timeCommitment: "",
+                        whoItsFor: [], youWillLearn: [], exampleSessions: [], outcomes: [], topics: [], radar: [], agenda: []
+                      };
+                      setEditingRow({ id: "new", collection: "workshops", data: newTrack });
+                      setEditFormData(newTrack);
+                    }}
+                    className="text-xs bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-bold transition-colors"
+                  >
+                    Add New Workshop
+                  </button>
+                </div>
+              </div>
+              {filteredWorkshops.length === 0 ? (
+                <div className="text-center py-20">
+                  <div className="text-slate-400 font-bold text-sm">No workshops found.</div>
+                  <p className="text-xs text-slate-500 mt-1">Click "Seed Initial Data" to populate Firestore.</p>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-indigo-100/50 bg-indigo-50/20">
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Track Number</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Title</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Slug</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Topics</th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredWorkshops.map((row, idx) => (
+                      <tr 
+                        key={row.id || row.slug || idx} 
+                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150 relative group"
+                      >
+                        <td className="p-4 text-xs font-bold text-slate-900">{row.number || "N/A"}</td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">{row.title || "N/A"}</td>
+                        <td className="p-4 text-xs font-mono font-bold text-slate-600">{row.slug || "N/A"}</td>
+                        <td className="p-4 text-xs font-semibold text-slate-600">{row.topics?.length || 0} topics</td>
+                        <td className="p-4 text-right whitespace-nowrap">
+                          {!row.id && (
+                            <span className="text-[10px] uppercase font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-md mr-3 inline-block">
+                              Unseeded Fallback Data
+                            </span>
+                          )}
+                          <button
+                            onClick={() => {
+                              if (!row.id) {
+                                alert("Please click 'Seed Initial Data' before editing to prevent other tracks from disappearing.");
+                                return;
+                              }
+                              setEditingRow({ id: row.id, collection: "workshops", data: row });
+                              setEditFormData(row);
+                            }}
+                            className={`inline-flex items-center justify-center h-8 w-8 rounded-lg transition-colors mr-1 ${!row.id ? 'text-slate-400 cursor-not-allowed' : 'text-indigo-600 hover:bg-indigo-50'}`}
+                            title={!row.id ? "Cannot edit fallback data" : "Edit"}
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              if (!row.id) {
+                                alert("Please seed initial data first to delete workshops.");
+                                return;
+                              }
+                              handleDelete("workshops", row.id);
+                            }}
+                            className={`inline-flex items-center justify-center h-8 w-8 rounded-lg transition-colors ${!row.id ? 'text-slate-400 cursor-not-allowed' : 'text-red-600 hover:bg-red-50'}`}
+                            title={!row.id ? "Cannot delete fallback data" : "Delete"}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ) : activeTab === "webinars" ? (
+            /* Webinars Table */
+            <div className="w-full overflow-x-auto rounded-2xl">
+              <div className="p-4 flex justify-between items-center bg-indigo-50/20 border-b border-indigo-100/50">
+                <div>
+                  <h3 className="text-sm font-extrabold text-slate-800">Dynamic Webinars</h3>
+                  <p className="text-xs text-slate-500">Manage live events and recordings on the site.</p>
+                </div>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={seedWebinars}
+                    className="text-xs bg-amber-100 text-amber-700 hover:bg-amber-200 px-4 py-2 rounded-lg font-bold transition-colors"
+                  >
+                    Seed Initial Data
+                  </button>
+                  <button 
+                    onClick={() => {
+                      const newWebinar = {
+                        title: "", presenter: "", date: "", time: "", status: "upcoming", link: ""
+                      };
+                      setEditingRow({ id: "new", collection: "webinars", data: newWebinar });
+                      setEditFormData(newWebinar);
+                    }}
+                    className="text-xs bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-bold transition-colors"
+                  >
+                    Add New Webinar
+                  </button>
+                </div>
+              </div>
+              {filteredWebinars.length === 0 ? (
+                <div className="text-center py-20">
+                  <div className="text-slate-400 font-bold text-sm">No webinars found.</div>
+                  <p className="text-xs text-slate-500 mt-1">Click "Seed Initial Data" to populate Firestore.</p>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-indigo-100/50 bg-indigo-50/20">
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Title</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Presenter</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Date/Time</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Status</th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredWebinars.map((row, idx) => (
+                      <tr 
+                        key={row.id || row.title || idx} 
+                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150 relative group"
+                      >
+                        <td className="p-4 text-xs font-bold text-slate-900 max-w-[200px] truncate">{row.title || "N/A"}</td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">{row.presenter || "N/A"}</td>
+                        <td className="p-4 text-xs font-mono font-bold text-slate-600">{row.date} {row.time}</td>
+                        <td className="p-4 text-xs">
+                          <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full font-bold text-[10px] ${
+                            row.status === "upcoming" 
+                              ? "bg-emerald-50 text-emerald-700 border border-emerald-250" 
+                              : "bg-slate-100 text-slate-700 border border-slate-300"
+                          }`}>
+                            <span className={`h-1.5 w-1.5 rounded-full ${row.status === "upcoming" ? "bg-emerald-500" : "bg-slate-500"}`}></span>
+                            {row.status || "upcoming"}
+                          </span>
+                        </td>
+                        <td className="p-4 text-right whitespace-nowrap">
+                          {!row.id && (
+                            <span className="text-[10px] uppercase font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-md mr-3 inline-block">
+                              Unseeded Fallback Data
+                            </span>
+                          )}
+                          <button
+                            onClick={() => {
+                              if (!row.id) {
+                                alert("Please click 'Seed Initial Data' before editing to prevent other webinars from disappearing.");
+                                return;
+                              }
+                              setEditingRow({ id: row.id, collection: "webinars", data: row });
+                              setEditFormData(row);
+                            }}
+                            className={`inline-flex items-center justify-center h-8 w-8 rounded-lg transition-colors mr-1 ${!row.id ? 'text-slate-400 cursor-not-allowed' : 'text-indigo-600 hover:bg-indigo-50'}`}
+                            title={!row.id ? "Cannot edit fallback data" : "Edit"}
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              if (!row.id) {
+                                alert("Please seed initial data first to delete webinars.");
+                                return;
+                              }
+                              handleDelete("webinars", row.id);
+                            }}
+                            className={`inline-flex items-center justify-center h-8 w-8 rounded-lg transition-colors ${!row.id ? 'text-slate-400 cursor-not-allowed' : 'text-red-600 hover:bg-red-50'}`}
+                            title={!row.id ? "Cannot delete fallback data" : "Delete"}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ) : null}
         </section>
       </div>
 
       {/* Edit Modal Overlay */}
       {editingRow && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm p-4" onClick={() => setEditingRow(null)}>
-          <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between border-b border-slate-100 p-4 sm:p-6 bg-slate-50/50">
+          {editingRow.collection === "workshops" ? (
+            <WorkshopEditor 
+              initialData={editFormData} 
+              onCancel={() => setEditingRow(null)} 
+              onSave={async (data) => {
+                try {
+                  const dataToSave = { ...data };
+                  delete dataToSave.id;
+                  if (editingRow.id === "new") {
+                    await addDoc(collection(db, "workshops"), { ...dataToSave, timestamp: new Date() });
+                  } else {
+                    await updateDoc(doc(db, "workshops", editingRow.id), dataToSave);
+                  }
+                  setEditingRow(null);
+                } catch (e) {
+                  console.error(e);
+                  alert("Failed to save workshop.");
+                }
+              }} 
+            />
+          ) : editingRow.collection === "webinars" ? (
+            <WebinarEditor 
+              initialData={editFormData} 
+              onCancel={() => setEditingRow(null)} 
+              onSave={async (data) => {
+                try {
+                  const dataToSave = { ...data };
+                  delete dataToSave.id;
+                  if (editingRow.id === "new") {
+                    await addDoc(collection(db, "webinars"), { ...dataToSave, timestamp: new Date() });
+                  } else {
+                    await updateDoc(doc(db, "webinars", editingRow.id), dataToSave);
+                  }
+                  setEditingRow(null);
+                } catch (e) {
+                  console.error(e);
+                  alert("Failed to save webinar.");
+                }
+              }} 
+            />
+          ) : (
+            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]" onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between border-b border-slate-100 p-4 sm:p-6 bg-slate-50/50">
               <h3 className="font-display text-lg font-bold text-slate-900">
                 Edit {editingRow.collection === "reservations" ? "Reservation" : editingRow.collection === "quiz_results" ? "Quiz Result" : "Consultation"}
               </h3>
@@ -623,7 +964,8 @@ function AdminComponent() {
                 <Save className="h-4 w-4" /> Save Changes
               </button>
             </div>
-          </div>
+            </div>
+          )}
         </div>
       )}
 

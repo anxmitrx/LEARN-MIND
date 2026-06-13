@@ -202,7 +202,7 @@ export function Hero() {
               time="SAT • 7:00 PM"
               positionClasses="-right-4 -top-8 sm:-right-12 sm:-top-6 w-[90%] max-w-[340px]"
               registeredCount="+412 registered"
-              to="/tracks/$slug"
+              to="/workshops/$slug"
               params={{ slug: "practical" }}
             />
 
@@ -213,7 +213,7 @@ export function Hero() {
               time="SUN • 5:00 PM"
               positionClasses="-left-16 top-12 sm:-left-24 sm:top-8 md:-left-32 md:top-16 z-30 max-w-[260px] scale-90 origin-top-right sm:scale-95"
               registeredCount="+215 registered"
-              to="/tracks/$slug"
+              to="/workshops/$slug"
               params={{ slug: "engineering" }}
             />
 
@@ -224,13 +224,13 @@ export function Hero() {
               time="TUE • 6:30 PM"
               positionClasses="-right-2 -bottom-6 sm:-right-12 sm:bottom-4 max-w-[280px] scale-90 sm:scale-95 hidden sm:block"
               registeredCount="+189 registered"
-              to="/tracks/$slug"
+              to="/workshops/$slug"
               params={{ slug: "engineering" }}
             />
 
             {/* Bottom/Left Floating Card: Arjun Outcome */}
             <MotionLink
-              to="/tracks/$slug"
+              to="/workshops/$slug"
               params={{ slug: "personal-professional" }}
               whileHover={{ y: -8, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}

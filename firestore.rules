@@ -65,6 +65,22 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Rules for 'workshops' collection
+    match /workshops/{workshopId} {
+      // Anyone can read the public workshops data
+      allow read: if true;
+      // Only admin can create, update, or delete workshops
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Rules for 'webinars' collection
+    match /webinars/{webinarId} {
+      // Anyone can read the public webinars data
+      allow read: if true;
+      // Only admin can create, update, or delete webinars
+      allow create, update, delete: if isAdmin();
+    }
+
     // Rules for 'users' collection
     match /users/{userId} {
       // Allow users to read their own profile, admins can read all

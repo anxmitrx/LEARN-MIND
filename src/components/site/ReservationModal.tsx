@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useReservation } from "./ReservationContext";
-import { tracks } from "@/lib/tracks";
+import { useWorkshops } from "@/hooks/useWorkshops";
 import { signInWithGoogle, db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "@tanstack/react-router";
@@ -40,6 +40,7 @@ export function ReservationModal() {
   const [data, setData] = useState({ name: "", college: "", email: "", phone: "", track: "" });
   const [touched, setTouched] = useState({ email: false, phone: false });
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const { workshops: tracks } = useWorkshops();
 
   useEffect(() => {
     if (open) {

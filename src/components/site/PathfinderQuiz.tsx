@@ -12,7 +12,7 @@ import {
   LineChart,
   Briefcase,
 } from "lucide-react";
-import { tracks } from "@/lib/tracks";
+import { useWorkshops } from "@/hooks/useWorkshops";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
@@ -29,6 +29,7 @@ type QuestionStep = {
 export function PathfinderQuiz() {
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const { workshops: tracks } = useWorkshops();
 
   const steps: Record<number, QuestionStep> = {
     1: {
@@ -320,7 +321,7 @@ export function PathfinderQuiz() {
 
                   <div className="flex flex-wrap gap-4">
                     <Link
-                      to="/tracks/$slug"
+                      to="/workshops/$slug"
                       params={{ slug: recommendedTrack.slug }}
                       className="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-full shadow-lg shadow-indigo-600/20 transition-transform duration-300 hover:scale-105 active:scale-95 text-sm cursor-pointer"
                     >
