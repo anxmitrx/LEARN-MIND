@@ -9,13 +9,13 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "@tanstack/react-router";
 
 const inputCls =
-  "w-full border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-slate-50 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
+  "w-full border border-white/50 bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
 
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <label className="block">
       <div className="mb-1.5 flex items-baseline justify-between gap-2">
-        <span className="text-xs font-display font-extrabold uppercase tracking-wider text-slate-900">{label}</span>
+        <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink">{label}</span>
         {error && <span className="text-[11px] font-bold text-red-600">{error}</span>}
       </div>
       {children}
@@ -122,7 +122,7 @@ export function ReservationModal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 backdrop-blur-md"
           onClick={closeModal}
         >
           <motion.div
@@ -131,12 +131,12 @@ export function ReservationModal() {
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 220, damping: 24 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md overflow-hidden bg-white border border-slate-200 p-6 sm:p-8 shadow-2xl rounded-3xl"
+            className="relative w-full max-w-md overflow-hidden bg-white/60 backdrop-blur-xl border border-white/50 p-6 sm:p-8 shadow-2xl rounded-3xl"
           >
             <button
               onClick={closeModal}
               aria-label="Close"
-              className="absolute right-4 top-4 grid h-9 w-9 place-items-center bg-white text-slate-600 border border-slate-200 transition-all hover:scale-105 active:scale-95 hover:bg-slate-50 rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+              className="absolute right-4 top-4 grid h-9 w-9 place-items-center bg-white/20 backdrop-blur-md text-indigo-600 border border-white/40 transition-all hover:scale-105 active:scale-95 hover:bg-white/40 hover:border-white rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             >
               <X className="h-4 w-4" strokeWidth={3} />
             </button>
@@ -144,14 +144,14 @@ export function ReservationModal() {
             {step < 3 && (
               <>
                 <div className="eyebrow text-indigo-600">Reserve Your Seat · {step + 1}/3</div>
-                <h3 className="mt-2 font-display text-2xl font-bold text-slate-900">
+                <h3 className="mt-2 font-display text-2xl font-bold text-ink">
                   {step === 0 && "Tell us who you are"}
                   {step === 1 && "How can we reach you?"}
                   {step === 2 && "Pick your track"}
                 </h3>
 
                 {/* progress */}
-                <div className="mt-5 flex h-2 overflow-hidden rounded-full bg-slate-100 border border-slate-200">
+                <div className="mt-5 flex h-2 overflow-hidden rounded-full bg-white/20 border border-white/40">
                   <div
                     className="bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
                     style={{ width: `${((step + 1) / 3) * 100}%` }}
@@ -203,8 +203,8 @@ export function ReservationModal() {
                         label="WhatsApp number"
                         error={touched.phone && !phoneOk ? "Enter a 10-digit number" : undefined}
                       >
-                        <div className="flex border border-slate-200 bg-white rounded-full overflow-hidden focus-within:bg-slate-50 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:outline-none transition-all">
-                          <span className="grid place-items-center bg-slate-100 px-4 font-mono text-sm font-extrabold text-indigo-600 border-r border-slate-200">
+                        <div className="flex border border-white/50 bg-white/25 rounded-full overflow-hidden focus-within:bg-white/45 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:outline-none transition-all">
+                          <span className="grid place-items-center bg-white/60 px-4 font-mono text-sm font-extrabold text-indigo-600 border-r border-white/40">
                             +91
                           </span>
                           <input
@@ -253,7 +253,7 @@ export function ReservationModal() {
                         type="button"
                         onClick={next}
                         disabled={step === 0 ? !canNext0 : !canNext1}
-                        className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-sm border border-transparent transition-transform duration-300 hover:scale-105 hover:bg-indigo-700 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
                       >
                         Continue <ArrowRight className="h-4 w-4" />
                       </button>
@@ -261,7 +261,7 @@ export function ReservationModal() {
                       <button
                         type="submit"
                         disabled={!canSubmit}
-                        className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-sm border border-transparent transition-transform duration-300 hover:scale-105 hover:bg-indigo-700 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
                       >
                         Reserve Seat <Check className="h-4 w-4" />
                       </button>
@@ -293,7 +293,7 @@ export function ReservationModal() {
                     />
                   </svg>
                 </div>
-                <h3 className="mt-6 font-display text-3xl font-bold leading-tight text-slate-900">
+                <h3 className="mt-6 font-display text-3xl font-bold leading-tight text-ink">
                   Seat Reserved!
                 </h3>
                 <p className="mt-3 text-sm text-slate-600 font-semibold">
@@ -304,7 +304,7 @@ export function ReservationModal() {
                      closeModal();
                      navigate({ to: "/dashboard" });
                    }}
-                  className="mt-7 inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-sm border border-transparent transition-transform duration-300 hover:scale-105 hover:bg-indigo-700 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                  className="mt-7 inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
                 >
                   Go to Dashboard
                 </button>

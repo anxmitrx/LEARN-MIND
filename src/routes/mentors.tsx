@@ -36,9 +36,9 @@ function MentorsPage() {
       <Navbar />
       <section className="bg-transparent pt-28 md:pt-36 pb-12 sm:pb-16">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-          <span className="eyebrow text-slate-900">Premium Mentors</span>
-          <h1 className="mt-4 max-w-3xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-slate-900 sm:text-6xl">
-            Learn from people who <span className="bg-slate-100 text-indigo-900 px-2 rounded-lg">hire people.</span>
+          <span className="eyebrow text-ink">Premium Mentors</span>
+          <h1 className="mt-4 max-w-3xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-6xl">
+            Learn from people who <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">hire people.</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-slate-600 font-semibold">
             MNC managers, IIM/IIT alumni, startup founders, and senior engineers — mentoring you
@@ -60,26 +60,26 @@ function MentorsPage() {
               <motion.div
                 key={m.name}
                 variants={cardVariants}
-                className="bento-card group bg-white border border-slate-200 shadow-sm rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md h-full flex flex-col"
+                className="bento-card group bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform h-full flex flex-col"
               >
                 <div className="flex-grow flex flex-col">
                   <div
                     className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0"
                     style={{ background: `linear-gradient(135deg, hsl(${m.hue}, 70%, 88%), hsl(${m.hue}, 60%, 75%))` }}
                   >
-                    <div className="absolute inset-0 grid place-items-center transition-all duration-300">
-                      <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-300 group-hover:scale-105">
+                    <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
+                      <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-500 group-hover:scale-105">
                         {m.initials}
                       </span>
                     </div>
                   </div>
-                  <h3 className="mt-6 font-display text-xl md:text-2xl font-bold text-slate-900">{m.name}</h3>
+                  <h3 className="mt-6 font-display text-xl md:text-2xl font-bold text-ink">{m.name}</h3>
                   <p className="text-sm md:text-base font-bold text-indigo-600 mt-1">{m.title}</p>
                   <p className="mt-2 text-xs md:text-sm text-slate-700 font-semibold line-clamp-3 leading-relaxed flex-grow" title={m.bio}>{m.bio}</p>
                 </div>
                 <div className="mt-6 mt-auto flex flex-wrap gap-2">
                   {m.topics.map((t) => (
-                    <span key={t} className="bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1 text-xs font-bold rounded-full shadow-sm">
+                    <span key={t} className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-xs font-bold rounded-full shadow-sm">
                       {t}
                     </span>
                   ))}

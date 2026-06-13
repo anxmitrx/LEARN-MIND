@@ -9,10 +9,10 @@ export function CtaFooter() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   return (
     <>
-      <section className="relative overflow-hidden bg-white border-y border-slate-200 py-24 sm:py-32">
+      <section className="relative overflow-hidden bg-white/40 backdrop-blur-xl border-y border-white/60 py-24 sm:py-32">
         <div className="absolute inset-0 grid-bg opacity-50" />
         <div className="container relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <h2 className="font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-slate-900 sm:text-7xl">
+          <h2 className="font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-7xl">
             Be ready <span className="bg-indigo-600 px-4 py-1 text-white rounded-full">before</span> <br /> the offer drops.
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg font-bold text-slate-700">
@@ -27,7 +27,7 @@ export function CtaFooter() {
         </div>
       </section>
 
-      <footer className="bg-slate-50 border-t border-slate-200 text-slate-800">
+      <footer className="bg-white/20 backdrop-blur-xl border-t border-white/40 text-slate-800">
         <div className="container mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-4">
           <div className="md:col-span-2">
             <Link to="/" className="flex items-center gap-2 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-xl">
@@ -59,7 +59,7 @@ export function CtaFooter() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-slate-200 px-4 py-5 text-center text-xs text-slate-500 sm:px-6 font-bold flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-white/40 px-4 py-5 text-center text-xs text-slate-500 sm:px-6 font-bold flex flex-col sm:flex-row items-center justify-between gap-4">
           <span>© {new Date().getFullYear()} Learn & Shine. All rights reserved.</span>
           <button
             type="button"

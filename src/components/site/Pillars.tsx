@@ -35,9 +35,9 @@ export function Pillars() {
     <section id="beyond" className="relative bg-surface py-24 sm:py-32">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="max-w-3xl">
-          <span className="eyebrow text-slate-900">Beyond Workshops</span>
-          <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-slate-900 sm:text-6xl">
-            The full <span className="bg-slate-100 text-indigo-900 px-2 rounded-lg">industry stack.</span>
+          <span className="eyebrow text-ink">Beyond Workshops</span>
+          <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
+            The full <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">industry stack.</span>
           </h2>
         </div>
 
@@ -46,11 +46,11 @@ export function Pillars() {
             const isInk = p.tone === "ink";
             const isYellow = p.tone === "yellow";
             
-            const bg = i === 0
-              ? "bg-indigo-900 border border-indigo-800 text-white shadow-sm hover:bg-indigo-950 hover:border-indigo-700 hover:-translate-y-1 hover:shadow-md" 
-              : i === 1
-              ? "bg-rose-50 border border-rose-100 text-slate-800 shadow-sm hover:bg-rose-100 hover:border-rose-200 hover:-translate-y-1 hover:shadow-md" 
-              : "bg-white border border-slate-200 text-slate-800 shadow-sm hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md";
+            const bg = isInk 
+              ? "bg-indigo-950/50 backdrop-blur-xl border border-white/30 text-white shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-indigo-950/65 hover:border-indigo-500/80" 
+              : isYellow 
+              ? "bg-[#F8EDEB]/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-[#F8EDEB]/60 hover:border-white/80" 
+              : "bg-white/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-white/60 hover:border-white/80";
               
             const iconBg = isInk 
               ? "bg-indigo-100 text-indigo-700 border border-indigo-200/50 shadow-sm" 

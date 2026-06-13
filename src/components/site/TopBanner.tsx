@@ -12,7 +12,7 @@ export function TopBanner() {
     >
       <Link
         to="/class-12-consult"
-        className="group mx-auto flex w-[92%] max-w-4xl items-center justify-center gap-3 py-4 px-6 sm:px-8 bg-white rounded-full border border-slate-200 shadow-sm text-center flex-wrap transition-all duration-300 hover:-translate-y-1 hover:shadow-md focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+        className="group mx-auto flex w-[92%] max-w-4xl items-center justify-center gap-3 py-4 px-6 sm:px-8 bg-white/40 backdrop-blur-md rounded-full border border-indigo-400/30 shadow-[0_10px_30px_-10px_rgba(31,38,135,0.2)] text-center flex-wrap transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_rgba(31,38,135,0.3)] hover:border-indigo-400/70 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
       >
         <span className="flex items-center justify-center gap-3 text-indigo-950 font-semibold md:text-lg leading-tight">
           <span>
