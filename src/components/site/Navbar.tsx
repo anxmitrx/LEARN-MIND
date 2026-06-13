@@ -29,13 +29,13 @@ export function Navbar() {
   const { openModal } = useReservation();
 
   return (
-    <header className="fixed top-[calc(var(--banner-height,0px)+1.5rem)] left-1/2 -translate-x-1/2 w-[92%] max-w-5xl z-50 rounded-full px-6 py-2 bg-white/20 backdrop-blur-lg border border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-[top] duration-200">
+    <header className="fixed top-0 left-0 right-0 w-full z-50 px-6 py-3 bg-white border-b border-slate-200 transition-[top] duration-200">
       <div className="flex w-full min-h-12 items-center justify-between gap-6">
         {/* Zone 1: Left - Logo */}
         <div className="flex-1 flex justify-start">
           <Link
             to="/"
-            className="group flex items-center gap-3 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-full"
+            className="group flex items-center gap-3 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
           >
             <img
               src="/assets/logo.png"
@@ -51,17 +51,17 @@ export function Navbar() {
             {links.map((l, i) =>
               l.subLinks ? (
                 <div key={i} className="relative group flex items-center">
-                  <button className="relative flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold text-ink transition-all hover:bg-white/60 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none cursor-pointer">
+                  <button className="relative flex items-center gap-1.5 rounded-sm px-3.5 py-2 text-sm font-bold text-ink transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none cursor-pointer">
                     <span>{l.label}</span>
-                    <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" />
+                    <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
                   </button>
-                  <div className="absolute top-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2 w-48 rounded-2xl bg-white/70 backdrop-blur-xl border border-white/60 p-2 shadow-[0_12px_40px_-6px_rgba(31,38,135,0.15)] opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50">
+                  <div className="absolute top-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2 w-48 rounded-md bg-white border border-slate-200 p-2 shadow-md opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
                     <div className="flex flex-col gap-1">
                       {l.subLinks.map((sub) => (
                         <Link
                           key={sub.to}
                           to={sub.to}
-                          className="block rounded-xl px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-white/80 hover:text-indigo-600 hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+                          className="block rounded-sm px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50 hover:text-blue-900 transition-colors focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
                         >
                           {sub.label}
                         </Link>
@@ -75,11 +75,11 @@ export function Navbar() {
                     key={l.to}
                     to={l.to}
                     activeOptions={{ exact: l.to === "/" }}
-                    className="relative flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold text-ink transition-all hover:bg-white/60 hover:shadow-sm data-[status=active]:bg-indigo-600 data-[status=active]:text-white focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none group"
+                    className="relative flex items-center gap-1.5 rounded-sm px-3.5 py-2 text-sm font-bold text-ink transition-colors hover:bg-slate-50 data-[status=active]:bg-blue-900 data-[status=active]:text-white focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none group"
                   >
                     <span>{l.label}</span>
                     {l.badge && (
-                      <span className="inline-flex shrink-0 items-center rounded-full bg-indigo-600 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white animate-pulse group-data-[status=active]:bg-white group-data-[status=active]:text-indigo-600">
+                      <span className="inline-flex shrink-0 items-center rounded-sm bg-blue-900 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white group-data-[status=active]:bg-white group-data-[status=active]:text-blue-900">
                         {l.badge}
                       </span>
                     )}
@@ -95,7 +95,7 @@ export function Navbar() {
           <div className="hidden md:block">
             <button
               onClick={() => openModal()}
-              className="inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-2.5 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+              className="inline-flex items-center bg-orange-800 text-white px-5 py-2.5 text-xs font-display font-bold uppercase tracking-wider rounded-md hover:bg-orange-700 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
             >
               Reserve Seat
             </button>
@@ -104,7 +104,7 @@ export function Navbar() {
           <button
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
-            className="grid h-10 w-10 place-items-center bg-white/20 backdrop-blur-md text-ink md:hidden rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+            className="grid h-10 w-10 place-items-center bg-slate-100 text-ink md:hidden rounded-sm hover:bg-slate-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
           >
             {open ? <X /> : <Menu />}
           </button>
@@ -113,12 +113,12 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="absolute top-[calc(100%+0.75rem)] left-0 right-0 z-50 bg-white/40 backdrop-blur-xl border border-white/60 p-4 rounded-3xl shadow-[0_12px_40px_-6px_rgba(31,38,135,0.15)] md:hidden">
+        <div className="absolute top-full left-0 right-0 z-50 bg-white border-b border-slate-200 p-4 shadow-md md:hidden">
           <nav className="flex flex-col gap-2">
             {links.map((l, i) =>
               l.subLinks ? (
-                <div key={i} className="flex flex-col gap-1 w-full mt-2 mb-2 bg-white/30 p-3 rounded-2xl border border-white/50 shadow-sm">
-                  <div className="px-3 pb-1 text-xs font-extrabold text-indigo-600 uppercase tracking-wider">
+                <div key={i} className="flex flex-col gap-1 w-full mt-2 mb-2 bg-slate-50 p-3 rounded-md border border-slate-200">
+                  <div className="px-3 pb-1 text-xs font-bold text-blue-900 uppercase tracking-wider">
                     {l.label}
                   </div>
                   {l.subLinks.map((sub) => (
@@ -126,7 +126,7 @@ export function Navbar() {
                       key={sub.to}
                       to={sub.to}
                       onClick={() => setOpen(false)}
-                      className="flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-bold text-ink hover:bg-white/60 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+                      className="flex items-center justify-between rounded-sm px-4 py-2.5 text-sm font-bold text-ink hover:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
                     >
                       <span>{sub.label}</span>
                     </Link>
@@ -138,11 +138,11 @@ export function Navbar() {
                     key={l.to}
                     to={l.to}
                     onClick={() => setOpen(false)}
-                    className="flex items-center justify-between rounded-full px-4 py-3 text-sm font-bold text-ink hover:bg-white/60 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+                    className="flex items-center justify-between rounded-sm px-4 py-3 text-sm font-bold text-ink hover:bg-slate-50 transition-colors focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
                   >
                     <span>{l.label}</span>
                     {l.badge && (
-                      <span className="inline-flex items-center rounded-full bg-indigo-600 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white">
+                      <span className="inline-flex items-center rounded-sm bg-blue-900 px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider text-white">
                         {l.badge}
                       </span>
                     )}
@@ -155,7 +155,7 @@ export function Navbar() {
                 setOpen(false);
                 openModal();
               }}
-              className="mt-2 w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-3 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 text-center flex justify-center items-center cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+              className="mt-2 w-full bg-orange-800 text-white px-5 py-3 text-xs font-display font-bold uppercase tracking-wider rounded-md hover:bg-orange-700 transition-colors text-center flex justify-center items-center cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
             >
               Reserve Seat
             </button>

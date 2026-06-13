@@ -36,7 +36,7 @@ export function TracksGrid() {
           <span className="eyebrow text-ink">5 Mentoring Tracks</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[1.1] md:leading-tight tracking-wide text-ink sm:text-6xl">
             Everything you need <br /> to walk in{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+            <span className="text-blue-900 bg-blue-50 px-2 rounded-sm">
               ready.
             </span>
           </h2>
@@ -54,10 +54,10 @@ export function TracksGrid() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 ${
+                className={`relative px-5 py-2.5 rounded-sm text-xs font-bold uppercase tracking-wider transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-900 ${
                   isActive
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
-                    : "bg-white/40 backdrop-blur-md text-slate-700 hover:bg-white/60 border border-white/50"
+                    ? "bg-blue-900 text-white shadow-sm"
+                    : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-200"
                 }`}
               >
                 {tab.label}
@@ -84,10 +84,10 @@ export function TracksGrid() {
                 exit={{ opacity: 0, scale: 0.95, y: 15 }}
                 transition={{ duration: 0.35, ease: "easeOut" }}
               >
-                <Link
+                  <Link
                   to="/workshops/$slug"
                   params={{ slug: t.slug }}
-                  className="bento-card group block h-full bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 md:p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform"
+                  className="bento-card group block h-full bg-white border border-slate-200 rounded-md p-5 md:p-7 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-md h-full flex flex-col"
                 >
                   <div className="flex items-start justify-between">
                     <div className="font-mono text-xs font-bold text-indigo-600/60">
@@ -104,19 +104,19 @@ export function TracksGrid() {
                     {t.topics.slice(0, 3).map((tp) => (
                       <span
                         key={tp.title}
-                        className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-[11px] font-bold rounded-full shadow-sm"
+                        className="bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1 text-[11px] font-bold rounded-full shadow-sm"
                       >
                         {tp.title}
                       </span>
                     ))}
                     {t.topics.length > 3 && (
-                      <span className="bg-indigo-500/20 backdrop-blur-md text-indigo-700 border border-indigo-500/30 px-3 py-1 text-[11px] font-extrabold rounded-full shadow-sm">
+                      <span className="bg-blue-50 text-blue-900 border border-blue-200 px-3 py-1 text-[11px] font-bold rounded-full shadow-sm">
                         +{t.topics.length - 3}
                       </span>
                     )}
                   </div>
 
-                  <div className="mt-7 flex items-center justify-between border-t border-white/40 pt-4">
+                  <div className="mt-7 flex items-center justify-between border-t border-slate-100 pt-4">
                     <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
                       {t.short}
                     </span>

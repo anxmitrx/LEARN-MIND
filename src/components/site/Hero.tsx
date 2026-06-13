@@ -32,16 +32,16 @@ function FloatingWorkshopCard({
       params={params}
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 350, damping: 20 }}
-      className={`absolute z-30 block bg-white/40 backdrop-blur-xl border border-white/60 rounded-3xl p-4 sm:p-5 shadow-[0_15px_35px_rgba(0,0,0,0.05)] hover:shadow-[0_25px_50px_rgba(31,38,135,0.15)] hover:border-indigo-400/50 group cursor-pointer animate-float-slow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 ${positionClasses}`}
+      className={`absolute z-30 block bg-white border border-slate-200 rounded-md p-4 sm:p-5 shadow-sm hover:shadow-md hover:-translate-y-[2px] hover:border-slate-300 group cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-900 ${positionClasses}`}
     >
       <div className="flex items-center justify-between mb-3 gap-2">
         <div className="flex items-center gap-2 bg-white rounded-full px-3 py-1 shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-          <span className="text-xs font-bold text-indigo-900 tracking-wide uppercase">Live</span>
+          <span className="w-2 h-2 rounded-full bg-red-600"></span>
+          <span className="text-xs font-bold text-slate-800 tracking-wide uppercase">Live</span>
         </div>
         <span className="text-xs font-semibold text-slate-600 tracking-wider">{time}</span>
       </div>
-      <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-tight mb-2 group-hover:text-indigo-700 transition-colors duration-300 font-display">
+      <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-tight mb-2 group-hover:text-blue-900 transition-colors duration-200 font-display">
         {title}
       </h3>
       <p className="text-xs sm:text-sm text-slate-700 mb-3 sm:mb-4 line-clamp-2 font-medium">
@@ -76,8 +76,7 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-background">
-      <div className="absolute inset-0 dot-bg opacity-60" />
-      <div className="pointer-events-none absolute -top-32 -right-24 h-[36rem] w-[36rem] rounded-full bg-[#8EC5FC]/30 opacity-80 blur-3xl animate-float-slow" />
+      <div className="absolute inset-0 bg-slate-50" />
 
       <div className="container relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-32">
         <motion.div
@@ -86,7 +85,7 @@ export function Hero() {
           animate="show"
           className="grid items-center gap-16 lg:grid-cols-[1.2fr_0.8fr]"
         >
-          <div className="relative overflow-hidden rounded-3xl p-5 sm:p-8 md:p-10 bg-white/20 border border-white/40 backdrop-blur-md shadow-xl">
+          <div className="relative overflow-hidden rounded-md p-5 sm:p-8 md:p-10 bg-white border border-slate-200 shadow-sm">
             {/* Contextual Background Image */}
             <div className="absolute inset-0 z-[-1] opacity-35 [mask-image:linear-gradient(to_bottom,white,transparent)]">
               <img
@@ -96,19 +95,19 @@ export function Hero() {
               />
             </div>
             {/* Glass Overlay Layer */}
-            <div className="absolute inset-0 z-[-1] bg-white/25 backdrop-blur-[3px]" />
+            <div className="absolute inset-0 z-[-1] bg-white/80" />
 
             {/* Top Badges Parent Wrapper */}
             <motion.div variants={item} className="flex flex-wrap items-center gap-3 mb-6">
-              <div className="flex items-center justify-center h-8 px-4 rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm">
-                <Sparkles className="w-4 h-4 mr-2 text-indigo-700 shrink-0" />
-                <span className="text-xs sm:text-sm font-bold text-indigo-700 tracking-wide uppercase leading-none">
+              <div className="flex items-center justify-center h-8 px-4 rounded-sm bg-slate-100 border border-slate-200 shadow-sm">
+                <Sparkles className="w-4 h-4 mr-2 text-blue-900 shrink-0" />
+                <span className="text-xs sm:text-sm font-bold text-blue-900 tracking-wide uppercase leading-none">
                   Industry-Ready Since Day One
                 </span>
               </div>
 
-              <div className="flex items-center justify-center h-8 px-4 rounded-full bg-white/40 backdrop-blur-md border border-white/60 shadow-sm">
-                <span className="text-xs sm:text-sm font-bold text-indigo-700 tracking-wide uppercase leading-none">
+              <div className="flex items-center justify-center h-8 px-4 rounded-sm bg-slate-100 border border-slate-200 shadow-sm">
+                <span className="text-xs sm:text-sm font-bold text-blue-900 tracking-wide uppercase leading-none">
                   STUCK? WE ARE HERE TO HELP YOU
                 </span>
               </div>
@@ -128,7 +127,7 @@ export function Hero() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -15, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="inline-block text-indigo-600 font-extrabold"
+                    className="inline-block text-blue-900 font-extrabold"
                   >
                     {WORDS[wordIndex]}
                   </motion.span>
@@ -136,7 +135,7 @@ export function Hero() {
               </span>{" "}
               <br />
               <span className="relative inline-block">
-                <span className="absolute inset-x-0 bottom-2 -z-10 h-5 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 sm:h-7 rounded-md" />
+                <span className="absolute inset-x-0 bottom-2 -z-10 h-5 bg-blue-50 sm:h-7 rounded-sm" />
                 with absolute clarity.
               </span>
             </motion.h1>
@@ -166,7 +165,7 @@ export function Hero() {
 
             <motion.div
               variants={item}
-              className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-[#3A3532]/10 pt-8"
+              className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-slate-200 pt-8"
             >
               {[
                 { k: "5", v: "Mentoring tracks" },
@@ -192,7 +191,7 @@ export function Hero() {
             <img
               src="/assets/WhatsApp Image 2026-06-03 at 7.48.00 PM.jpeg"
               alt="Hiring Outcomes & Prep"
-              className="w-full max-w-md sm:max-w-lg aspect-[4/3] lg:aspect-[3/4] xl:aspect-[4/3] object-cover rounded-[2rem] shadow-2xl z-0"
+              className="w-full max-w-md sm:max-w-lg aspect-[4/3] lg:aspect-[3/4] xl:aspect-[4/3] object-cover rounded-md shadow-lg z-0"
             />
 
             {/* Top/Right Floating Card: Salary Negotiation Workshop */}
@@ -234,14 +233,14 @@ export function Hero() {
               params={{ slug: "personal-professional" }}
               whileHover={{ y: -8, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}
-              className="absolute -left-4 -bottom-6 sm:-left-10 sm:bottom-10 z-20 max-w-[260px] block bg-white/40 backdrop-blur-xl border border-white/60 rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.05)] hover:shadow-[0_25px_50px_rgba(31,38,135,0.15)] hover:border-indigo-400/50 group cursor-pointer animate-float-slow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+              className="absolute -left-4 -bottom-6 sm:-left-10 sm:bottom-10 z-20 max-w-[260px] block bg-white border border-slate-200 rounded-md p-5 shadow-sm hover:shadow-md hover:-translate-y-[2px] group cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-900"
             >
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-1.5 bg-indigo-50 text-indigo-700 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide">
+                <div className="flex items-center gap-1.5 bg-blue-50 text-blue-900 rounded-sm px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide">
                   Outcome
                 </div>
               </div>
-              <h3 className="text-base font-bold text-slate-900 leading-tight mb-1 group-hover:text-indigo-700 transition-colors duration-300 font-display">
+              <h3 className="text-base font-bold text-slate-900 leading-tight mb-1 group-hover:text-blue-900 transition-colors duration-200 font-display">
                 Hired at Infosys
               </h3>
               <p className="text-xs font-semibold text-slate-600">— Arjun, B.Tech</p>
@@ -255,8 +254,8 @@ export function Hero() {
         <div className="flex w-max animate-marquee gap-12 py-3 font-display text-sm font-extrabold uppercase tracking-[0.3em] text-white">
           {Array.from({ length: 12 }).map((_, i) => (
             <span key={i} className="flex items-center gap-12">
-              Gain Clarity <span className="text-indigo-400">★</span> Step Forward with Confidence{" "}
-              <span className="text-indigo-400">★</span>
+              Gain Clarity <span className="text-blue-400">★</span> Step Forward with Confidence{" "}
+              <span className="text-blue-400">★</span>
             </span>
           ))}
         </div>
