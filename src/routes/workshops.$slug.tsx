@@ -45,22 +45,22 @@ function TrackPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-transparent">
-        <div className="absolute inset-0 grid-bg opacity-50" />
+      <section className="relative overflow-hidden bg-slate-50">
+        <div className="absolute inset-0 grid-bg opacity-10" />
         <div className="container relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
           <Link to="/workshops" className="inline-flex items-center gap-2 text-sm font-bold text-indigo-600 hover:underline focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">
             <ArrowLeft className="h-4 w-4" /> All tracks
           </Link>
           <div className="mt-8 grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
             <div>
-              <span className="inline-block bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3.5 py-1 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-sm">
+              <span className="inline-block bg-white text-indigo-600 border border-slate-200 px-3.5 py-1 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-sm">
                 Track {track.number} · {track.short}
               </span>
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="mt-5 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl lg:text-7xl"
+                className="mt-5 font-display text-5xl font-bold leading-[0.95] tracking-wide text-slate-900 sm:text-6xl lg:text-7xl"
               >
                 {isEngineering ? (
                   <ScrambleText text={track.title} duration={900} />
@@ -82,7 +82,7 @@ function TrackPage() {
                 </MagneticButton>
               </div>
             </div>
-            <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6">
+            <div className="bg-white border border-slate-200 shadow-sm rounded-3xl p-5 sm:p-6">
               <div className="eyebrow text-indigo-600 font-bold">Skill Radar</div>
               <p className="mt-1 text-sm text-slate-600 font-semibold">What you'll be measurably better at by the end.</p>
               <div className="mt-4 grid place-items-center">
@@ -97,9 +97,9 @@ function TrackPage() {
       <section id="bento" className="bg-transparent py-24">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
           <div className="max-w-2xl">
-            <span className="eyebrow text-ink">Inside the Track</span>
-            <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-              The <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">bento.</span>
+            <span className="eyebrow text-slate-600">Inside the Track</span>
+            <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-slate-900 sm:text-6xl">
+              The <span className="bg-slate-100 text-indigo-900 px-2 rounded-lg">bento.</span>
             </h2>
           </div>
 
@@ -107,7 +107,7 @@ function TrackPage() {
             {/* A: Topics — spans 2 cols */}
             <BentoCard className="lg:col-span-2">
               <div className="font-mono text-xs font-bold text-indigo-600/60">// A · TOPIC LIST</div>
-              <h3 className="mt-2 font-display text-3xl font-bold text-ink">Topics covered</h3>
+              <h3 className="mt-2 font-display text-3xl font-bold text-slate-900">Topics covered</h3>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {track.topics.map((topic, i) => {
                   const Icon = getIcon(topic.icon);
@@ -118,12 +118,12 @@ function TrackPage() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.05 }}
-                      className="flex items-center gap-3 bg-white/40 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/50 shadow-sm"
+                      className="flex items-center gap-3 bg-white px-4 py-3 rounded-2xl border border-slate-200 shadow-sm"
                     >
                       <span className="grid h-9 w-9 shrink-0 place-items-center bg-indigo-100 text-indigo-700 border border-indigo-200/50 rounded-full shadow-sm">
                         <Icon className="h-4 w-4 text-indigo-700" />
                       </span>
-                      <span className="font-display text-sm font-bold text-ink">{topic.title}</span>
+                      <span className="font-display text-sm font-bold text-slate-900">{topic.title}</span>
                     </motion.li>
                   );
                 })}
@@ -133,11 +133,11 @@ function TrackPage() {
             {/* B: Outcomes */}
             <BentoCard tone="yellow">
               <div className="font-mono text-xs font-bold text-indigo-600/70">// B · OUTCOMES</div>
-              <h3 className="mt-2 font-display text-3xl font-bold text-ink">You'll be able to</h3>
+              <h3 className="mt-2 font-display text-3xl font-bold text-slate-900">You'll be able to</h3>
               <ul className="mt-5 space-y-4">
                 {track.outcomes.map((o, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 rounded-full shadow-sm">
+                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center bg-white text-indigo-600 border border-slate-200 rounded-full shadow-sm">
                       <Check className="h-3.5 w-3.5 text-indigo-600" strokeWidth={3} />
                     </span>
                     <span className="text-sm font-semibold text-slate-800 leading-relaxed">{o}</span>
@@ -152,8 +152,8 @@ function TrackPage() {
               <h3 className="mt-2 font-display text-3xl font-bold text-white">A typical workshop</h3>
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {track.agenda.map((a, i) => (
-                  <div key={i} className="relative bg-indigo-950/60 backdrop-blur-md border border-white/20 p-5 rounded-2xl shadow-sm text-white">
-                    <span className="absolute -top-3 left-3 bg-[#E0C3FC] px-3.5 py-0.5 font-mono text-xs font-extrabold text-indigo-950 rounded-full shadow-sm border border-white/20">
+                  <div key={i} className="relative bg-slate-900 border border-slate-700 p-5 rounded-2xl shadow-sm text-white">
+                    <span className="absolute -top-3 left-3 bg-[#E0C3FC] px-3.5 py-0.5 font-mono text-xs font-extrabold text-indigo-950 rounded-full shadow-sm border border-slate-700">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div className="mt-2 font-mono text-xs text-indigo-300 font-semibold">{a.time}</div>
@@ -177,7 +177,7 @@ function TrackPage() {
       <section className="bg-transparent py-20">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mb-10 flex items-end justify-between">
-            <h3 className="font-display text-3xl font-bold text-ink">Other tracks</h3>
+            <h3 className="font-display text-3xl font-bold text-slate-900">Other tracks</h3>
             <Link to="/workshops" className="text-sm font-extrabold text-indigo-600 underline underline-offset-4">View all →</Link>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -186,10 +186,10 @@ function TrackPage() {
                 key={t.slug}
                 to="/workshops/$slug"
                 params={{ slug: t.slug }}
-                className="bento-card bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
+                className="bento-card bg-white border border-slate-200 shadow-sm rounded-3xl p-4 sm:p-6 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md will-change-transform focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 <span className="font-mono text-xs font-bold text-indigo-600/60">// TRACK {t.number}</span>
-                <div className="mt-2 font-display text-lg font-bold text-ink">{t.title}</div>
+                <div className="mt-2 font-display text-lg font-bold text-slate-900">{t.title}</div>
               </Link>
             ))}
           </div>

@@ -77,7 +77,7 @@ function TracksIndex() {
   const durationTransition = shouldReduceMotion ? 0 : 0.45;
 
   // Easing specification: ease: [0.22, 1, 0.36, 1]
-  const globalEase = [0.22, 1, 0.36, 1];
+  const globalEase = [0.22, 1, 0.36, 1] as const;
 
   // Motion variants
   const staggerContainer = {
@@ -206,22 +206,19 @@ function TracksIndex() {
     <main className="min-h-screen bg-transparent text-slate-800 relative">
       <Navbar />
 
-      {/* Aurora Mesh Blobs Local Overlay for Extra Visual Pop */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none">
-        <div className="absolute top-[20%] right-[10%] w-[45vw] h-[45vw] max-w-[500px] rounded-full bg-purple-200/20 blur-3xl animate-pulse" style={{ animationDuration: "12s" }} />
-        <div className="absolute top-[50%] left-[5%] w-[40vw] h-[40vw] max-w-[450px] rounded-full bg-indigo-200/20 blur-3xl animate-pulse" style={{ animationDuration: "16s", animationDelay: "2s" }} />
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none bg-slate-50">
       </div>
 
       {/* Hero Section */}
       <section className="bg-transparent py-20 relative">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex flex-col items-start gap-4">
-            <span className="eyebrow text-indigo-600 bg-white/40 backdrop-blur-md border border-white/50 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase">
+            <span className="eyebrow text-indigo-600 bg-white border border-slate-200 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase">
               YOUR CAREER IN FOCUS · 5 Structured Pathways
             </span>
             <h1 className="mt-2 max-w-4xl font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-7xl">
               Forge Your Edge. <br />
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-slate-900">
                 Pick Your Track.
               </span>
             </h1>
@@ -231,19 +228,19 @@ function TracksIndex() {
 
             {/* Platform Metrics Grid */}
             <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl pt-6 border-t border-slate-200/30">
-              <div className="p-4 bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl">
+              <div className="p-4 bg-white border border-slate-200 shadow-sm rounded-2xl">
                 <div className="text-3xl font-display font-extrabold text-indigo-600">5</div>
                 <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Core Tracks</div>
               </div>
-              <div className="p-4 bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl">
+              <div className="p-4 bg-white border border-slate-200 shadow-sm rounded-2xl">
                 <div className="text-3xl font-display font-extrabold text-indigo-600">40+</div>
                 <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Industry Topics</div>
               </div>
-              <div className="p-4 bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl">
+              <div className="p-4 bg-white border border-slate-200 shadow-sm rounded-2xl">
                 <div className="text-3xl font-display font-extrabold text-indigo-600">1:1</div>
                 <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Mentor Access</div>
               </div>
-              <div className="p-4 bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl">
+              <div className="p-4 bg-white border border-slate-200 shadow-sm rounded-2xl">
                 <div className="text-3xl font-display font-extrabold text-indigo-600">100%</div>
                 <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Practical Labs</div>
               </div>
@@ -255,7 +252,7 @@ function TracksIndex() {
       {/* Interactive Filters & Quiz Section */}
       <section className="bg-transparent py-2">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 bg-white/25 backdrop-blur-xl border border-white/50 rounded-3xl p-4 sm:p-6 shadow-sm">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 bg-white border border-slate-200 rounded-3xl p-4 sm:p-6 shadow-sm">
             
             {/* Tag Filters */}
             <div className="flex flex-wrap items-center gap-2">
@@ -268,7 +265,7 @@ function TracksIndex() {
                     className={`relative px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${
                       isActive
                         ? "text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900 bg-white/40 hover:bg-white/60 border border-white/40"
+                        : "text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200"
                     }`}
                   >
                     {isActive && (
@@ -290,7 +287,7 @@ function TracksIndex() {
                 resetQuiz();
                 setQuizOpen(true);
               }}
-              className="flex items-center gap-4 bg-white/40 hover:bg-white/60 border border-white/60 hover:border-white/90 p-3 sm:py-3 sm:px-4 rounded-2xl shadow-sm transition-all duration-300 group cursor-pointer animate-pulse-slow select-none border-dashed border-2"
+              className="flex items-center gap-4 bg-white border border-slate-200 p-3 sm:py-3 sm:px-4 rounded-2xl shadow-sm transition-all duration-300 group cursor-pointer select-none"
             >
               <div className="p-2 bg-indigo-500/10 text-indigo-600 rounded-full group-hover:bg-indigo-500/20 transition-all duration-300">
                 <Sparkles className="h-4 w-4" />
@@ -322,18 +319,18 @@ function TracksIndex() {
               return (
                 <motion.div
                   key={t.slug}
-                  ref={(el) => (cardRefs.current[t.slug] = el)}
-                  variants={cardReveal}
+                  ref={(el) => (cardRefs.current[t.slug] = el as any)}
+                  variants={cardReveal as any}
                   layout="position"
                   onClick={() => toggleExpandTrack(t.slug)}
                   onKeyDown={(e) => handleKeyboardSelect(t.slug, e)}
                   tabIndex={0}
                   role="button"
                   aria-expanded={isExpanded}
-                  className={`group relative overflow-hidden bg-white/30 backdrop-blur-xl border rounded-3xl p-6 sm:p-8 cursor-pointer shadow-[0_8px_32px_0_rgba(31,38,135,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(99,102,241,0.12)] will-change-transform focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${
+                  className={`group relative overflow-hidden bg-white border rounded-3xl p-6 sm:p-8 cursor-pointer shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-md will-change-transform focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${
                     isSelected
-                      ? "border-indigo-400/80 ring-1 ring-indigo-500/10 shadow-[0_15px_40px_-5px_rgba(99,102,241,0.15)] bg-white/50"
-                      : "border-white/60 hover:border-white/95"
+                      ? "border-indigo-400/80 ring-1 ring-indigo-500/10 shadow-md bg-white"
+                      : "border-slate-200 hover:border-slate-300"
                   }`}
                 >
                   {/* Select State Glow Edge Indicator */}
@@ -366,13 +363,13 @@ function TracksIndex() {
                         {t.topics.slice(0, 4).map((tp) => (
                           <span
                             key={tp.title}
-                            className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-[11px] font-bold rounded-full shadow-sm"
+                            className="bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1 text-[11px] font-bold rounded-full shadow-sm"
                           >
                             {tp.title}
                           </span>
                         ))}
                         {t.topics.length > 4 && (
-                          <span className="bg-indigo-500/20 backdrop-blur-md text-indigo-700 border border-indigo-500/30 px-3 py-1 text-[11px] font-extrabold rounded-full shadow-sm">
+                          <span className="bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1 text-[11px] font-extrabold rounded-full shadow-sm">
                             +{t.topics.length - 4} Topics
                           </span>
                         )}
@@ -386,13 +383,13 @@ function TracksIndex() {
                         className={`px-4 py-2 font-display text-xs font-extrabold uppercase tracking-wider rounded-2xl border transition-all duration-300 cursor-pointer ${
                           isSelected
                             ? "bg-slate-900 text-white border-transparent shadow-sm"
-                            : "bg-white/60 hover:bg-white/80 border-slate-200 text-indigo-600 hover:border-indigo-300"
+                            : "bg-white hover:bg-slate-50 border-slate-200 text-indigo-600 hover:border-indigo-300"
                         }`}
                       >
                         {isSelected ? "Deselect" : "Select Track"}
                       </button>
 
-                      <div className="p-2 bg-white/40 border border-white/50 text-indigo-600 rounded-full shadow-sm group-hover:bg-white/70 transition-all duration-300 shrink-0">
+                      <div className="p-2 bg-white border border-slate-200 text-indigo-600 rounded-full shadow-sm group-hover:bg-slate-50 transition-all duration-300 shrink-0">
                         <motion.div
                           animate={{ rotate: isExpanded ? 180 : 0 }}
                           transition={{ duration: 0.35, ease: globalEase }}
@@ -475,7 +472,7 @@ function TracksIndex() {
                                 {t.exampleSessions.map((session, idx) => (
                                   <div
                                     key={idx}
-                                    className="p-3 bg-white/40 border border-white/50 rounded-2xl shadow-sm text-xs font-bold text-slate-800 flex items-center justify-between gap-3"
+                                    className="p-3 bg-white border border-slate-200 rounded-2xl shadow-sm text-xs font-bold text-slate-800 flex items-center justify-between gap-3"
                                   >
                                     <span>{session}</span>
                                     <span className="shrink-0 px-2 py-0.5 bg-indigo-100/60 text-indigo-700 text-[10px] font-extrabold rounded-full">
@@ -554,7 +551,7 @@ function TracksIndex() {
             animate={{ y: 0, x: "-50%", opacity: 1 }}
             exit={{ y: 100, x: "-50%", opacity: 0 }}
             transition={{ duration: 0.45, ease: globalEase }}
-            className="fixed bottom-8 sm:bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-3xl bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_15px_40px_-5px_rgba(99,102,241,0.18)] rounded-full px-6 py-4 flex flex-row items-center justify-between gap-4 z-40 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:pb-4"
+            className="fixed bottom-8 sm:bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-3xl bg-white border border-slate-200 shadow-md rounded-full px-6 py-4 flex flex-row items-center justify-between gap-4 z-40 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:pb-4"
           >
             {/* Dock Details */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-left">
@@ -579,7 +576,7 @@ function TracksIndex() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => openModal(selectedTrackSlug)}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-display text-xs font-extrabold uppercase tracking-wider px-5 py-3 rounded-full shadow-lg shadow-indigo-500/20 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-display text-xs font-extrabold uppercase tracking-wider px-5 py-3 rounded-full shadow-sm border border-transparent transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
               >
                 Reserve Seat
               </button>
@@ -598,7 +595,7 @@ function TracksIndex() {
       {/* 30-Second Matchmaker Quiz Overlay / Modal */}
       <AnimatePresence>
         {quizOpen && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-md">
+          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/50 p-4">
             
             {/* Modal Box */}
             <motion.div
@@ -606,13 +603,13 @@ function TracksIndex() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 30, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 220, damping: 24 }}
-              className="relative w-full max-w-lg overflow-hidden bg-white/60 backdrop-blur-xl border border-white/50 p-6 sm:p-8 shadow-2xl rounded-3xl z-[70] text-slate-800"
+              className="relative w-full max-w-lg overflow-hidden bg-white border border-slate-200 p-6 sm:p-8 shadow-2xl rounded-3xl z-[70] text-slate-800"
             >
               {/* Close Button */}
               <button
                 onClick={() => setQuizOpen(false)}
                 aria-label="Close matchmaker quiz"
-                className="absolute right-4 top-4 grid h-8 w-8 place-items-center bg-white/30 backdrop-blur-md text-indigo-600 border border-white/40 transition-all hover:scale-105 active:scale-95 hover:bg-white/50 hover:border-white rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+                className="absolute right-4 top-4 grid h-8 w-8 place-items-center bg-white text-slate-600 border border-slate-200 transition-all hover:scale-105 active:scale-95 hover:bg-slate-50 rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
               >
                 <X className="h-4 w-4" strokeWidth={3} />
               </button>
@@ -637,7 +634,7 @@ function TracksIndex() {
                             setQuizAnswers({ ...quizAnswers, focus: "tech" });
                             setQuizStep(1);
                           }}
-                          className="w-full text-left p-4 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
+                          className="w-full text-left p-4 bg-white hover:bg-slate-50 border border-slate-200 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
                           <div>
                             <div className="text-sm text-slate-900">Tech & Engineering</div>
@@ -650,7 +647,7 @@ function TracksIndex() {
                             setQuizAnswers({ ...quizAnswers, focus: "mgmt" });
                             setQuizStep(1);
                           }}
-                          className="w-full text-left p-4 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
+                          className="w-full text-left p-4 bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
                           <div>
                             <div className="text-sm text-slate-900">Management & Consulting</div>
@@ -663,7 +660,7 @@ function TracksIndex() {
                             setQuizAnswers({ ...quizAnswers, focus: "general" });
                             setQuizStep(1);
                           }}
-                          className="w-full text-left p-4 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
+                          className="w-full text-left p-4 bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
                           <div>
                             <div className="text-sm text-slate-900">Open-Ended Professional prep</div>
@@ -683,7 +680,7 @@ function TracksIndex() {
                             runQuizEvaluation(newAnswers.focus, "brand");
                             setQuizStep(2);
                           }}
-                          className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
+                          className="w-full text-left p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
                           <span className="text-xs text-slate-900">Building networking skills & high-converting LinkedIn profiles</span>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -695,7 +692,7 @@ function TracksIndex() {
                             runQuizEvaluation(newAnswers.focus, "communication");
                             setQuizStep(2);
                           }}
-                          className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
+                          className="w-full text-left p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
                           <span className="text-xs text-slate-900">Perfecting verbal pitching, workplace reports, and email loops</span>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -708,7 +705,7 @@ function TracksIndex() {
                               runQuizEvaluation(newAnswers.focus, "technical");
                               setQuizStep(2);
                             }}
-                            className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
+                            className="w-full text-left p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                           >
                             <span className="text-xs text-slate-900">Bridging academic coding gaps to ship clean enterprise software</span>
                             <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -722,7 +719,7 @@ function TracksIndex() {
                               runQuizEvaluation(newAnswers.focus, "business");
                               setQuizStep(2);
                             }}
-                            className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
+                            className="w-full text-left p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                           >
                             <span className="text-xs text-slate-900">Mastering roadmap cycles, product specs, and spreadsheet math</span>
                             <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -735,7 +732,7 @@ function TracksIndex() {
                             runQuizEvaluation(newAnswers.focus, "placement");
                             setQuizStep(2);
                           }}
-                          className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
+                          className="w-full text-left p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
                           <span className="text-xs text-slate-900">Acing recruiters AMAs, ATS resumes, and salary negotiations</span>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -777,7 +774,7 @@ function TracksIndex() {
                     Based on your focus and immediate challenges, our curriculum engines recommend:
                   </p>
 
-                  <div className="mt-6 p-5 bg-white/50 border border-indigo-100 rounded-2xl shadow-sm text-left max-w-md mx-auto">
+                  <div className="mt-6 p-5 bg-white border border-slate-200 rounded-2xl shadow-sm text-left max-w-md mx-auto">
                     <span className="font-mono text-[9px] font-bold text-indigo-600/70">
                       RECOMMENDED
                     </span>
@@ -792,7 +789,7 @@ function TracksIndex() {
                   <div className="mt-8 flex flex-col sm:flex-row gap-3 items-center justify-center">
                     <button
                       onClick={applyQuizRecommendation}
-                      className="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-display text-xs font-extrabold uppercase tracking-wider px-6 py-3 rounded-full shadow-lg shadow-indigo-500/25 border border-white/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                      className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-display text-xs font-extrabold uppercase tracking-wider px-6 py-3 rounded-full shadow-sm border border-transparent transition-all hover:scale-105 active:scale-95 cursor-pointer"
                     >
                       Apply Match & Open Details
                     </button>

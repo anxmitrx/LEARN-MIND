@@ -12,7 +12,7 @@ const containerVariants = {
 
 const cardVariants = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 function MentorCard({ m }: { m: (typeof mentors)[number] }) {
@@ -20,7 +20,7 @@ function MentorCard({ m }: { m: (typeof mentors)[number] }) {
     <div className="bento-card group w-full bg-white border border-slate-200 rounded-md p-6 sm:p-8 md:p-10 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-md h-full flex flex-col">
       <div className="flex-grow flex flex-col">
         <div
-          className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0"
+          className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-slate-200 shrink-0"
           style={{ background: `linear-gradient(135deg, hsl(${m.hue}, 70%, 88%), hsl(${m.hue}, 60%, 78%))` }}
         >
           <div className="absolute inset-0 grid place-items-center transition-all duration-200 group-hover:bg-black/5">
@@ -29,7 +29,7 @@ function MentorCard({ m }: { m: (typeof mentors)[number] }) {
             </span>
           </div>
         </div>
-        <h4 className="mt-6 font-display text-xl md:text-2xl font-bold text-ink">{m.name}</h4>
+        <h4 className="mt-6 font-display text-xl md:text-2xl font-bold text-slate-900">{m.name}</h4>
         <p className="text-sm md:text-base font-bold text-indigo-600 mt-1">{m.title}</p>
         <p className="mt-2 text-xs md:text-sm text-slate-700 font-semibold line-clamp-3 leading-relaxed flex-grow" title={m.bio}>{m.bio}</p>
       </div>
@@ -46,12 +46,12 @@ function MentorCard({ m }: { m: (typeof mentors)[number] }) {
 
 export function MentorsMarquee() {
   return (
-    <section id="mentors" className="relative bg-background pt-28 md:pt-36 pb-24 sm:pb-28">
+    <section id="mentors" className="relative bg-slate-50 pt-28 md:pt-36 pb-24 sm:pb-28">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex flex-col items-start gap-4 md:gap-6 border-b border-white/40 pb-10">
+        <div className="flex flex-col items-start gap-4 md:gap-6 border-b border-slate-200 pb-10">
           <div>
-            <span className="eyebrow text-ink">Premium Mentors</span>
-            <h2 className="mt-3 max-w-2xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-6xl">
+            <span className="eyebrow text-slate-600">Premium Mentors</span>
+            <h2 className="mt-3 max-w-2xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-slate-900 sm:text-6xl">
               Learn from people <br /> who <span className="text-blue-900 bg-blue-50 px-2 py-1 rounded-sm">hire people.</span>
             </h2>
           </div>

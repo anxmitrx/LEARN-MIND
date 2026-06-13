@@ -118,11 +118,11 @@ function Class12ConsultPage() {
   };
 
   return (
-    <main className="min-h-screen bg-transparent text-slate-800 dot-bg">
+    <main className="min-h-screen bg-transparent text-slate-800">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative w-full overflow-hidden border-b border-white/60 pt-28 pb-20 md:pt-36 md:pb-28 min-h-[65vh] flex items-center">
+      <section className="relative w-full overflow-hidden border-b border-slate-200 pt-28 pb-20 md:pt-36 md:pb-28 min-h-[65vh] flex items-center bg-slate-50">
         <img
           src="/assets/WhatsApp Image 2026-06-03 at 7.45.22 PM.jpeg"
           alt="Students studying"
@@ -131,12 +131,12 @@ function Class12ConsultPage() {
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#F8EDEB] via-[#F8EDEB]/40 via-20% to-transparent sm:bg-gradient-to-r sm:from-[#f8f5ff]/95 sm:via-[#f8f5ff]/60 sm:via-35% sm:to-transparent sm:to-70%"></div>
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 relative z-20">
           <div className="max-w-2xl">
-            <span className="eyebrow inline-block bg-white/60 backdrop-blur-md px-4 py-1.5 font-bold text-indigo-600 border border-white/50 rounded-full shadow-sm">
+            <span className="eyebrow inline-block bg-white px-4 py-1.5 font-bold text-indigo-600 border border-slate-200 rounded-full shadow-sm">
               ✨ Limited Subsidy Slots Available
             </span>
-            <h1 className="mt-6 font-display text-4xl font-bold leading-[1.1] tracking-wide text-ink sm:text-6xl md:text-7xl drop-shadow-sm">
+            <h1 className="mt-6 font-display text-4xl font-bold leading-[1.1] tracking-wide text-slate-900 sm:text-6xl md:text-7xl drop-shadow-sm">
               The Ultimate <br className="hidden sm:inline" />
-              Class 12 <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg box-decoration-slice">Roadmap.</span>
+              Class 12 <span className="bg-slate-100 text-indigo-900 px-2 rounded-lg box-decoration-slice">Roadmap.</span>
             </h1>
             <p className="mt-6 text-base font-bold leading-relaxed text-slate-700 sm:text-lg">
               Stop guessing your future. Get expert, personalized guidance on choosing the right college courses, entrance exams, and high-growth careers at a price that actually makes sense.
@@ -155,21 +155,21 @@ function Class12ConsultPage() {
               
               {/* Value Cards Grid */}
               <div className="grid gap-6 sm:grid-cols-2">
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform">
+                <div className="bg-white border border-slate-200 shadow-sm rounded-3xl p-5 sm:p-6 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md h-full">
                   <div className="grid h-12 w-12 place-items-center bg-indigo-100 text-indigo-700 border border-indigo-200/50 mb-4 rounded-full shadow-sm">
                     <GraduationCap className="h-6 w-6" strokeWidth={2.5} />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-ink">Right Choice Guarantee</h3>
+                  <h3 className="font-display text-lg font-bold text-slate-900">Right Choice Guarantee</h3>
                   <p className="mt-2 text-sm text-slate-600 font-semibold leading-relaxed">
                     Make data-backed stream & course choices based on modern high-growth careers, not outdated peer pressure.
                   </p>
                 </div>
 
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform">
+                <div className="bg-white border border-slate-200 shadow-sm rounded-3xl p-5 sm:p-6 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md h-full">
                   <div className="grid h-12 w-12 place-items-center bg-indigo-100 text-indigo-700 border border-indigo-200/50 mb-4 rounded-full shadow-sm">
                     <Sparkles className="h-6 w-6" strokeWidth={2.5} />
                   </div>
-                  <h3 className="font-display text-lg font-bold text-ink">Premium 1:1 Focus</h3>
+                  <h3 className="font-display text-lg font-bold text-slate-900">Premium 1:1 Focus</h3>
                   <p className="mt-2 text-sm text-slate-600 font-semibold leading-relaxed">
                     No crowded zoom rooms. One dedicated student, one industry veteran mentor, and custom tailored advice.
                   </p>
@@ -177,10 +177,10 @@ function Class12ConsultPage() {
               </div>
 
               {/* FAQ Bento Box Accordion */}
-              <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 md:p-8">
+              <div className="bg-white border border-slate-200 shadow-sm rounded-3xl p-5 sm:p-6 md:p-8">
                 <div className="flex items-center gap-2.5 mb-6">
                   <HelpCircle className="h-6 w-6 text-indigo-600" strokeWidth={2.5} />
-                  <h2 className="font-display text-2xl font-bold text-ink tracking-wide">Roadmap FAQs</h2>
+                  <h2 className="font-display text-2xl font-bold text-slate-900 tracking-wide">Roadmap FAQs</h2>
                 </div>
 
                 <div className="space-y-4">
@@ -189,18 +189,18 @@ function Class12ConsultPage() {
                     return (
                       <div
                         key={i}
-                        className="bg-white/30 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm transition-all duration-300 hover:bg-white/40 overflow-hidden will-change-transform"
+                        className="bg-white rounded-2xl border border-slate-200 shadow-sm transition-all duration-200 hover:bg-slate-50 overflow-hidden"
                       >
                         <button
                           onClick={() => setOpenFaq(isOpen ? null : i)}
                           className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none rounded-t-2xl"
                         >
-                          <span className="font-display text-sm font-bold text-ink sm:text-base tracking-wide">
+                          <span className="font-display text-sm font-bold text-slate-900 sm:text-base tracking-wide">
                             {f.q}
                           </span>
                           <span
                             className={`grid h-8 w-8 shrink-0 place-items-center rounded-full transition-all duration-300 ${
-                              isOpen ? "rotate-45 bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50"
+                              isOpen ? "rotate-45 bg-indigo-600 text-white shadow-sm" : "bg-white text-indigo-600 border border-slate-200"
                             }`}
                           >
                             <Plus className="h-4 w-4" strokeWidth={3} />
@@ -214,7 +214,7 @@ function Class12ConsultPage() {
                               animate={{ height: "auto", opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
                               transition={{ duration: 0.25, ease: "easeOut" }}
-                              className="overflow-hidden border-t border-white/40"
+                              className="overflow-hidden border-t border-slate-200"
                             >
                               <p className="px-5 py-4 text-xs sm:text-sm leading-relaxed text-slate-700 font-semibold">
                                 {f.a}
@@ -239,10 +239,10 @@ function Class12ConsultPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -15 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 md:p-8"
+                    className="bg-white border border-slate-200 shadow-sm rounded-3xl p-5 sm:p-6 md:p-8"
                   >
-                    <div className="border-b border-white/40 pb-4 mb-6">
-                      <h2 className="font-display text-2xl font-bold text-ink uppercase tracking-wider">
+                    <div className="border-b border-slate-200 pb-4 mb-6">
+                      <h2 className="font-display text-2xl font-bold text-slate-900 uppercase tracking-wider">
                         Book Consultation
                       </h2>
                       <p className="text-xs font-semibold text-slate-500 mt-1">
@@ -255,7 +255,7 @@ function Class12ConsultPage() {
                       {/* Full Name field */}
                       <div>
                         <label className="block mb-1.5">
-                          <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink flex items-center gap-1.5">
+                          <span className="text-xs font-display font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                             <User className="h-3.5 w-3.5 text-indigo-600" /> Full Name <span className="text-red-500">*</span>
                           </span>
                         </label>
@@ -267,8 +267,8 @@ function Class12ConsultPage() {
                             value={form.name}
                             onBlur={() => setTouched((t) => ({ ...t, name: true }))}
                             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                            className={`w-full border bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${
-                              touched.name && !nameOk ? "border-red-500 focus:ring-0" : "border-white/50"
+                            className={`w-full border bg-white px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-slate-50 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${
+                              touched.name && !nameOk ? "border-red-500 focus:ring-0" : "border-slate-200"
                             }`}
                           />
                           {touched.name && !nameOk && (
@@ -282,14 +282,14 @@ function Class12ConsultPage() {
                       {/* WhatsApp field */}
                       <div>
                         <label className="block mb-1.5">
-                          <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink flex items-center gap-1.5">
+                          <span className="text-xs font-display font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                             <Phone className="h-3.5 w-3.5 text-indigo-600" /> WhatsApp Number <span className="text-red-500">*</span>
                           </span>
                         </label>
-                        <div className={`flex border bg-white/25 rounded-full overflow-hidden focus-within:bg-white/45 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:outline-none transition-all ${
-                          touched.phone && !phoneOk ? "border-red-500" : "border-white/50"
+                        <div className={`flex border bg-white rounded-full overflow-hidden focus-within:bg-slate-50 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:outline-none transition-all ${
+                          touched.phone && !phoneOk ? "border-red-500" : "border-slate-200"
                         }`}>
-                          <span className="grid place-items-center bg-white/60 px-4 font-mono text-sm font-extrabold text-indigo-600 border-r border-white/40">
+                          <span className="grid place-items-center bg-slate-100 px-4 font-mono text-sm font-extrabold text-indigo-600 border-r border-slate-200">
                             +91
                           </span>
                           <input
@@ -318,7 +318,7 @@ function Class12ConsultPage() {
                       {/* Current Stream field */}
                       <div>
                         <label className="block mb-1.5">
-                          <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink flex items-center gap-1.5">
+                          <span className="text-xs font-display font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                             <GraduationCap className="h-3.5 w-3.5 text-indigo-600" /> Current Stream <span className="text-red-500">*</span>
                           </span>
                         </label>
@@ -327,8 +327,8 @@ function Class12ConsultPage() {
                           value={form.stream}
                           onBlur={() => setTouched((t) => ({ ...t, stream: true }))}
                           onChange={(e) => setForm((f) => ({ ...f, stream: e.target.value }))}
-                          className={`w-full border bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${
-                            touched.stream && !streamOk ? "border-red-500 focus:ring-0" : "border-white/50"
+                          className={`w-full border bg-white px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-slate-50 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${
+                            touched.stream && !streamOk ? "border-red-500 focus:ring-0" : "border-slate-200"
                           }`}
                         >
                           <option value="">Select your stream...</option>
@@ -346,7 +346,7 @@ function Class12ConsultPage() {
                       {/* Optional Target Career field */}
                       <div>
                         <label className="block mb-1.5">
-                          <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink flex items-center gap-1.5">
+                          <span className="text-xs font-display font-extrabold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
                             <Briefcase className="h-3.5 w-3.5 text-indigo-600" /> Target Career / Dream Job <span className="text-zinc-500 font-normal text-[10px]">(Optional)</span>
                           </span>
                         </label>
@@ -355,7 +355,7 @@ function Class12ConsultPage() {
                           placeholder="e.g. AI Engineer, Investment Banker"
                           value={form.career}
                           onChange={(e) => setForm((f) => ({ ...f, career: e.target.value }))}
-                          className="w-full border border-white/50 bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+                          className="w-full border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-slate-50 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
                         />
                       </div>
 
@@ -366,7 +366,7 @@ function Class12ConsultPage() {
                           disabled={isSubmitting}
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.98 }}
-                          className="flex w-full items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-4 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-all duration-300 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20 will-change-transform disabled:opacity-40 disabled:scale-100 cursor-pointer"
+                          className="flex w-full items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-4 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-sm border border-transparent transition-all duration-300 hover:scale-105 hover:bg-indigo-700 active:scale-95 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:opacity-40 disabled:scale-100 cursor-pointer"
                         >
                           {isSubmitting ? (
                             <>Processing Request...</>
@@ -385,36 +385,36 @@ function Class12ConsultPage() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-8 text-center"
+                    className="bg-white border border-slate-200 shadow-sm rounded-3xl p-5 sm:p-8 text-center"
                   >
-                    <div className="mx-auto grid h-16 w-16 place-items-center bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 mb-6 rounded-full shadow-md">
+                    <div className="mx-auto grid h-16 w-16 place-items-center bg-indigo-50 text-indigo-700 border border-indigo-100 mb-6 rounded-full shadow-sm">
                       <Sparkles className="h-8 w-8 text-indigo-600" strokeWidth={2.5} />
                     </div>
 
-                    <h2 className="font-display text-2xl font-bold text-ink uppercase tracking-tight">
+                    <h2 className="font-display text-2xl font-bold text-slate-900 uppercase tracking-tight">
                       Request Received!
                     </h2>
                     <p className="mt-3 text-sm font-semibold text-slate-800">
                       Awesome, {form.name.split(" ")[0]}! Your subsidized consult slot is temporarily reserved.
                     </p>
 
-                    <div className="mt-6 border border-white/40 bg-white/20 p-4 rounded-2xl text-left text-xs space-y-2 font-semibold">
-                      <div className="flex justify-between border-b border-white/20 pb-1.5">
+                    <div className="mt-6 border border-slate-200 bg-slate-50 p-4 rounded-2xl text-left text-xs space-y-2 font-semibold">
+                      <div className="flex justify-between border-b border-slate-200 pb-1.5">
                         <span className="text-slate-500">Student Name:</span>
-                        <span className="font-bold text-ink">{form.name}</span>
+                        <span className="font-bold text-slate-900">{form.name}</span>
                       </div>
-                      <div className="flex justify-between border-b border-white/20 pb-1.5">
+                      <div className="flex justify-between border-b border-slate-200 pb-1.5">
                         <span className="text-slate-500">WhatsApp:</span>
-                        <span className="font-bold text-ink">+91 {form.phone}</span>
+                        <span className="font-bold text-slate-900">+91 {form.phone}</span>
                       </div>
-                      <div className="flex justify-between border-b border-white/20 pb-1.5">
+                      <div className="flex justify-between border-b border-slate-200 pb-1.5">
                         <span className="text-slate-500">Selected Stream:</span>
-                        <span className="font-bold text-ink">{form.stream}</span>
+                        <span className="font-bold text-slate-900">{form.stream}</span>
                       </div>
                       {form.career.trim() && (
                         <div className="flex justify-between">
                           <span className="text-slate-500">Target Career:</span>
-                          <span className="font-bold text-ink">{form.career}</span>
+                          <span className="font-bold text-slate-900">{form.career}</span>
                         </div>
                       )}
                     </div>
@@ -429,7 +429,7 @@ function Class12ConsultPage() {
                         setTouched({ name: false, phone: false, stream: false });
                         setSubmitted(false);
                       }}
-                      className="mt-6 inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-5 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-all duration-300 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20 will-change-transform cursor-pointer"
+                      className="mt-6 inline-flex items-center bg-indigo-600 text-white px-5 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-sm border border-transparent transition-all duration-300 hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white cursor-pointer hover:bg-indigo-700"
                     >
                       Book Another Slot
                     </button>

@@ -33,12 +33,13 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative bg-background py-24 sm:py-28">
+    <section id="faq" className="relative bg-white py-24 sm:py-28">
       <div className="container mx-auto max-w-4xl px-4 sm:px-6">
         <div>
-          <span className="eyebrow text-ink">FAQ</span>
-          <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            Quick answers, <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">straight up.</span>
+          <span className="eyebrow text-slate-900">FAQ</span>
+          <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-slate-900 sm:text-6xl">
+            Questions? <br />
+            <span className="text-indigo-600">We've got answers.</span>
           </h2>
         </div>
 
@@ -48,16 +49,16 @@ export function FAQ() {
             return (
               <div
                 key={i}
-                className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl overflow-hidden transition-all duration-500 ease-out hover:-translate-y-1 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform"
+                className="bg-white border border-slate-200 shadow-sm rounded-3xl overflow-hidden transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md h-full"
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-6 p-4 md:p-8 text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20 rounded-t-3xl"
+                  className="flex w-full items-center justify-between gap-6 p-4 md:p-8 text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white rounded-t-3xl"
                 >
-                  <span className="font-display text-base font-bold text-ink sm:text-lg tracking-wide">{f.q}</span>
+                  <span className="font-display text-base font-bold text-slate-900 sm:text-lg tracking-wide">{f.q}</span>
                   <span
                     className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition-all duration-300 ${
-                      isOpen ? "rotate-45 bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50"
+                      isOpen ? "rotate-45 bg-indigo-600 text-white shadow-sm" : "bg-white text-indigo-600 border border-slate-200"
                     }`}
                   >
                     <Plus className="h-5 w-5" strokeWidth={3} />
@@ -70,7 +71,7 @@ export function FAQ() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25, ease: "easeOut" }}
-                      className="overflow-hidden border-t border-white/40"
+                      className="overflow-hidden border-t border-slate-200"
                     >
                       <p className="p-4 md:px-8 md:pb-8 md:pt-6 text-sm leading-relaxed text-slate-700 font-semibold">{f.a}</p>
                     </motion.div>

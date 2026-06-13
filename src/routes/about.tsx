@@ -25,10 +25,10 @@ function AboutPage() {
       <Navbar />
       <section className="bg-transparent pb-20 md:pb-32">
         <div className="container mx-auto max-w-4xl px-4 sm:px-6 pt-32 md:pt-48 flex flex-col gap-6">
-          <span className="eyebrow text-ink">Our Mission</span>
-          <h1 className="font-display text-5xl font-bold leading-[1.2] md:leading-[1.2] tracking-wide text-ink sm:text-6xl">
+          <span className="eyebrow text-slate-900">Our Mission</span>
+          <h1 className="font-display text-5xl font-bold leading-[1.2] md:leading-[1.2] tracking-wide text-slate-900 sm:text-6xl">
             A guided journey{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg box-decoration-slice">
+            <span className="bg-slate-100 text-indigo-900 px-2 rounded-lg box-decoration-slice">
               from campus
             </span>{" "}
             to corporate.

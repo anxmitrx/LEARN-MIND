@@ -95,7 +95,7 @@ export function Hero() {
               />
             </div>
             {/* Glass Overlay Layer */}
-            <div className="absolute inset-0 z-[-1] bg-white/80" />
+            <div className="absolute inset-0 z-[-1] bg-white" />
 
             {/* Top Badges Parent Wrapper */}
             <motion.div variants={item} className="flex flex-wrap items-center gap-3 mb-6">
@@ -115,7 +115,7 @@ export function Hero() {
 
             <motion.h1
               variants={item}
-              className="font-display text-[clamp(2.25rem,6vw,4.5rem)] font-bold leading-[0.95] tracking-normal text-ink"
+              className="font-display text-[clamp(2.25rem,6vw,4.5rem)] font-bold leading-[0.95] tracking-normal text-slate-900"
             >
               Step into <br />
               your{" "}
@@ -173,7 +173,7 @@ export function Hero() {
                 { k: "1:1", v: "Mentor access" },
               ].map((s) => (
                 <div key={s.v}>
-                  <div className="font-display text-4xl font-bold text-ink">{s.k}</div>
+                  <div className="font-display text-4xl font-bold text-slate-900">{s.k}</div>
                   <div className="mt-1 text-[11px] font-bold uppercase tracking-wider text-zinc-600">
                     {s.v}
                   </div>

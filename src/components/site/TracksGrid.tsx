@@ -33,8 +33,8 @@ export function TracksGrid() {
     <section id="tracks" className="relative bg-surface pt-12 sm:pt-16 pb-24 sm:pb-32">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="max-w-3xl">
-          <span className="eyebrow text-ink">5 Mentoring Tracks</span>
-          <h2 className="mt-4 font-display text-5xl font-bold leading-[1.1] md:leading-tight tracking-wide text-ink sm:text-6xl">
+          <span className="eyebrow text-slate-900">5 Mentoring Tracks</span>
+          <h2 className="mt-4 font-display text-5xl font-bold leading-[1.1] md:leading-tight tracking-wide text-slate-900 sm:text-6xl">
             Everything you need <br /> to walk in{" "}
             <span className="text-blue-900 bg-blue-50 px-2 rounded-sm">
               ready.
@@ -95,7 +95,7 @@ export function TracksGrid() {
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-indigo-600 transition-transform group-hover:rotate-12" />
                   </div>
-                  <h3 className="mt-4 font-display text-2xl font-bold leading-tight text-ink">
+                  <h3 className="mt-4 font-display text-2xl font-bold leading-tight text-slate-900">
                     {t.title}
                   </h3>
                   <p className="mt-3 text-sm text-slate-600 font-semibold">{t.tagline}</p>

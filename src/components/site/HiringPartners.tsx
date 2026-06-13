@@ -15,7 +15,7 @@ export function HiringPartners() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="text-center mb-6">
           <span className="eyebrow text-indigo-600/70">Top tech hiring partners</span>
-          <h3 className="mt-2 font-display text-2xl font-bold text-ink">Get prepared for premium teams</h3>
+          <h3 className="mt-2 font-display text-2xl font-bold text-slate-900">Get prepared for premium teams</h3>
         </div>
         
         <div className="relative w-full overflow-hidden marquee-pause">
@@ -30,7 +30,7 @@ export function HiringPartners() {
                 href={company.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105 hover:shadow-md hover:border-indigo-400/50 transition-all duration-300 px-6 py-3 rounded-2xl bg-white/20 border border-white/30 shadow-sm backdrop-blur-sm cursor-pointer"
+                className="flex items-center justify-center opacity-80 hover:opacity-100 hover:-translate-y-1 hover:shadow-md transition-all duration-200 px-6 py-3 rounded-2xl bg-white border border-slate-200 shadow-sm cursor-pointer"
               >
                 <img
                   src={company.logo}

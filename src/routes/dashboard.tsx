@@ -42,9 +42,9 @@ function DashboardComponent() {
     <div className="min-h-screen bg-transparent text-slate-800 p-4 md:p-8">
       <div className="mx-auto max-w-6xl">
         {/* Header */}
-        <header className="mb-8 flex items-center justify-between bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6">
+        <header className="mb-8 flex items-center justify-between bg-white border border-slate-200 shadow-sm rounded-3xl p-6">
           <div className="flex items-center gap-4">
-            <div className="h-12 w-12 overflow-hidden bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-sm">
+            <div className="h-12 w-12 overflow-hidden bg-slate-100 text-indigo-700 border border-slate-200 rounded-full shadow-sm">
               {user.photoURL ? (
                 <img src={user.photoURL} alt={user.displayName || "User"} className="h-full w-full object-cover" />
               ) : (
@@ -65,7 +65,7 @@ function DashboardComponent() {
           
           <button
             onClick={() => auth && auth.signOut()}
-            className="grid h-10 w-10 place-items-center bg-white/20 backdrop-blur-md border border-white/50 rounded-full hover:scale-105 active:scale-95 text-indigo-600 hover:bg-white/40 hover:border-white transition-all cursor-pointer shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
+            className="grid h-10 w-10 place-items-center bg-white border border-slate-200 rounded-full hover:scale-105 active:scale-95 text-indigo-600 hover:bg-slate-50 hover:border-slate-300 transition-all cursor-pointer shadow-sm focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
             title="Log out"
           >
             <LogOut className="h-5 w-5" strokeWidth={3} />
@@ -73,14 +73,14 @@ function DashboardComponent() {
         </header>
 
         {/* XP Progress Bar */}
-        <div className="sticky top-4 z-10 mb-8 bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6">
+        <div className="sticky top-4 z-10 mb-8 bg-white border border-slate-200 shadow-sm rounded-3xl p-6">
           <div className="mb-2 flex items-baseline justify-between">
             <span className="font-display text-sm font-bold uppercase tracking-wider text-indigo-600">Industry XP</span>
             <span className="font-mono text-sm font-bold text-indigo-600">{userData?.xp || 0} / 1000</span>
           </div>
-          <div className="h-4 w-full bg-white/20 border border-white/40 rounded-full overflow-hidden">
+          <div className="h-4 w-full bg-slate-100 border border-slate-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-1000"
+              className="h-full bg-indigo-600 rounded-full transition-all duration-1000"
               style={{ width: `${Math.min(((userData?.xp || 0) / 1000) * 100, 100)}%` }}
             />
           </div>
@@ -93,25 +93,25 @@ function DashboardComponent() {
           <div className="flex flex-col gap-6 md:col-span-2">
             
             {/* Next Up Widget */}
-            <div className="bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6">
-              <div className="mb-4 inline-flex items-center gap-2 bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 px-4 py-1.5 font-display text-xs font-extrabold uppercase tracking-wider rounded-full shadow-sm">
+            <div className="bg-white border border-slate-200 shadow-sm rounded-3xl p-6">
+              <div className="mb-4 inline-flex items-center gap-2 bg-slate-100 text-indigo-700 border border-slate-200 px-4 py-1.5 font-display text-xs font-extrabold uppercase tracking-wider rounded-full shadow-sm">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-600 opacity-75"></span>
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-indigo-600"></span>
                 </span>
                 Next Up
               </div>
-              <h2 className="font-display text-3xl font-bold leading-tight uppercase text-ink">Mastering System Design</h2>
+              <h2 className="font-display text-3xl font-bold leading-tight uppercase text-slate-900">Mastering System Design</h2>
               <p className="mt-2 text-slate-600 font-semibold">Tomorrow • 6:00 PM IST</p>
               
-              <button className="mt-6 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-sm font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20">
+              <button className="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 font-display text-sm font-extrabold uppercase tracking-wider rounded-3xl shadow-sm border border-transparent transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20">
                 Join Zoom Room
               </button>
             </div>
 
             {/* Resource Vault */}
-            <div className="bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6">
-              <h2 className="font-display text-xl font-bold uppercase tracking-wider mb-4 text-ink">Resource Vault</h2>
+            <div className="bg-white border border-slate-200 shadow-sm rounded-3xl p-6">
+              <h2 className="font-display text-xl font-bold uppercase tracking-wider mb-4 text-slate-900">Resource Vault</h2>
               <div className="grid gap-3">
                 {[
                   "System Design Cheatsheet.pdf",
@@ -121,7 +121,7 @@ function DashboardComponent() {
                   <button
                     key={i}
                     type="button"
-                    className="flex w-full items-center justify-between border border-white/40 bg-white/20 hover:bg-white/30 p-4 cursor-pointer rounded-2xl transition-all duration-200 shadow-sm text-left focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
+                    className="flex w-full items-center justify-between border border-slate-200 bg-white hover:bg-slate-50 p-4 cursor-pointer rounded-2xl transition-all duration-200 shadow-sm text-left focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
                   >
                     <span className="font-bold text-sm text-slate-800">{res}</span>
                     <span className="font-mono text-xs font-bold text-indigo-600">Download</span>
@@ -136,8 +136,8 @@ function DashboardComponent() {
           <div className="flex flex-col gap-6">
             
             {/* Skill Radar */}
-            <div className="bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6 flex flex-col h-full min-h-[300px]">
-              <h2 className="font-display text-xl font-bold uppercase tracking-wider mb-4 text-ink">Skill Radar</h2>
+            <div className="bg-white border border-slate-200 shadow-sm rounded-3xl p-6 flex flex-col h-full min-h-[300px]">
+              <h2 className="font-display text-xl font-bold uppercase tracking-wider mb-4 text-slate-900">Skill Radar</h2>
               <div className="flex-1 -mx-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart cx="50%" cy="50%" outerRadius="70%" data={dummySkillData}>

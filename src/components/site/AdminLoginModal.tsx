@@ -5,7 +5,7 @@ import { auth, signInWithGoogle } from "@/lib/firebase";
 import { useNavigate } from "@tanstack/react-router";
 
 const inputCls =
-  "w-full border border-white/50 bg-white/25 pl-11 pr-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
+  "w-full border border-slate-200 bg-white pl-11 pr-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-slate-50 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
 
 interface AdminLoginModalProps {
   isOpen: boolean;
@@ -60,7 +60,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/40 backdrop-blur-md p-4"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 p-4"
           onClick={onClose}
         >
           <motion.div
@@ -69,13 +69,13 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 220, damping: 24 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md overflow-hidden bg-white/60 backdrop-blur-xl border border-white/50 p-8 shadow-2xl rounded-3xl"
+            className="relative w-full max-w-md overflow-hidden bg-white border border-slate-200 p-8 shadow-2xl rounded-3xl"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
               aria-label="Close"
-              className="absolute right-4 top-4 grid h-8 w-8 place-items-center bg-white/20 backdrop-blur-md text-indigo-600 border border-white/40 transition-all hover:scale-105 active:scale-95 hover:bg-white/40 hover:border-white rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+              className="absolute right-4 top-4 grid h-8 w-8 place-items-center bg-white text-slate-600 border border-slate-200 transition-all hover:scale-105 active:scale-95 hover:bg-slate-50 rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             >
               <X className="h-4 w-4" strokeWidth={3} />
             </button>
@@ -104,7 +104,7 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
               <button
                 onClick={handleGoogleSignIn}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-50 text-slate-700 px-6 py-3.5 font-display text-sm font-bold rounded-2xl shadow-sm border border-slate-200 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+                className="w-full mt-4 flex items-center justify-center gap-2 bg-indigo-600 text-white font-display text-sm font-bold uppercase tracking-wider px-6 py-4 rounded-3xl shadow-sm border border-transparent transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
               >
                 <img 
                   src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 

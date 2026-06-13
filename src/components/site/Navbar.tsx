@@ -51,7 +51,7 @@ export function Navbar() {
             {links.map((l, i) =>
               l.subLinks ? (
                 <div key={i} className="relative group flex items-center">
-                  <button className="relative flex items-center gap-1.5 rounded-sm px-3.5 py-2 text-sm font-bold text-ink transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none cursor-pointer">
+                  <button className="relative flex items-center gap-1.5 rounded-sm px-3.5 py-2 text-sm font-bold text-slate-900 transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none cursor-pointer">
                     <span>{l.label}</span>
                     <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
                   </button>
@@ -75,7 +75,7 @@ export function Navbar() {
                     key={l.to}
                     to={l.to}
                     activeOptions={{ exact: l.to === "/" }}
-                    className="relative flex items-center gap-1.5 rounded-sm px-3.5 py-2 text-sm font-bold text-ink transition-colors hover:bg-slate-50 data-[status=active]:bg-blue-900 data-[status=active]:text-white focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none group"
+                    className="relative flex items-center gap-1.5 rounded-sm px-3.5 py-2 text-sm font-bold text-slate-900 transition-colors hover:bg-slate-50 data-[status=active]:bg-blue-900 data-[status=active]:text-white focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none group"
                   >
                     <span>{l.label}</span>
                     {l.badge && (
@@ -104,7 +104,7 @@ export function Navbar() {
           <button
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
-            className="grid h-10 w-10 place-items-center bg-slate-100 text-ink md:hidden rounded-sm hover:bg-slate-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
+            className="grid h-10 w-10 place-items-center bg-slate-100 text-slate-900 md:hidden rounded-sm hover:bg-slate-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
           >
             {open ? <X /> : <Menu />}
           </button>
@@ -126,7 +126,7 @@ export function Navbar() {
                       key={sub.to}
                       to={sub.to}
                       onClick={() => setOpen(false)}
-                      className="flex items-center justify-between rounded-sm px-4 py-2.5 text-sm font-bold text-ink hover:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
+                      className="flex items-center justify-between rounded-sm px-4 py-2.5 text-sm font-bold text-slate-900 hover:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
                     >
                       <span>{sub.label}</span>
                     </Link>
@@ -138,7 +138,7 @@ export function Navbar() {
                     key={l.to}
                     to={l.to}
                     onClick={() => setOpen(false)}
-                    className="flex items-center justify-between rounded-sm px-4 py-3 text-sm font-bold text-ink hover:bg-slate-50 transition-colors focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
+                    className="flex items-center justify-between rounded-sm px-4 py-3 text-sm font-bold text-slate-900 hover:bg-slate-50 transition-colors focus-visible:ring-2 focus-visible:ring-blue-900 focus-visible:outline-none"
                   >
                     <span>{l.label}</span>
                     {l.badge && (

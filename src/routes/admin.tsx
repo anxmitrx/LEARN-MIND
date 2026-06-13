@@ -60,7 +60,7 @@ function AdminComponent() {
     if (window.confirm(`Are you sure you want to delete this entry? This action cannot be undone.`)) {
       try {
         await deleteDoc(doc(db, collectionName, id));
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error deleting document:", err);
         alert("Failed to delete the document. Check console for details.");
       }
@@ -76,7 +76,7 @@ function AdminComponent() {
       
       await updateDoc(doc(db, editingRow.collection, editingRow.id), dataToSave);
       setEditingRow(null);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error updating document:", err);
       alert("Failed to update the document. Check console for details.");
     }
@@ -130,7 +130,7 @@ function AdminComponent() {
       }));
       setReservations(resList);
       setLoading(false);
-    }, (err) => {
+    }, (err: any) => {
       console.error("Error fetching reservations:", err);
       setLoading(false);
     });
@@ -142,7 +142,7 @@ function AdminComponent() {
         ...doc.data()
       }));
       setQuizResults(quizList);
-    }, (err) => {
+    }, (err: any) => {
       console.error("Error fetching quiz results:", err);
     });
 
@@ -153,7 +153,7 @@ function AdminComponent() {
         ...doc.data()
       }));
       setConsultations(consultList);
-    }, (err) => {
+    }, (err: any) => {
       console.error("Error fetching consultations:", err);
     });
 
@@ -168,7 +168,7 @@ function AdminComponent() {
         }));
         setWorkshops(wsList);
       }
-    }, (err) => {
+    }, (err: any) => {
       console.error("Error fetching workshops:", err);
     });
 
@@ -183,7 +183,7 @@ function AdminComponent() {
         }));
         setWebinars(webList);
       }
-    }, (err) => {
+    }, (err: any) => {
       console.error("Error fetching webinars:", err);
     });
 
@@ -210,7 +210,7 @@ function AdminComponent() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser || currentUser.email !== MASTER_ADMIN_EMAIL) {
         if (currentUser && auth) {
-          auth.signOut().catch(err => console.error("Error signing out:", err));
+          auth.signOut().catch((err: any) => console.error("Error signing out:", err));
         }
         navigate({ to: "/" });
       }
@@ -222,7 +222,7 @@ function AdminComponent() {
   if (authLoading || !user || user.email !== MASTER_ADMIN_EMAIL) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-transparent">
-        <div className="h-12 w-12 animate-spin border-4 border-white/20 border-t-indigo-600 rounded-full"></div>
+        <div className="h-12 w-12 animate-spin border-4 border-slate-200 border-t-indigo-600 rounded-full"></div>
       </div>
     );
   }
@@ -311,16 +311,13 @@ function AdminComponent() {
     <main className="min-h-screen bg-transparent text-slate-800 relative">
       <Navbar />
 
-      {/* Aurora Ambient Decorative Elements */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none">
-        <div className="absolute top-[10%] left-[10%] w-[35vw] h-[35vw] max-w-[400px] rounded-full bg-indigo-200/20 blur-3xl animate-pulse" style={{ animationDuration: "14s" }} />
-        <div className="absolute bottom-[20%] right-[15%] w-[40vw] h-[40vw] max-w-[450px] rounded-full bg-purple-200/20 blur-3xl animate-pulse" style={{ animationDuration: "18s" }} />
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none bg-slate-50">
       </div>
 
       <div className="min-h-screen pt-28 pb-16 px-4 sm:px-8 max-w-7xl mx-auto flex flex-col gap-8">
         
         {/* Header command center info */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6 sm:p-8">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white border border-slate-200 shadow-sm rounded-md p-6 sm:p-8">
           <div className="flex items-center gap-4">
             <div className="h-12 w-12 bg-indigo-500/10 text-indigo-600 border border-indigo-500/30 rounded-2xl flex items-center justify-center shadow-inner">
               <ShieldAlert className="h-6 w-6" />
@@ -344,7 +341,7 @@ function AdminComponent() {
                 }
                 navigate({ to: "/" });
               }}
-              className="inline-flex items-center gap-2 bg-white/60 hover:bg-white/90 border border-slate-200 text-slate-700 px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 shadow-sm cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 shadow-sm cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
             >
               <ArrowLeft className="h-4 w-4" /> Home Page
             </button>
@@ -363,7 +360,7 @@ function AdminComponent() {
 
         {/* Stats Cards */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-6 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl flex items-center justify-between">
+          <div className="p-6 bg-white border border-slate-200 shadow-sm rounded-md flex items-center justify-between">
             <div>
               <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Total Seats Reserved</span>
               <h3 className="text-3xl font-display font-extrabold text-indigo-600 mt-1">{totalSignups}</h3>
@@ -373,7 +370,7 @@ function AdminComponent() {
             </div>
           </div>
 
-          <div className="p-6 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl flex items-center justify-between">
+          <div className="p-6 bg-white border border-slate-200 shadow-sm rounded-md flex items-center justify-between">
             <div>
               <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Total Quiz Attempts</span>
               <h3 className="text-3xl font-display font-extrabold text-indigo-600 mt-1">{totalQuizzes}</h3>
@@ -383,7 +380,7 @@ function AdminComponent() {
             </div>
           </div>
 
-          <div className="p-6 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl flex items-center justify-between">
+          <div className="p-6 bg-white border border-slate-200 shadow-sm rounded-md flex items-center justify-between">
             <div>
               <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Popular Track Match</span>
               <h3 className="text-sm font-display font-extrabold text-indigo-650 mt-2 truncate max-w-[170px]">{getPopularTrack()}</h3>
@@ -393,7 +390,7 @@ function AdminComponent() {
             </div>
           </div>
 
-          <div className="p-6 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl flex items-center justify-between">
+          <div className="p-6 bg-white border border-slate-200 shadow-sm rounded-md flex items-center justify-between">
             <div>
               <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Primary Roadblock</span>
               <h3 className="text-xs font-display font-extrabold text-indigo-650 mt-3 truncate max-w-[170px]">{getTopChallenge()}</h3>
@@ -405,7 +402,7 @@ function AdminComponent() {
         </section>
 
         {/* Search and Tab Filters Panel */}
-        <section className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white/25 backdrop-blur-xl border border-white/50 rounded-3xl p-4 sm:p-5 shadow-sm">
+        <section className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white border border-slate-200 rounded-md p-4 sm:p-5 shadow-sm">
           {/* Navigation Tabs */}
           <div className="flex gap-2">
             <button
@@ -413,7 +410,7 @@ function AdminComponent() {
               className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
                 activeTab === "waitlist"
                   ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+                  : "bg-white hover:bg-slate-50 text-slate-600 border border-slate-200"
               }`}
             >
               Waitlist Entries ({filteredReservations.length})
@@ -423,7 +420,7 @@ function AdminComponent() {
               className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
                 activeTab === "quiz"
                   ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+                  : "bg-white hover:bg-slate-50 text-slate-600 border border-slate-200"
               }`}
             >
               Quiz Diagnostics ({filteredQuizResults.length})
@@ -433,7 +430,7 @@ function AdminComponent() {
               className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
                 activeTab === "consult"
                   ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+                  : "bg-white hover:bg-slate-50 text-slate-600 border border-slate-200"
               }`}
             >
               Class 12 Consults ({filteredConsultations.length})
@@ -443,7 +440,7 @@ function AdminComponent() {
               className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
                 activeTab === "workshops"
                   ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+                  : "bg-white hover:bg-slate-50 text-slate-600 border border-slate-200"
               }`}
             >
               Workshops ({filteredWorkshops.length})
@@ -453,7 +450,7 @@ function AdminComponent() {
               className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
                 activeTab === "webinars"
                   ? "bg-slate-900 text-white shadow-sm"
-                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+                  : "bg-white hover:bg-slate-50 text-slate-600 border border-slate-200"
               }`}
             >
               Webinars ({filteredWebinars.length})
@@ -468,18 +465,18 @@ function AdminComponent() {
               placeholder={`Search ${activeTab === "waitlist" ? "reservations" : "quiz results"}...`}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-white/50 bg-white/20 px-4 text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none transition-all rounded-2xl focus:bg-white/40 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-800 placeholder:text-slate-400 outline-none transition-all rounded-2xl focus:bg-slate-50 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
             />
           </div>
         </section>
 
         {/* Data Tables Container */}
-        <section className="flex-1 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl p-2 sm:p-4 overflow-hidden flex flex-col min-h-[400px]">
+        <section className="flex-1 bg-white border border-slate-200 shadow-sm rounded-md p-2 sm:p-4 overflow-hidden flex flex-col min-h-[400px]">
           {loading ? (
             /* Skeleton Loading State */
             <div className="flex-1 flex flex-col justify-center items-center gap-3 py-16">
-              <div className="h-10 w-10 animate-spin border-4 border-white/20 border-t-indigo-600 rounded-full"></div>
-              <p className="text-xs font-semibold text-slate-500 animate-pulse">Loading Firestore entries...</p>
+              <div className="h-10 w-10 animate-spin border-4 border-slate-200 border-t-indigo-600 rounded-full"></div>
+              <p className="text-xs font-semibold text-slate-500">Loading Firestore entries...</p>
             </div>
           ) : activeTab === "waitlist" ? (
             /* Waitlist / Reservation Table */
@@ -508,7 +505,7 @@ function AdminComponent() {
                     {filteredReservations.map((row) => (
                       <tr 
                         key={row.id} 
-                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150"
+                        className="border-b border-slate-200 hover:bg-slate-50 transition-colors duration-150"
                       >
                         <td className="p-4 text-xs font-bold text-slate-900">{row.name || "N/A"}</td>
                         <td className="p-4 text-xs font-semibold text-slate-700">{row.email || "N/A"}</td>
@@ -579,7 +576,7 @@ function AdminComponent() {
                     {filteredQuizResults.map((row) => (
                       <tr 
                         key={row.id} 
-                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150"
+                        className="border-b border-slate-200 hover:bg-slate-50 transition-colors duration-150"
                       >
                         <td className="p-4 text-xs font-bold text-slate-900">{row.educationLevel || "N/A"}</td>
                         <td className="p-4 text-xs font-semibold text-slate-700">{row.challenge || "N/A"}</td>
@@ -638,7 +635,7 @@ function AdminComponent() {
                     {filteredConsultations.map((row) => (
                       <tr 
                         key={row.id} 
-                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150"
+                        className="border-b border-slate-200 hover:bg-slate-50 transition-colors duration-150"
                       >
                         <td className="p-4 text-xs font-bold text-slate-900">{row.name || "N/A"}</td>
                         <td className="p-4 text-xs font-mono font-bold text-slate-600">{row.phone || "N/A"}</td>
@@ -724,7 +721,7 @@ function AdminComponent() {
                     {filteredWorkshops.map((row, idx) => (
                       <tr 
                         key={row.id || row.slug || idx} 
-                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150 relative group"
+                        className="border-b border-slate-200 hover:bg-slate-50 transition-colors duration-150 relative group"
                       >
                         <td className="p-4 text-xs font-bold text-slate-900">{row.number || "N/A"}</td>
                         <td className="p-4 text-xs font-semibold text-slate-700">{row.title || "N/A"}</td>
@@ -819,7 +816,7 @@ function AdminComponent() {
                     {filteredWebinars.map((row, idx) => (
                       <tr 
                         key={row.id || row.title || idx} 
-                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150 relative group"
+                        className="border-b border-slate-200 hover:bg-slate-50 transition-colors duration-150 relative group"
                       >
                         <td className="p-4 text-xs font-bold text-slate-900 max-w-[200px] truncate">{row.title || "N/A"}</td>
                         <td className="p-4 text-xs font-semibold text-slate-700">{row.presenter || "N/A"}</td>
@@ -880,7 +877,7 @@ function AdminComponent() {
 
       {/* Edit Modal Overlay */}
       {editingRow && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 backdrop-blur-sm p-4" onClick={() => setEditingRow(null)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" onClick={() => setEditingRow(null)}>
           {editingRow.collection === "workshops" ? (
             <WorkshopEditor 
               initialData={editFormData} 

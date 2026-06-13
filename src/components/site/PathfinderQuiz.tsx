@@ -107,7 +107,7 @@ export function PathfinderQuiz() {
       setStep(3);
       if (db) {
         try {
-          const step1Label = steps[1].options.find(o => o.value === newAnswers[1])?.label || newAnswers[1];
+          const step1Label = steps[1].options.find(o => o.value === (newAnswers as any)["1"])?.label || (newAnswers as any)["1"];
           const step2Label = steps[2].options.find(o => o.value === optionValue)?.label || optionValue;
           const recommendedTrackObj = tracks.find((t) => t.slug === optionValue) || tracks[0];
           
@@ -162,7 +162,7 @@ export function PathfinderQuiz() {
               Interactive Finder
             </span>
           </div>
-          <h2 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+          <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
             Find your perfect{" "}
             <span className="text-blue-900 bg-blue-50 px-2 py-1 rounded-sm">
               mentoring track.
@@ -204,7 +204,7 @@ export function PathfinderQuiz() {
                 transition={{ duration: 0.3 }}
                 className="flex-1"
               >
-                <h3 className="font-display text-2xl font-bold text-ink mb-6">
+                <h3 className="font-display text-2xl font-bold text-slate-900 mb-6">
                   {steps[1].question}
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -214,7 +214,7 @@ export function PathfinderQuiz() {
                       <button
                         key={opt.value}
                         onClick={() => handleSelectOption(opt.value)}
-                        className="group text-left p-5 bg-white/50 hover:bg-white border border-white hover:border-indigo-400 hover:shadow-lg rounded-2xl transition-all duration-300 flex items-start gap-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
+                        className="group text-left p-5 bg-white border border-slate-200 hover:border-indigo-400 hover:shadow-md rounded-2xl transition-all duration-200 flex items-start gap-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2"
                       >
                         <div className="p-3 bg-blue-50 group-hover:bg-blue-900 text-blue-900 group-hover:text-white rounded-sm transition-colors duration-200 shrink-0">
                           <Icon className="w-6 h-6" />
@@ -252,7 +252,7 @@ export function PathfinderQuiz() {
                   >
                     ← Back
                   </button>
-                  <h3 className="font-display text-2xl font-bold text-ink">{steps[2].question}</h3>
+                  <h3 className="font-display text-2xl font-bold text-slate-900">{steps[2].question}</h3>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
                   {steps[2].options.map((opt) => {
@@ -296,7 +296,7 @@ export function PathfinderQuiz() {
                   <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-900 rounded-sm px-3 py-1 text-xs font-extrabold uppercase tracking-wide mb-3">
                     Your Profile Match
                   </div>
-                  <h3 className="font-display text-3xl sm:text-4xl font-bold text-ink mb-3 leading-tight">
+                  <h3 className="font-display text-3xl sm:text-4xl font-bold text-slate-900 mb-3 leading-tight">
                     Track {recommendedTrack.number}: <br className="hidden sm:inline" />
                     <span className="text-blue-900">{recommendedTrack.short}</span>
                   </h3>
