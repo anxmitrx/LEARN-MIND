@@ -5,6 +5,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Calendar, Clock, Video, ExternalLink } from "lucide-react";
 import { useWebinars } from "@/hooks/useWebinars";
 import { Webinar } from "@/lib/webinars";
+import { useAuth } from "@/lib/AuthContext";
+import { db } from "@/lib/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useState } from "react";
 
 export const Route = createFileRoute("/webinars")({
   component: WebinarsPage,
@@ -95,6 +99,38 @@ function WebinarsPage() {
 }
 
 function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "past" }) {
+  const { user, setShowLoginModal } = useAuth();
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  const handleActionClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+
+    if (type === "upcoming") {
+      setIsRegistering(true);
+      try {
+        await addDoc(collection(db, "webinar_registrations"), {
+          email: user.email,
+          name: user.displayName,
+          webinarTitle: webinar.title,
+          webinarId: webinar.id || webinar.title,
+          webinarDate: webinar.date,
+          webinarTime: webinar.time,
+          timestamp: serverTimestamp()
+        });
+      } catch (err) {
+        console.error("Error registering for webinar:", err);
+      }
+      setIsRegistering(false);
+    }
+    
+    window.open(webinar.link, "_blank");
+  };
+
   return (
     <div className="group relative overflow-hidden bg-white/40 backdrop-blur-xl border border-white/60 rounded-3xl p-6 sm:p-8 shadow-[0_8px_32px_0_rgba(31,38,135,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(99,102,241,0.12)] hover:border-white/95 flex flex-col justify-between h-full">
       <div>
@@ -124,13 +160,14 @@ function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "
       </div>
 
       <div className="mt-8">
-        <a
-          href={webinar.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex w-full items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-display text-sm font-extrabold uppercase tracking-wider px-5 py-3.5 rounded-2xl shadow-lg shadow-indigo-500/20 border border-white/20 transition-transform duration-300 group-hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+        <button
+          onClick={handleActionClick}
+          disabled={isRegistering}
+          className="inline-flex w-full items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-display text-sm font-extrabold uppercase tracking-wider px-5 py-3.5 rounded-2xl shadow-lg shadow-indigo-500/20 border border-white/20 transition-transform duration-300 group-hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none disabled:opacity-70 disabled:scale-100 cursor-pointer"
         >
-          {type === "upcoming" ? (
+          {isRegistering ? (
+            <div className="h-4 w-4 animate-spin border-2 border-white/30 border-t-white rounded-full" />
+          ) : type === "upcoming" ? (
             <>
               Register & Join <ExternalLink className="h-4 w-4" />
             </>
@@ -139,7 +176,7 @@ function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "
               Watch Recording <Video className="h-4 w-4" />
             </>
           )}
-        </a>
+        </button>
       </div>
     </div>
   );

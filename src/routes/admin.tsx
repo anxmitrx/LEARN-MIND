@@ -49,8 +49,9 @@ function AdminComponent() {
   const [consultations, setConsultations] = useState<any[]>([]);
   const [workshops, setWorkshops] = useState<any[]>([]);
   const [webinars, setWebinars] = useState<any[]>([]);
+  const [usersList, setUsersList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"waitlist" | "quiz" | "consult" | "workshops" | "webinars">("waitlist");
+  const [activeTab, setActiveTab] = useState<"waitlist" | "quiz" | "consult" | "workshops" | "webinars" | "users">("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
   
   const [editingRow, setEditingRow] = useState<{ id: string, collection: string, data: any } | null>(null);
@@ -187,6 +188,17 @@ function AdminComponent() {
       console.error("Error fetching webinars:", err);
     });
 
+    const usersQuery = query(collection(db, "users"), orderBy("createdAt", "desc"));
+    const unsubscribeUsers = onSnapshot(usersQuery, (snap) => {
+      const uList = snap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setUsersList(uList);
+    }, (err) => {
+      console.error("Error fetching users:", err);
+    });
+
     // We store these unsubscribers to clean them up when auth changes
     return () => {
       unsubscribeRes();
@@ -194,6 +206,7 @@ function AdminComponent() {
       unsubscribeConsult();
       unsubscribeWorkshops();
       unsubscribeWebinars();
+      unsubscribeUsers();
     };
   }, [db]);
 
@@ -251,6 +264,7 @@ function AdminComponent() {
   // Stats computation
   const totalSignups = reservations.length;
   const totalQuizzes = quizResults.length;
+  const totalUsersCount = usersList.length;
   
   const getPopularTrack = () => {
     if (quizResults.length === 0) return "N/A";
@@ -305,6 +319,12 @@ function AdminComponent() {
   const filteredWebinars = webinars.filter(w =>
     w.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     w.presenter?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredUsers = usersList.filter(u =>
+    u.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    u.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    u.level?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -362,7 +382,17 @@ function AdminComponent() {
         </header>
 
         {/* Stats Cards */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="p-6 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Total Registered Users</span>
+              <h3 className="text-3xl font-display font-extrabold text-indigo-600 mt-1">{totalUsersCount}</h3>
+            </div>
+            <div className="p-3 bg-indigo-500/10 text-indigo-600 rounded-2xl">
+              <Users className="h-6 w-6" />
+            </div>
+          </div>
+
           <div className="p-6 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl flex items-center justify-between">
             <div>
               <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Total Seats Reserved</span>
@@ -457,6 +487,16 @@ function AdminComponent() {
               }`}
             >
               Webinars ({filteredWebinars.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("users")}
+              className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
+                activeTab === "users"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+              }`}
+            >
+              Users ({filteredUsers.length})
             </button>
           </div>
 
@@ -868,6 +908,57 @@ function AdminComponent() {
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ) : activeTab === "users" ? (
+            /* Users Table */
+            <div className="w-full overflow-x-auto rounded-2xl">
+              {filteredUsers.length === 0 ? (
+                <div className="text-center py-20">
+                  <div className="text-slate-400 font-bold text-sm">No users found.</div>
+                  <p className="text-xs text-slate-500 mt-1">Users who log in with Google will appear here.</p>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-indigo-100/50 bg-indigo-50/20">
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Name</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Email</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Level</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">XP</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Joined</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((row) => (
+                      <tr 
+                        key={row.id} 
+                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150"
+                      >
+                        <td className="p-4 text-xs font-bold text-slate-900">
+                          <div className="flex items-center gap-3">
+                            {row.photoURL ? (
+                              <img src={row.photoURL} alt={row.name} className="h-8 w-8 rounded-full border border-slate-200" />
+                            ) : (
+                              <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center border border-indigo-200">
+                                {row.name?.charAt(0) || "U"}
+                              </div>
+                            )}
+                            {row.name || "N/A"}
+                          </div>
+                        </td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">{row.email || "N/A"}</td>
+                        <td className="p-4 text-xs">
+                          <span className="px-2.5 py-1 bg-indigo-50 border border-indigo-100/50 text-indigo-700 font-bold rounded-lg text-[10px]">
+                            {row.level || "Level 1: Novice"}
+                          </span>
+                        </td>
+                        <td className="p-4 text-xs font-mono font-bold text-slate-600">{row.xp || 0}</td>
+                        <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.createdAt)}</td>
                       </tr>
                     ))}
                   </tbody>

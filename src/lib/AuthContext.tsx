@@ -7,12 +7,16 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   userData: any | null;
+  showLoginModal: boolean;
+  setShowLoginModal: (show: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   userData: null,
+  showLoginModal: false,
+  setShowLoginModal: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -21,6 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userData, setUserData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     if (!auth) {
@@ -50,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, userData }}>
+    <AuthContext.Provider value={{ user, loading, userData, showLoginModal, setShowLoginModal }}>
       {children}
     </AuthContext.Provider>
   );

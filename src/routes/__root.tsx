@@ -7,13 +7,16 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { ReservationProvider } from "@/components/site/ReservationContext";
 import { ReservationModal } from "@/components/site/ReservationModal";
 import { CurtainReveal } from "@/components/site/CurtainReveal";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
-import { AuthProvider } from "@/lib/AuthContext";
+import { AuthProvider, useAuth } from "@/lib/AuthContext";
+import { GlobalLoginModal } from "@/components/site/GlobalLoginModal";
+import { DashboardDrawer } from "@/components/site/DashboardDrawer";
 
 
 function NotFoundComponent() {
@@ -115,12 +118,29 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+function GlobalLoginTrigger() {
+  const { user, loading, setShowLoginModal } = useAuth();
+  
+  useEffect(() => {
+    if (loading) return;
+    
+    if (!user) {
+      setShowLoginModal(true);
+    } else {
+      setShowLoginModal(false);
+    }
+  }, [user, loading, setShowLoginModal]);
+
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <GlobalLoginTrigger />
         <ReservationProvider>
           {/* Animated Soothing Aurora Blobs */}
           <div className="pointer-events-none fixed inset-0 -z-50 overflow-hidden select-none">
@@ -132,6 +152,8 @@ function RootComponent() {
           <ScrollProgress />
           <Outlet />
           <ReservationModal />
+          <GlobalLoginModal />
+          <DashboardDrawer />
         </ReservationProvider>
       </AuthProvider>
     </QueryClientProvider>

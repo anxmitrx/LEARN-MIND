@@ -7,6 +7,7 @@ import { useWorkshops } from "@/hooks/useWorkshops";
 import { signInWithGoogle, db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/lib/AuthContext";
 
 const inputCls =
   "w-full border border-white/50 bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
@@ -36,6 +37,7 @@ const phoneIsValid = (raw: string) => raw.replace(/\D/g, "").length === 10;
 export function ReservationModal() {
   const { open, closeModal, preferredTrack } = useReservation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [step, setStep] = useState(0);
   const [data, setData] = useState({ name: "", college: "", email: "", phone: "", track: "" });
   const [touched, setTouched] = useState({ email: false, phone: false });
@@ -46,9 +48,14 @@ export function ReservationModal() {
     if (open) {
       setStep(0);
       setTouched({ email: false, phone: false });
-      setData((d) => ({ ...d, track: preferredTrack ?? "" }));
+      setData((d) => ({ 
+        ...d, 
+        track: preferredTrack ?? "",
+        name: user?.displayName || d.name,
+        email: user?.email || d.email,
+      }));
     }
-  }, [open, preferredTrack]);
+  }, [open, preferredTrack, user]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && closeModal();
