@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
+import { WebinarFeaturesBento } from "@/components/site/WebinarFeaturesBento";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Calendar, Clock, Video, ExternalLink } from "lucide-react";
 import { useWebinars } from "@/hooks/useWebinars";
@@ -93,6 +94,8 @@ function WebinarsPage() {
         </div>
       </section>
 
+      <WebinarFeaturesBento />
+      
       <CtaFooter />
     </main>
   );

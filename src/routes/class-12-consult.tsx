@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
+import { ConsultationProcessBento } from "@/components/site/ConsultationProcessBento";
+import { FloatingTestimonials } from "@/components/site/FloatingTestimonials";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, HelpCircle, Phone, User, Briefcase, GraduationCap, Plus, Sparkles, Send } from "lucide-react";
@@ -153,28 +155,8 @@ function Class12ConsultPage() {
             {/* Left Column: Value Prop & FAQ */}
             <div className="lg:col-span-7 space-y-8">
               
-              {/* Value Cards Grid */}
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform">
-                  <div className="grid h-12 w-12 place-items-center bg-indigo-100 text-indigo-700 border border-indigo-200/50 mb-4 rounded-full shadow-sm">
-                    <GraduationCap className="h-6 w-6" strokeWidth={2.5} />
-                  </div>
-                  <h3 className="font-display text-lg font-bold text-ink">Right Choice Guarantee</h3>
-                  <p className="mt-2 text-sm text-slate-600 font-semibold leading-relaxed">
-                    Make data-backed stream & course choices based on modern high-growth careers, not outdated peer pressure.
-                  </p>
-                </div>
-
-                <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform">
-                  <div className="grid h-12 w-12 place-items-center bg-indigo-100 text-indigo-700 border border-indigo-200/50 mb-4 rounded-full shadow-sm">
-                    <Sparkles className="h-6 w-6" strokeWidth={2.5} />
-                  </div>
-                  <h3 className="font-display text-lg font-bold text-ink">Premium 1:1 Focus</h3>
-                  <p className="mt-2 text-sm text-slate-600 font-semibold leading-relaxed">
-                    No crowded zoom rooms. One dedicated student, one industry veteran mentor, and custom tailored advice.
-                  </p>
-                </div>
-              </div>
+              {/* Consultation Process Bento Grid */}
+              <ConsultationProcessBento />
 
               {/* FAQ Bento Box Accordion */}
               <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 sm:p-6 md:p-8">
@@ -441,6 +423,8 @@ function Class12ConsultPage() {
           </div>
         </div>
       </section>
+
+      <FloatingTestimonials />
 
       <CtaFooter />
     </main>

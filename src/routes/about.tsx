@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { Pillars } from "@/components/site/Pillars";
+import { FloatingTeam } from "@/components/site/FloatingTeam";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
@@ -44,6 +45,7 @@ function AboutPage() {
       </section>
 
       <Pillars />
+      <FloatingTeam />
       <CtaFooter />
     </main>
   );

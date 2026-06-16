@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { mentors } from "@/lib/mentors";
+import { MentorBenefitsBento } from "@/components/site/MentorBenefitsBento";
+import { FloatingSuccessMetrics } from "@/components/site/FloatingSuccessMetrics";
 import { motion } from "framer-motion";
 
 const containerVariants = {
@@ -89,6 +91,9 @@ function MentorsPage() {
           </motion.div>
         </div>
       </section>
+
+      <MentorBenefitsBento />
+      <FloatingSuccessMetrics />
 
       <CtaFooter />
     </main>

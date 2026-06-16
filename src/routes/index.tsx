@@ -5,11 +5,13 @@ import { HowItWorks } from "@/components/site/HowItWorks";
 import { PathfinderQuiz } from "@/components/site/PathfinderQuiz";
 import { TracksGrid } from "@/components/site/TracksGrid";
 import { MentorsMarquee } from "@/components/site/MentorsMarquee";
-import { Pillars } from "@/components/site/Pillars";
 import { FAQ } from "@/components/site/FAQ";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { TopBanner } from "@/components/site/TopBanner";
 import { HiringPartners } from "@/components/site/HiringPartners";
+import { GeometricFeatures } from "@/components/site/GeometricFeatures";
+import { InteractiveBentoGrid } from "@/components/site/InteractiveBentoGrid";
+import { FloatingTestimonials } from "@/components/site/FloatingTestimonials";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -44,13 +46,15 @@ function Index() {
     <main className="min-h-screen bg-transparent text-slate-800">
       <Navbar />
       <Hero />
+      <GeometricFeatures />
       <HowItWorks />
       <PathfinderQuiz />
       <TopBanner />
       <TracksGrid />
       <HiringPartners />
       <MentorsMarquee />
-      <Pillars />
+      <InteractiveBentoGrid />
+      <FloatingTestimonials />
       <FAQ />
       <CtaFooter />
     </main>

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
+import { WorkshopProcessBento } from "@/components/site/WorkshopProcessBento";
 import { useWorkshops } from "@/hooks/useWorkshops";
 import { useReservation } from "@/components/site/ReservationContext";
 import { db } from "@/lib/firebase";
@@ -809,6 +810,8 @@ function TracksIndex() {
           </div>
         )}
       </AnimatePresence>
+
+      <WorkshopProcessBento />
 
       <CtaFooter />
     </main>
