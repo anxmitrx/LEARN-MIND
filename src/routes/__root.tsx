@@ -14,6 +14,7 @@ import { ReservationProvider } from "@/components/site/ReservationContext";
 import { ReservationModal } from "@/components/site/ReservationModal";
 import { CurtainReveal } from "@/components/site/CurtainReveal";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
+import { WhatsAppChatButton } from "@/components/site/WhatsAppChatButton";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { GlobalLoginModal } from "@/components/site/GlobalLoginModal";
 import { DashboardDrawer } from "@/components/site/DashboardDrawer";
@@ -150,10 +151,10 @@ function RootComponent() {
           </div>
           <CurtainReveal />
           <ScrollProgress />
+          <WhatsAppChatButton />
           <Outlet />
           <ReservationModal />
           <GlobalLoginModal />
-          <DashboardDrawer />
         </ReservationProvider>
       </AuthProvider>
     </QueryClientProvider>

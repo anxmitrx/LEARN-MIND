@@ -284,8 +284,7 @@ function AdminComponent() {
       challengeCounts[chal] = (challengeCounts[chal] || 0) + 1;
     });
     const topChal = Object.entries(challengeCounts).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
-    // Truncate if too long
-    return topChal.length > 25 ? topChal.substring(0, 25) + "..." : topChal;
+    return topChal;
   };
 
   // Filter lists based on search query
@@ -416,7 +415,7 @@ function AdminComponent() {
           <div className="p-6 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl flex items-center justify-between">
             <div>
               <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Popular Track Match</span>
-              <h3 className="text-sm font-display font-extrabold text-indigo-650 mt-2 truncate max-w-[170px]">{getPopularTrack()}</h3>
+              <h3 className="text-sm font-display font-extrabold text-indigo-650 mt-2 leading-snug line-clamp-3">{getPopularTrack()}</h3>
             </div>
             <div className="p-3 bg-indigo-500/10 text-indigo-600 rounded-2xl shrink-0">
               <Award className="h-6 w-6" />
@@ -426,7 +425,7 @@ function AdminComponent() {
           <div className="p-6 bg-white/40 backdrop-blur-xl border border-white/60 shadow-sm rounded-3xl flex items-center justify-between">
             <div>
               <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Primary Roadblock</span>
-              <h3 className="text-xs font-display font-extrabold text-indigo-650 mt-3 truncate max-w-[170px]">{getTopChallenge()}</h3>
+              <h3 className="text-xs font-display font-extrabold text-indigo-650 mt-2 leading-snug line-clamp-3">{getTopChallenge()}</h3>
             </div>
             <div className="p-3 bg-indigo-500/10 text-indigo-600 rounded-2xl shrink-0">
               <Layers className="h-6 w-6" />

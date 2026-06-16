@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X, Mail, Phone as PhoneIcon, KeyRound } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useReservation } from "./ReservationContext";
 import { useWorkshops } from "@/hooks/useWorkshops";
@@ -10,7 +10,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/AuthContext";
 
 const inputCls =
-  "w-full border border-white/50 bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
+  "w-full border border-white/50 bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-xl focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
 
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
@@ -38,16 +38,34 @@ export function ReservationModal() {
   const { open, closeModal, preferredTrack } = useReservation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  
+  // Base State
   const [step, setStep] = useState(0);
   const [data, setData] = useState({ name: "", college: "", email: "", phone: "", track: "" });
   const [touched, setTouched] = useState({ email: false, phone: false });
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const { workshops: tracks } = useWorkshops();
+
+  // OTP States
+  const [emailOtpSent, setEmailOtpSent] = useState(false);
+  const [emailOtp, setEmailOtp] = useState("");
+  const [emailOtpVerified, setEmailOtpVerified] = useState(false);
+  const [emailOtpError, setEmailOtpError] = useState("");
+
+  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
+  const [phoneOtp, setPhoneOtp] = useState("");
+  const [phoneOtpVerified, setPhoneOtpVerified] = useState(false);
+  const [phoneOtpError, setPhoneOtpError] = useState("");
 
   useEffect(() => {
     if (open) {
       setStep(0);
       setTouched({ email: false, phone: false });
+      setEmailOtpSent(false);
+      setEmailOtpVerified(false);
+      setEmailOtp("");
+      setPhoneOtpSent(false);
+      setPhoneOtpVerified(false);
+      setPhoneOtp("");
       setData((d) => ({ 
         ...d, 
         track: preferredTrack ?? "",
@@ -63,14 +81,53 @@ export function ReservationModal() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open, closeModal]);
 
+
+
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
   const phoneOk = phoneIsValid(data.phone);
+  
   const canNext0 = data.name.trim().length >= 2 && data.college.trim().length >= 2;
-  const canNext1 = emailOk && phoneOk;
-  const canSubmit = canNext0 && canNext1 && data.track;
+  const canNext1 = emailOk && emailOtpVerified;
+  const canNext2 = phoneOk && phoneOtpVerified;
+  const canSubmit = canNext0 && canNext1 && canNext2 && data.track;
 
   const next = () => setStep((s) => s + 1);
   const back = () => setStep((s) => Math.max(0, s - 1));
+
+  // Simulated OTP Logic
+  const handleSendEmailOTP = () => {
+    if (!emailOk) return;
+    setEmailOtpSent(true);
+    setEmailOtpError("");
+    // In production, call your backend email service here
+    console.log("Simulating Email OTP Send...");
+  };
+
+  const handleVerifyEmailOTP = () => {
+    // Simulated check: any 4-digit code works, or exactly "1234"
+    if (emailOtp === "1234" || emailOtp.length === 4) {
+      setEmailOtpVerified(true);
+      setEmailOtpError("");
+    } else {
+      setEmailOtpError("Invalid OTP. Try 1234");
+    }
+  };
+
+  const handleSendPhoneOTP = () => {
+    if (!phoneOk) return;
+    setPhoneOtpSent(true);
+    setPhoneOtpError("");
+    console.log("Simulating Phone OTP Send...");
+  };
+
+  const handleVerifyPhoneOTP = () => {
+    if (phoneOtp === "1234" || phoneOtp.length === 4) {
+      setPhoneOtpVerified(true);
+      setPhoneOtpError("");
+    } else {
+      setPhoneOtpError("Invalid OTP. Try 1234");
+    }
+  };
 
   const fireConfetti = () => {
     const end = Date.now() + 800;
@@ -87,7 +144,7 @@ export function ReservationModal() {
     if (!canSubmit) return;
     if (!db) {
       console.error("Firestore database is not initialized.");
-      setStep(3);
+      setStep(4);
       setTimeout(fireConfetti, 120);
       return;
     }
@@ -105,21 +162,8 @@ export function ReservationModal() {
     } catch (err) {
       console.error("Error writing reservation to Firestore:", err);
     }
-    setStep(3);
+    setStep(4);
     setTimeout(fireConfetti, 120);
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      setIsAuthenticating(true);
-      await signInWithGoogle();
-      closeModal();
-      navigate({ to: "/dashboard" });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsAuthenticating(false);
-    }
   };
 
   return (
@@ -143,31 +187,33 @@ export function ReservationModal() {
             <button
               onClick={closeModal}
               aria-label="Close"
-              className="absolute right-4 top-4 grid h-9 w-9 place-items-center bg-white/20 backdrop-blur-md text-indigo-600 border border-white/40 transition-all hover:scale-105 active:scale-95 hover:bg-white/40 hover:border-white rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+              className="absolute right-4 top-4 grid h-9 w-9 place-items-center bg-white/20 backdrop-blur-md text-indigo-600 border border-white/40 transition-all hover:scale-105 active:scale-95 hover:bg-white/40 hover:border-white rounded-full shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none z-10"
             >
               <X className="h-4 w-4" strokeWidth={3} />
             </button>
 
-            {step < 3 && (
+            {step < 4 && (
               <>
-                <div className="eyebrow text-indigo-600">Reserve Your Seat · {step + 1}/3</div>
+                <div className="eyebrow text-indigo-600">Reserve Your Seat · {step + 1}/4</div>
                 <h3 className="mt-2 font-display text-2xl font-bold text-ink">
                   {step === 0 && "Tell us who you are"}
-                  {step === 1 && "How can we reach you?"}
-                  {step === 2 && "Pick your track"}
+                  {step === 1 && "Verify your email"}
+                  {step === 2 && "Verify your phone"}
+                  {step === 3 && "Pick your track"}
                 </h3>
 
                 {/* progress */}
                 <div className="mt-5 flex h-2 overflow-hidden rounded-full bg-white/20 border border-white/40">
                   <div
                     className="bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
-                    style={{ width: `${((step + 1) / 3) * 100}%` }}
+                    style={{ width: `${((step + 1) / 4) * 100}%` }}
                   />
                 </div>
 
-                <form onSubmit={submit} className="mt-7 space-y-4">
+                <form onSubmit={submit} className="mt-7 space-y-5">
+                  {/* STEP 0: NAME & COLLEGE */}
                   {step === 0 && (
-                    <>
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
                       <Field label="Full name">
                         <input
                           autoFocus
@@ -187,133 +233,228 @@ export function ReservationModal() {
                           placeholder="VIT Vellore"
                         />
                       </Field>
-                    </>
+                    </motion.div>
                   )}
+
+                  {/* STEP 1: EMAIL & OTP */}
                   {step === 1 && (
-                    <>
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-5">
                       <Field
-                        label="Email"
+                        label="Email Address"
                         error={touched.email && !emailOk ? "Enter a valid email" : undefined}
                       >
-                        <input
-                          autoFocus
-                          type="email"
-                          value={data.email}
-                          onBlur={() => setTouched((t) => ({ ...t, email: true }))}
-                          onChange={(e) => setData({ ...data, email: e.target.value })}
-                          maxLength={120}
-                          className={inputCls}
-                          placeholder="you@college.edu"
-                        />
+                        <div className="relative">
+                          <input
+                            autoFocus
+                            type="email"
+                            value={data.email}
+                            disabled={emailOtpVerified}
+                            onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                            onChange={(e) => setData({ ...data, email: e.target.value })}
+                            maxLength={120}
+                            className={`${inputCls} ${emailOtpVerified ? 'opacity-60' : ''}`}
+                            placeholder="you@college.edu"
+                          />
+                          {emailOk && !emailOtpVerified && (
+                            <button
+                              type="button"
+                              onClick={handleSendEmailOTP}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg hover:bg-indigo-200 transition-colors"
+                            >
+                              {emailOtpSent ? "Resend" : "Send OTP"}
+                            </button>
+                          )}
+                          {emailOtpVerified && (
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 bg-green-100 p-1 rounded-full">
+                              <Check className="w-4 h-4" strokeWidth={3} />
+                            </div>
+                          )}
+                        </div>
                       </Field>
+
+                      <AnimatePresence>
+                        {emailOtpSent && !emailOtpVerified && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <Field label="Enter Email OTP" error={emailOtpError}>
+                              <div className="flex gap-2">
+                                <input
+                                  type="text"
+                                  value={emailOtp}
+                                  onChange={(e) => setEmailOtp(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                                  className={`${inputCls} text-center tracking-[0.5em] font-mono text-lg`}
+                                  placeholder="••••"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={handleVerifyEmailOTP}
+                                  disabled={emailOtp.length !== 4}
+                                  className="shrink-0 bg-indigo-600 text-white px-5 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-700 transition-colors"
+                                >
+                                  Verify
+                                </button>
+                              </div>
+                            </Field>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  )}
+
+                  {/* STEP 2: PHONE & OTP */}
+                  {step === 2 && (
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-5">
                       <Field
                         label="WhatsApp number"
                         error={touched.phone && !phoneOk ? "Enter a 10-digit number" : undefined}
                       >
-                        <div className="flex border border-white/50 bg-white/25 rounded-full overflow-hidden focus-within:bg-white/45 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:outline-none transition-all">
+                        <div className={`relative flex border border-white/50 bg-white/25 rounded-xl overflow-hidden focus-within:bg-white/45 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 transition-all ${phoneOtpVerified ? 'opacity-60' : ''}`}>
                           <span className="grid place-items-center bg-white/60 px-4 font-mono text-sm font-extrabold text-indigo-600 border-r border-white/40">
                             +91
                           </span>
                           <input
                             inputMode="numeric"
                             value={data.phone}
+                            disabled={phoneOtpVerified}
                             onBlur={() => setTouched((t) => ({ ...t, phone: true }))}
                             onChange={(e) => setData({ ...data, phone: formatPhone(e.target.value) })}
                             className="w-full bg-transparent px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none"
                             placeholder="98765 43210"
                           />
+                          {phoneOk && !phoneOtpVerified && (
+                            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
+                              <button
+                                type="button"
+                                onClick={handleSendPhoneOTP}
+                                className="text-xs font-bold bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg hover:bg-indigo-200 transition-colors"
+                              >
+                                {phoneOtpSent ? "Resend" : "Send OTP"}
+                              </button>
+                            </div>
+                          )}
+                          {phoneOtpVerified && (
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 bg-green-100 p-1 rounded-full">
+                              <Check className="w-4 h-4" strokeWidth={3} />
+                            </div>
+                          )}
                         </div>
                       </Field>
-                    </>
-                  )}
-                  {step === 2 && (
-                    <Field label="Preferred track">
-                      <select
-                        autoFocus
-                        value={data.track}
-                        onChange={(e) => setData({ ...data, track: e.target.value })}
-                        className={inputCls}
-                      >
-                        <option value="">Choose a track…</option>
-                        {tracks.map((t) => (
-                          <option key={t.slug} value={t.slug}>
-                            {t.title}
-                          </option>
-                        ))}
-                      </select>
-                    </Field>
+
+                      <AnimatePresence>
+                        {phoneOtpSent && !phoneOtpVerified && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <Field label="Enter Phone OTP" error={phoneOtpError}>
+                              <div className="flex gap-2">
+                                <input
+                                  type="text"
+                                  value={phoneOtp}
+                                  onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                                  className={`${inputCls} text-center tracking-[0.5em] font-mono text-lg`}
+                                  placeholder="••••"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={handleVerifyPhoneOTP}
+                                  disabled={phoneOtp.length !== 4}
+                                  className="shrink-0 bg-indigo-600 text-white px-5 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-700 transition-colors"
+                                >
+                                  Verify
+                                </button>
+                              </div>
+                            </Field>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
                   )}
 
-                  <div className="mt-7 flex items-center justify-between gap-3">
+                  {/* STEP 3: TRACK */}
+                  {step === 3 && (
+                    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                      <Field label="Preferred track">
+                        <select
+                          autoFocus
+                          value={data.track}
+                          onChange={(e) => setData({ ...data, track: e.target.value })}
+                          className={inputCls}
+                        >
+                          <option value="">Choose a track…</option>
+                          {tracks.map((t) => (
+                            <option key={t.slug} value={t.slug}>
+                              {t.title}
+                            </option>
+                          ))}
+                        </select>
+                      </Field>
+                    </motion.div>
+                  )}
+
+                  <div className="mt-7 flex items-center justify-between gap-3 pt-4 border-t border-white/30">
                     {step > 0 ? (
                       <button
                         type="button"
                         onClick={back}
-                        className="inline-flex items-center gap-1 text-sm font-bold text-indigo-600 hover:underline rounded focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none cursor-pointer px-1"
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-xl"
                       >
-                        <ArrowLeft className="h-4 w-4" /> Back
+                        <ArrowLeft className="h-4 w-4" />
+                        Back
                       </button>
-                    ) : <span />}
+                    ) : (
+                      <div />
+                    )}
 
-                    {step < 2 ? (
+                    {step < 3 ? (
                       <button
                         type="button"
+                        disabled={(step === 0 && !canNext0) || (step === 1 && !canNext1) || (step === 2 && !canNext2)}
                         onClick={next}
-                        disabled={step === 0 ? !canNext0 : !canNext1}
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
+                        className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-2.5 text-sm font-bold text-white shadow-md shadow-indigo-500/20 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
                       >
-                        Continue <ArrowRight className="h-4 w-4" />
+                        Continue
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                       </button>
                     ) : (
                       <button
                         type="submit"
                         disabled={!canSubmit}
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
+                        className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-2.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
                       >
-                        Reserve Seat <Check className="h-4 w-4" />
+                        Submit Reservation
+                        <Check className="h-4 w-4" />
                       </button>
                     )}
                   </div>
-
                 </form>
               </>
             )}
 
-            {step === 3 && (
+            {step === 4 && (
               <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="py-6 text-center"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center justify-center py-6 text-center"
               >
-                <div className="mx-auto grid h-20 w-20 place-items-center bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-md">
-                  <svg viewBox="0 0 24 24" className="h-10 w-10 text-indigo-600">
-                    <motion.path
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                      d="M5 12.5l4.5 4.5L19 7"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                <div className="grid h-20 w-20 place-items-center rounded-full bg-gradient-to-br from-green-400 to-emerald-600 text-white shadow-xl shadow-green-500/30">
+                  <Check className="h-10 w-10" strokeWidth={3} />
                 </div>
-                <h3 className="mt-6 font-display text-3xl font-bold leading-tight text-ink">
-                  Seat Reserved!
-                </h3>
-                <p className="mt-3 text-sm text-slate-600 font-semibold">
-                  You're one step closer to being Industry-Ready. Check your email for next steps.
+                <h3 className="mt-6 font-display text-2xl font-bold text-ink">You're on the list!</h3>
+                <p className="mt-3 text-sm font-medium text-slate-600 leading-relaxed max-w-[280px]">
+                  We've successfully secured your reservation. Keep an eye on your inbox for the official invite.
                 </p>
                 <button
-                   onClick={() => {
-                     closeModal();
-                     navigate({ to: "/dashboard" });
-                   }}
-                  className="mt-7 inline-flex items-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 font-display text-xs font-extrabold uppercase tracking-wider rounded-3xl shadow-lg shadow-indigo-500/30 border border-white/20 transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20"
+                  onClick={closeModal}
+                  className="mt-8 rounded-full bg-slate-900 px-8 py-3 text-sm font-bold text-white shadow-md transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:outline-none"
                 >
-                  Go to Dashboard
+                  Done
                 </button>
               </motion.div>
             )}
