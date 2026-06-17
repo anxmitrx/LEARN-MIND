@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User, onAuthStateChanged } from "firebase/auth";
+import { User, onAuthStateChanged, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { auth, db } from "./firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 interface AuthContextType {
   user: User | null;
@@ -32,6 +32,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
       return;
     }
+
+    // Check if the URL is a sign-in with email link
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      let email = window.localStorage.getItem("emailForSignIn");
+      if (!email) {
+        // User opened the link on a different device or browser
+        email = window.prompt("Please provide your email for confirmation");
+      }
+      if (email) {
+        signInWithEmailLink(auth, email, window.location.href)
+          .then(async (result) => {
+            window.localStorage.removeItem("emailForSignIn");
+            const user = result.user;
+            
+            // Create or update user document if this is a new sign-in
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+            if (!userSnap.exists()) {
+              await setDoc(userRef, {
+                name: user.displayName || email?.split('@')[0] || "User",
+                email: user.email,
+                photoURL: user.photoURL,
+                xp: 0,
+                level: "Level 1: Novice",
+                createdAt: new Date().toISOString(),
+              });
+            }
+            
+            // Optionally remove the sign-in parameters from the URL
+            window.history.replaceState(null, "", window.location.pathname);
+          })
+          .catch((error) => {
+            console.error("Error signing in with email link:", error);
+          });
+      }
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser && db) {

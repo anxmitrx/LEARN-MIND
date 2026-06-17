@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, X, Mail, Phone as PhoneIcon, KeyRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, X, Mail, Phone as PhoneIcon, KeyRound, Loader2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useReservation } from "./ReservationContext";
 import { useWorkshops } from "@/hooks/useWorkshops";
-import { signInWithGoogle, db } from "@/lib/firebase";
+import { signInWithGoogle, db, auth } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { sendSignInLinkToEmail } from "firebase/auth";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/AuthContext";
 
@@ -46,23 +47,30 @@ export function ReservationModal() {
   const { workshops: tracks } = useWorkshops();
 
   // OTP States
-  const [emailOtpSent, setEmailOtpSent] = useState(false);
-  const [emailOtp, setEmailOtp] = useState("");
-  const [emailOtpVerified, setEmailOtpVerified] = useState(false);
-  const [emailOtpError, setEmailOtpError] = useState("");
+  const [emailLinkSent, setEmailLinkSent] = useState(false);
+  const [sendingLink, setSendingLink] = useState(false);
+  const [emailLinkError, setEmailLinkError] = useState("");
 
   const [phoneOtpSent, setPhoneOtpSent] = useState(false);
   const [phoneOtp, setPhoneOtp] = useState("");
   const [phoneOtpVerified, setPhoneOtpVerified] = useState(false);
   const [phoneOtpError, setPhoneOtpError] = useState("");
 
+  // Sync auth state to advance automatically if verified
+  useEffect(() => {
+    // Only auto-advance if they are actively waiting for the link in this session
+    if (user && step === 1 && user.email === data.email && emailLinkSent) {
+      setStep(2);
+    }
+  }, [user, step, data.email, emailLinkSent]);
+
   useEffect(() => {
     if (open) {
       setStep(0);
       setTouched({ email: false, phone: false });
-      setEmailOtpSent(false);
-      setEmailOtpVerified(false);
-      setEmailOtp("");
+      setEmailLinkSent(false);
+      setSendingLink(false);
+      setEmailLinkError("");
       setPhoneOtpSent(false);
       setPhoneOtpVerified(false);
       setPhoneOtp("");
@@ -86,30 +94,39 @@ export function ReservationModal() {
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
   const phoneOk = phoneIsValid(data.phone);
   
+  // If user is logged in, their email is verified. Otherwise false.
+  const emailVerified = !!user && user.email === data.email;
+
   const canNext0 = data.name.trim().length >= 2 && data.college.trim().length >= 2;
-  const canNext1 = emailOk && emailOtpVerified;
+  const canNext1 = emailOk && emailVerified;
   const canNext2 = phoneOk && phoneOtpVerified;
   const canSubmit = canNext0 && canNext1 && canNext2 && data.track;
 
   const next = () => setStep((s) => s + 1);
   const back = () => setStep((s) => Math.max(0, s - 1));
 
-  // Simulated OTP Logic
-  const handleSendEmailOTP = () => {
-    if (!emailOk) return;
-    setEmailOtpSent(true);
-    setEmailOtpError("");
-    // In production, call your backend email service here
-    console.log("Simulating Email OTP Send...");
-  };
+  // Magic Link Logic
+  const handleSendMagicLink = async () => {
+    if (!emailOk || !auth) return;
+    setSendingLink(true);
+    setEmailLinkError("");
+    
+    const actionCodeSettings = {
+      // URL you want to redirect back to. The domain must be whitelisted in Firebase Console.
+      url: window.location.href,
+      // This must be true.
+      handleCodeInApp: true,
+    };
 
-  const handleVerifyEmailOTP = () => {
-    // Simulated check: any 4-digit code works, or exactly "1234"
-    if (emailOtp === "1234" || emailOtp.length === 4) {
-      setEmailOtpVerified(true);
-      setEmailOtpError("");
-    } else {
-      setEmailOtpError("Invalid OTP. Try 1234");
+    try {
+      await sendSignInLinkToEmail(auth, data.email, actionCodeSettings);
+      window.localStorage.setItem('emailForSignIn', data.email);
+      setEmailLinkSent(true);
+    } catch (err: any) {
+      console.error("Error sending email link", err);
+      setEmailLinkError(err.message || "Failed to send link. Try again.");
+    } finally {
+      setSendingLink(false);
     }
   };
 
@@ -236,7 +253,7 @@ export function ReservationModal() {
                     </motion.div>
                   )}
 
-                  {/* STEP 1: EMAIL & OTP */}
+                  {/* STEP 1: EMAIL & MAGIC LINK */}
                   {step === 1 && (
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-5">
                       <Field
@@ -248,57 +265,56 @@ export function ReservationModal() {
                             autoFocus
                             type="email"
                             value={data.email}
-                            disabled={emailOtpVerified}
+                            disabled={emailVerified || sendingLink}
                             onBlur={() => setTouched((t) => ({ ...t, email: true }))}
                             onChange={(e) => setData({ ...data, email: e.target.value })}
                             maxLength={120}
-                            className={`${inputCls} ${emailOtpVerified ? 'opacity-60' : ''}`}
+                            className={`${inputCls} ${emailVerified ? 'opacity-60' : ''}`}
                             placeholder="you@college.edu"
                           />
-                          {emailOk && !emailOtpVerified && (
+                          {emailOk && !emailVerified && (
                             <button
                               type="button"
-                              onClick={handleSendEmailOTP}
-                              className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg hover:bg-indigo-200 transition-colors"
+                              onClick={handleSendMagicLink}
+                              disabled={sendingLink}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg hover:bg-indigo-200 transition-colors disabled:opacity-50 flex items-center gap-1"
                             >
-                              {emailOtpSent ? "Resend" : "Send OTP"}
+                              {sendingLink && <Loader2 className="w-3 h-3 animate-spin" />}
+                              {emailLinkSent ? "Resend" : "Send Link"}
                             </button>
                           )}
-                          {emailOtpVerified && (
+                          {emailVerified && (
                             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 bg-green-100 p-1 rounded-full">
                               <Check className="w-4 h-4" strokeWidth={3} />
                             </div>
                           )}
                         </div>
+                        {emailVerified && (
+                          <p className="mt-2 text-xs font-medium text-emerald-600 bg-emerald-50 px-3 py-2 rounded-lg inline-block border border-emerald-100">
+                            You are already signed in with this email. No verification needed!
+                          </p>
+                        )}
                       </Field>
 
                       <AnimatePresence>
-                        {emailOtpSent && !emailOtpVerified && (
+                        {emailLinkSent && !emailVerified && (
                           <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
                             className="overflow-hidden"
                           >
-                            <Field label="Enter Email OTP" error={emailOtpError}>
-                              <div className="flex gap-2">
-                                <input
-                                  type="text"
-                                  value={emailOtp}
-                                  onChange={(e) => setEmailOtp(e.target.value.replace(/\D/g, "").slice(0, 4))}
-                                  className={`${inputCls} text-center tracking-[0.5em] font-mono text-lg`}
-                                  placeholder="••••"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={handleVerifyEmailOTP}
-                                  disabled={emailOtp.length !== 4}
-                                  className="shrink-0 bg-indigo-600 text-white px-5 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-700 transition-colors"
-                                >
-                                  Verify
-                                </button>
-                              </div>
-                            </Field>
+                            <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-center">
+                              <Mail className="w-6 h-6 text-indigo-600 mx-auto mb-2" />
+                              <h4 className="text-sm font-bold text-indigo-900 mb-1">Check your inbox</h4>
+                              <p className="text-xs text-indigo-700 leading-relaxed">
+                                We sent a magic link to <span className="font-semibold">{data.email}</span>. 
+                                Click the link to securely verify your email and continue.
+                              </p>
+                              {emailLinkError && (
+                                <p className="text-xs font-bold text-red-600 mt-2">{emailLinkError}</p>
+                              )}
+                            </div>
                           </motion.div>
                         )}
                       </AnimatePresence>

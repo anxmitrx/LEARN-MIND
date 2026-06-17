@@ -34,14 +34,23 @@ export function GlobalLoginModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/80 p-4 backdrop-blur-md"
+          onClick={() => setShowLoginModal(false)}
         >
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 220, damping: 24 }}
+            onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-sm overflow-hidden bg-white/90 backdrop-blur-xl border border-white/50 p-6 sm:p-8 shadow-2xl rounded-3xl text-center"
           >
+            <button
+              onClick={() => setShowLoginModal(false)}
+              aria-label="Close"
+              className="absolute right-4 top-4 grid h-9 w-9 place-items-center bg-slate-100/50 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-all rounded-full focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none z-10"
+            >
+              <X className="h-4 w-4" strokeWidth={3} />
+            </button>
 
             <div className="mx-auto mt-2 grid h-16 w-16 place-items-center bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-inner mb-6">
               <LogIn className="h-8 w-8" strokeWidth={2.5} />
