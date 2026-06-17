@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, onAuthStateChanged, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 import { auth, db } from "./firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 
 interface AuthContextType {
   user: User | null;
@@ -56,6 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 photoURL: user.photoURL,
                 xp: 0,
                 level: "Level 1: Novice",
+                onboardingComplete: false,
                 createdAt: new Date().toISOString(),
               });
             }
@@ -69,16 +70,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    let unsubscribeSnapshot: (() => void) | undefined;
+
+    const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      
+      // Clear previous snapshot listener if it exists
+      if (unsubscribeSnapshot) {
+        unsubscribeSnapshot();
+      }
+
       if (currentUser && db) {
         try {
-          // Fetch extra user data like XP, Level
           const docRef = doc(db, "users", currentUser.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            setUserData(docSnap.data());
-          }
+          // Listen to real-time updates of the user profile
+          unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+              setUserData(docSnap.data());
+            } else {
+              setUserData(null);
+            }
+          }, (error) => {
+            console.warn("Firestore snapshot error (expected during logout):", error);
+          });
         } catch (err) {
           console.error("Error fetching user data from Firestore:", err);
         }
@@ -88,7 +102,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeSnapshot) unsubscribeSnapshot();
+    };
   }, []);
 
   return (

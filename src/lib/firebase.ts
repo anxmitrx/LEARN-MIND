@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA191wT69wauFXqMbUEbqatsjRnM8g-HjA",
@@ -22,33 +23,17 @@ const app = getApps().length > 0
 
 const auth = app ? getAuth(app) : null as any;
 const db = app ? getFirestore(app) : null as any;
+const storage = app ? getStorage(app) : null as any;
 const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
-    const user = result.user;
-    
-    // Create or update user document
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
-    
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        xp: 0,
-        level: "Level 1: Novice",
-        createdAt: new Date().toISOString(),
-      });
-    }
-    
-    return user;
+    return result;
   } catch (error) {
     console.error("Error signing in with Google", error);
     throw error;
   }
 };
 
-export { app, auth, db };
+export { app, auth, db, storage };

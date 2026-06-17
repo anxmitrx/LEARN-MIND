@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { LogOut, Calendar, Video, GraduationCap, Home } from "lucide-react";
 import { auth, db } from "@/lib/firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { ProfileAvatarUpload } from "@/components/site/ProfileAvatarUpload";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
 const dummySkillData = [
@@ -60,15 +61,7 @@ function DashboardComponent() {
         <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 pointer-events-none" />
           <div className="flex items-center gap-4">
-            <div className="h-12 w-12 overflow-hidden bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-sm">
-              {user.photoURL ? (
-                <img src={user.photoURL} alt={user.displayName || "User"} className="h-full w-full object-cover" />
-              ) : (
-                <div className="grid h-full w-full place-items-center font-display text-xl font-bold">
-                  {user.displayName?.[0] || "U"}
-                </div>
-              )}
-            </div>
+            <ProfileAvatarUpload />
             <div>
               <h1 className="font-display text-xl font-bold uppercase tracking-wide">
                 {user.displayName}

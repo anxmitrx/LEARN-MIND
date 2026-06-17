@@ -17,6 +17,7 @@ import { ScrollProgress } from "@/components/site/ScrollProgress";
 import { WhatsAppChatButton } from "@/components/site/WhatsAppChatButton";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { GlobalLoginModal } from "@/components/site/GlobalLoginModal";
+import { GlobalOnboardingModal } from "@/components/site/GlobalOnboardingModal";
 import { DashboardDrawer } from "@/components/site/DashboardDrawer";
 
 
@@ -155,6 +156,7 @@ function RootComponent() {
           <Outlet />
           <ReservationModal />
           <GlobalLoginModal />
+          <GlobalOnboardingModal />
         </ReservationProvider>
       </AuthProvider>
     </QueryClientProvider>

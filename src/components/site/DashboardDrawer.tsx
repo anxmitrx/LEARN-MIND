@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/AuthContext";
 import { auth, db } from "@/lib/firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { X, LogOut, GraduationCap, Video, Calendar, ChevronLeft } from "lucide-react";
+import { ProfileAvatarUpload } from "@/components/site/ProfileAvatarUpload";
 
 export function DashboardDrawer() {
   const { user, userData } = useAuth();
@@ -83,13 +84,7 @@ export function DashboardDrawer() {
               {/* Profile Card */}
               <div className="flex items-center justify-between bg-white/60 border border-white/50 shadow-sm rounded-2xl p-4">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 overflow-hidden bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-sm flex items-center justify-center font-bold">
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt={user.displayName || "User"} className="h-full w-full object-cover" />
-                    ) : (
-                      user.displayName?.[0] || "U"
-                    )}
-                  </div>
+                  <ProfileAvatarUpload />
                   <div>
                     <h3 className="font-display text-sm font-bold uppercase tracking-wide text-ink">{user.displayName}</h3>
                     <p className="text-xs font-bold text-slate-500">{userData?.level || "Level 1: Novice"}</p>
