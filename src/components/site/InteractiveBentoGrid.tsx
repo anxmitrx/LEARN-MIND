@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Briefcase, UserCog, Sparkles, Plane, ArrowUpRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 const pillars = [
   {
@@ -9,6 +10,7 @@ const pillars = [
     colSpan: "md:col-span-2",
     gradient: "from-blue-500/10 via-indigo-500/10 to-transparent",
     bgPattern: "bg-[radial-gradient(#4f46e5_1px,transparent_1px)] [background-size:16px_16px]",
+    slug: "business-simulations",
   },
   {
     icon: UserCog,
@@ -17,6 +19,7 @@ const pillars = [
     colSpan: "md:col-span-1",
     gradient: "from-purple-500/10 via-fuchsia-500/10 to-transparent",
     bgPattern: "",
+    slug: "live-amas",
   },
   {
     icon: Sparkles,
@@ -25,6 +28,7 @@ const pillars = [
     colSpan: "md:col-span-1",
     gradient: "from-emerald-500/10 via-teal-500/10 to-transparent",
     bgPattern: "",
+    slug: "inner-engineering",
   },
   {
     icon: Plane,
@@ -33,6 +37,7 @@ const pillars = [
     colSpan: "md:col-span-2",
     gradient: "from-orange-500/10 via-amber-500/10 to-transparent",
     bgPattern: "bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:24px_24px]",
+    slug: "internships-and-visits",
   },
 ];
 
@@ -70,6 +75,7 @@ export function InteractiveBentoGrid() {
               transition={{ duration: 0.5, delay: i * 0.1, type: "spring", stiffness: 100 }}
               className={`group relative overflow-hidden rounded-[2rem] bg-white border border-slate-200/60 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:-translate-y-1 ${p.colSpan}`}
             >
+              <Link to="/blog/$slug" params={{ slug: p.slug }} className="absolute inset-0 z-20" aria-label={`Read more about ${p.title}`} />
               {/* Geometric Hover Gradients */}
               <div className={`absolute inset-0 bg-gradient-to-br ${p.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
               

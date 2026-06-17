@@ -18,6 +18,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkshopsIndexRouteImport } from './routes/workshops.index'
 import { Route as WorkshopsSlugRouteImport } from './routes/workshops.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const WebinarsRoute = WebinarsRouteImport.update({
   id: '/webinars',
@@ -64,6 +65,11 @@ const WorkshopsSlugRoute = WorkshopsSlugRouteImport.update({
   path: '/workshops/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/webinars': typeof WebinarsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops/': typeof WorkshopsIndexRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/webinars': typeof WebinarsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops': typeof WorkshopsIndexRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/webinars': typeof WebinarsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops/': typeof WorkshopsIndexRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mentors'
     | '/webinars'
+    | '/blog/$slug'
     | '/workshops/$slug'
     | '/workshops/'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mentors'
     | '/webinars'
+    | '/blog/$slug'
     | '/workshops/$slug'
     | '/workshops'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/mentors'
     | '/webinars'
+    | '/blog/$slug'
     | '/workshops/$slug'
     | '/workshops/'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   MentorsRoute: typeof MentorsRoute
   WebinarsRoute: typeof WebinarsRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   WorkshopsSlugRoute: typeof WorkshopsSlugRoute
   WorkshopsIndexRoute: typeof WorkshopsIndexRoute
 }
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkshopsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   MentorsRoute: MentorsRoute,
   WebinarsRoute: WebinarsRoute,
+  BlogSlugRoute: BlogSlugRoute,
   WorkshopsSlugRoute: WorkshopsSlugRoute,
   WorkshopsIndexRoute: WorkshopsIndexRoute,
 }
