@@ -49,13 +49,19 @@ function Class12ConsultPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative w-full overflow-hidden border-b border-white/60 pt-28 pb-16 md:pt-36 md:pb-24 min-h-[50vh] flex flex-col items-center justify-center">
-        <img
-          src="/assets/WhatsApp Image 2026-06-03 at 7.45.22 PM.jpeg"
-          alt="Students studying"
-          className="absolute inset-0 w-full h-full object-cover object-center z-0 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]"
-        />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#F8EDEB] via-[#F8EDEB]/60 via-20% to-transparent sm:bg-gradient-to-r sm:from-[#f8f5ff]/95 sm:via-[#f8f5ff]/70 sm:via-45% sm:to-transparent sm:to-80%"></div>
+      <section className="relative w-full pt-28 pb-16 md:pt-36 md:pb-24 min-h-[50vh] flex flex-col items-center justify-center">
+        {/* Background Image with Masks for smooth blending */}
+        <div className="absolute inset-0 z-0 pointer-events-none [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]">
+          <img
+            src="/assets/images/backpack.png"
+            alt="Student looking at roadmap signs"
+            className="absolute inset-0 w-full h-full object-cover object-right md:object-center [mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_100%)]"
+          />
+        </div>
+        
+        {/* Very subtle gradient overlay just behind the text to enhance readability */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-white/60 via-transparent to-transparent pointer-events-none"></div>
+
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 relative z-20">
           <div className="max-w-2xl">
             <span className="eyebrow inline-block bg-white/60 backdrop-blur-md px-4 py-1.5 font-bold text-indigo-600 border border-white/50 rounded-full shadow-sm">
