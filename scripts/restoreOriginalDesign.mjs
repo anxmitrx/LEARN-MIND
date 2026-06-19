@@ -1,4 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import fs from 'fs';
+
+const originalCode = `import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { ConsultationProcessBento } from "@/components/site/ConsultationProcessBento";
@@ -32,14 +34,14 @@ const faqs = [
 ];
 
 const formatPhone = (raw: string) => {
-  const digits = raw.replace(/\D/g, "").replace(/^91/, "").slice(0, 10);
+  const digits = raw.replace(/\\D/g, "").replace(/^91/, "").slice(0, 10);
   if (!digits) return "";
   const a = digits.slice(0, 5);
   const b = digits.slice(5, 10);
-  return b ? `${a} ${b}` : a;
+  return b ? \`\${a} \${b}\` : a;
 };
 
-const phoneIsValid = (raw: string) => raw.replace(/\D/g, "").length === 10;
+const phoneIsValid = (raw: string) => raw.replace(/\\D/g, "").length === 10;
 
 function Class12ConsultPage() {
   const [activeTab, setActiveTab] = useState<"counselling" | "rank-vs-college">("counselling");
@@ -76,9 +78,9 @@ function Class12ConsultPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveTab("counselling")}
-                className={`relative px-6 py-3 rounded-full font-display text-sm font-bold tracking-wide transition-all duration-300 ${
+                className={\`relative px-6 py-3 rounded-full font-display text-sm font-bold tracking-wide transition-all duration-300 \${
                   activeTab === "counselling" ? "text-white shadow-md shadow-indigo-500/30" : "text-slate-600 hover:text-ink hover:bg-white/50"
-                }`}
+                }\`}
               >
                 {activeTab === "counselling" && (
                   <motion.div layoutId="activeTab" className="absolute inset-0 bg-indigo-600 rounded-full z-0" />
@@ -91,9 +93,9 @@ function Class12ConsultPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setActiveTab("rank-vs-college")}
-                className={`relative px-6 py-3 rounded-full font-display text-sm font-bold tracking-wide transition-all duration-300 ${
+                className={\`relative px-6 py-3 rounded-full font-display text-sm font-bold tracking-wide transition-all duration-300 \${
                   activeTab === "rank-vs-college" ? "text-white shadow-md shadow-indigo-500/30" : "text-slate-600 hover:text-ink hover:bg-white/50"
-                }`}
+                }\`}
               >
                 {activeTab === "rank-vs-college" && (
                   <motion.div layoutId="activeTab" className="absolute inset-0 bg-indigo-600 rounded-full z-0" />
@@ -182,7 +184,7 @@ function CounsellingView() {
                 <div key={i} className="bg-white/30 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm transition-all duration-300 hover:bg-white/40 overflow-hidden will-change-transform">
                   <button onClick={() => setOpenFaq(isOpen ? null : i)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none rounded-t-2xl">
                     <span className="font-display text-sm font-bold text-ink sm:text-base tracking-wide">{f.q}</span>
-                    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full transition-all duration-300 ${isOpen ? "rotate-45 bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50"}`}><Plus className="h-4 w-4" strokeWidth={3} /></span>
+                    <span className={\`grid h-8 w-8 shrink-0 place-items-center rounded-full transition-all duration-300 \${isOpen ? "rotate-45 bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50"}\`}><Plus className="h-4 w-4" strokeWidth={3} /></span>
                   </button>
                   <AnimatePresence initial={false}>
                     {isOpen && (
@@ -212,18 +214,18 @@ function CounsellingView() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block mb-1.5"><span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink flex items-center gap-1.5"><User className="h-3.5 w-3.5 text-indigo-600" /> Full Name <span className="text-red-500">*</span></span></label>
-                  <input type="text" required placeholder="e.g. Priyanshu Mehta" value={form.name} onBlur={() => setTouched(t => ({ ...t, name: true }))} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className={`w-full border bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${touched.name && !nameOk ? "border-red-500 focus:ring-0" : "border-white/50"}`} />
+                  <input type="text" required placeholder="e.g. Priyanshu Mehta" value={form.name} onBlur={() => setTouched(t => ({ ...t, name: true }))} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className={\`w-full border bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none \${touched.name && !nameOk ? "border-red-500 focus:ring-0" : "border-white/50"}\`} />
                 </div>
                 <div>
                   <label className="block mb-1.5"><span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-indigo-600" /> WhatsApp Number <span className="text-red-500">*</span></span></label>
-                  <div className={`flex border bg-white/25 rounded-full overflow-hidden focus-within:bg-white/45 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:outline-none transition-all ${touched.phone && !phoneOk ? "border-red-500" : "border-white/50"}`}>
+                  <div className={\`flex border bg-white/25 rounded-full overflow-hidden focus-within:bg-white/45 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:outline-none transition-all \${touched.phone && !phoneOk ? "border-red-500" : "border-white/50"}\`}>
                     <span className="grid place-items-center bg-white/60 px-4 font-mono text-sm font-extrabold text-indigo-600 border-r border-white/40">+91</span>
                     <input type="text" inputMode="numeric" required placeholder="98765 43210" value={form.phone} onBlur={() => setTouched(t => ({ ...t, phone: true }))} onChange={e => setForm(f => ({ ...f, phone: formatPhone(e.target.value) }))} className="w-full bg-transparent px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none" />
                   </div>
                 </div>
                 <div>
                   <label className="block mb-1.5"><span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink flex items-center gap-1.5"><GraduationCap className="h-3.5 w-3.5 text-indigo-600" /> Current Stream <span className="text-red-500">*</span></span></label>
-                  <select required value={form.stream} onBlur={() => setTouched(t => ({ ...t, stream: true }))} onChange={e => setForm(f => ({ ...f, stream: e.target.value }))} className={`w-full border bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none ${touched.stream && !streamOk ? "border-red-500 focus:ring-0" : "border-white/50"}`}>
+                  <select required value={form.stream} onBlur={() => setTouched(t => ({ ...t, stream: true }))} onChange={e => setForm(f => ({ ...f, stream: e.target.value }))} className={\`w-full border bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-full focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none \${touched.stream && !streamOk ? "border-red-500 focus:ring-0" : "border-white/50"}\`}>
                     <option value="">Select your stream...</option>
                     <option value="Science">Science (PCM/PCB)</option>
                     <option value="Commerce">Commerce</option>
@@ -396,16 +398,16 @@ function HistoricalTrendsSection() {
       <div className="bg-white/40 backdrop-blur-md border border-white/60 rounded-3xl p-6 shadow-sm">
         <div className="flex flex-wrap gap-2 mb-4">
           {FIELDS.map((f) => (
-            <button key={f} onClick={() => setActiveField(f)} className={`px-4 py-2 rounded-full font-display text-xs font-bold transition-all duration-300 cursor-pointer ${activeField === f ? "bg-slate-800 text-white shadow-md" : "bg-white/50 text-slate-600 hover:bg-white/80 hover:text-ink"}`}>{f}</button>
+            <button key={f} onClick={() => setActiveField(f)} className={\`px-4 py-2 rounded-full font-display text-xs font-bold transition-all duration-300 cursor-pointer \${activeField === f ? "bg-slate-800 text-white shadow-md" : "bg-white/50 text-slate-600 hover:bg-white/80 hover:text-ink"}\`}>{f}</button>
           ))}
         </div>
         <div className="flex flex-wrap gap-2 mb-6 border-b border-white/50 pb-4">
           {historicalData.map((d) => (
-            <button key={d.year} onClick={() => setActiveYear(d.year)} className={`px-5 py-2.5 rounded-xl font-display text-sm font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer ${activeYear === d.year ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-white/50 text-slate-600 hover:bg-white/80 hover:text-ink"}`}><Calendar className="h-4 w-4" /> {d.year}</button>
+            <button key={d.year} onClick={() => setActiveYear(d.year)} className={\`px-5 py-2.5 rounded-xl font-display text-sm font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer \${activeYear === d.year ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-white/50 text-slate-600 hover:bg-white/80 hover:text-ink"}\`}><Calendar className="h-4 w-4" /> {d.year}</button>
           ))}
         </div>
         <AnimatePresence mode="wait">
-          <motion.div key={`${activeField}-${activeYear}`} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.2 }} className="space-y-3 min-h-[150px]">
+          <motion.div key={\`\${activeField}-\${activeYear}\`} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.2 }} className="space-y-3 min-h-[150px]">
             {filteredColleges.length > 0 ? filteredColleges.map((college, i) => (
               <motion.div key={i} whileHover={{ scale: 1.01, x: 4 }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/60 border border-white/50 rounded-2xl hover:bg-white/90 hover:shadow-md hover:border-indigo-200 transition-colors cursor-default group">
                 <div className="mb-2 sm:mb-0">
@@ -424,3 +426,6 @@ function HistoricalTrendsSection() {
     </div>
   );
 }
+`;
+
+fs.writeFileSync('scripts/restoreOriginalDesign.mjs', \`import fs from 'fs'; fs.writeFileSync('src/routes/class-12-consult.tsx', \${JSON.stringify(originalCode)});\`);

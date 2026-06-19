@@ -1,0 +1,345 @@
+export const mockCollegeData = {
+  "JEE Main": [
+    {
+      "name": "NIT Trichy",
+      "cutoff": 1224,
+      "avgPackage": "20 LPA",
+      "type": "Tier 1",
+      "location": "Tamil Nadu",
+      "estFees": "₹8.5 L",
+      "placementRate": "92%"
+    },
+    {
+      "name": "NIT Surathkal",
+      "cutoff": 2594,
+      "avgPackage": "18 LPA",
+      "type": "Tier 1",
+      "location": "Karnataka",
+      "estFees": "₹8.1 L",
+      "placementRate": "90%"
+    },
+    {
+      "name": "NIT Warangal",
+      "cutoff": 3100,
+      "avgPackage": "17 LPA",
+      "type": "Tier 1",
+      "location": "Telangana",
+      "estFees": "₹8.2 L",
+      "placementRate": "88%"
+    },
+    {
+      "name": "IIIT Hyderabad",
+      "cutoff": 839,
+      "avgPackage": "30 LPA",
+      "type": "Tier 1",
+      "location": "Telangana",
+      "estFees": "₹14 L",
+      "placementRate": "99%"
+    },
+    {
+      "name": "DTU (Delhi Tech. Univ.)",
+      "cutoff": 15060,
+      "avgPackage": "15 LPA",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹8.8 L",
+      "placementRate": "85%"
+    },
+    {
+      "name": "NSUT Delhi",
+      "cutoff": 16000,
+      "avgPackage": "14 LPA",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹8.9 L",
+      "placementRate": "84%"
+    },
+    {
+      "name": "NIT Calicut",
+      "cutoff": 4482,
+      "avgPackage": "13 LPA",
+      "type": "Tier 1",
+      "location": "Kerala",
+      "estFees": "₹8.0 L",
+      "placementRate": "82%"
+    },
+    {
+      "name": "NIT Rourkela",
+      "cutoff": 3983,
+      "avgPackage": "14 LPA",
+      "type": "Tier 1",
+      "location": "Odisha",
+      "estFees": "₹8.1 L",
+      "placementRate": "83%"
+    },
+    {
+      "name": "MNNIT Allahabad",
+      "cutoff": 4500,
+      "avgPackage": "15 LPA",
+      "type": "Tier 1",
+      "location": "Uttar Pradesh",
+      "estFees": "₹8.0 L",
+      "placementRate": "85%"
+    },
+    {
+      "name": "MNIT Jaipur",
+      "cutoff": 5200,
+      "avgPackage": "13 LPA",
+      "type": "Tier 1",
+      "location": "Rajasthan",
+      "estFees": "₹8.2 L",
+      "placementRate": "81%"
+    },
+    {
+      "name": "VNIT Nagpur",
+      "cutoff": 6100,
+      "avgPackage": "12 LPA",
+      "type": "Tier 1",
+      "location": "Maharashtra",
+      "estFees": "₹8.3 L",
+      "placementRate": "80%"
+    },
+    {
+      "name": "IIIT Allahabad",
+      "cutoff": 4600,
+      "avgPackage": "22 LPA",
+      "type": "Tier 1",
+      "location": "Uttar Pradesh",
+      "estFees": "₹7.5 L",
+      "placementRate": "95%"
+    }
+  ],
+  "NEET": [
+    {
+      "name": "AIIMS New Delhi",
+      "cutoff": 47,
+      "avgPackage": "Top Residency",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹6.8 K",
+      "placementRate": "100%"
+    },
+    {
+      "name": "MAMC New Delhi",
+      "cutoff": 145,
+      "avgPackage": "Top Residency",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹15 K",
+      "placementRate": "98%"
+    },
+    {
+      "name": "CMC Vellore",
+      "cutoff": 84,
+      "avgPackage": "Top Residency",
+      "type": "Tier 1",
+      "location": "Tamil Nadu",
+      "estFees": "₹1.5 L",
+      "placementRate": "99%"
+    },
+    {
+      "name": "VMMC Delhi",
+      "cutoff": 141,
+      "avgPackage": "Top Residency",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹1.6 L",
+      "placementRate": "97%"
+    },
+    {
+      "name": "JIPMER Puducherry",
+      "cutoff": 350,
+      "avgPackage": "Top Residency",
+      "type": "Tier 1",
+      "location": "Puducherry",
+      "estFees": "₹34 K",
+      "placementRate": "98%"
+    },
+    {
+      "name": "Seth GS Medical College",
+      "cutoff": 680,
+      "avgPackage": "Top Residency",
+      "type": "Tier 1",
+      "location": "Maharashtra",
+      "estFees": "₹5.6 L",
+      "placementRate": "95%"
+    },
+    {
+      "name": "BJ Medical College",
+      "cutoff": 715,
+      "avgPackage": "Top Residency",
+      "type": "Tier 1",
+      "location": "Gujarat",
+      "estFees": "₹1.1 L",
+      "placementRate": "94%"
+    },
+    {
+      "name": "KGMU Lucknow",
+      "cutoff": 1050,
+      "avgPackage": "Govt Postings",
+      "type": "Tier 1",
+      "location": "Uttar Pradesh",
+      "estFees": "₹2.2 L",
+      "placementRate": "95%"
+    },
+    {
+      "name": "AFMC Pune",
+      "cutoff": 1200,
+      "avgPackage": "Armed Forces",
+      "type": "Tier 1",
+      "location": "Maharashtra",
+      "estFees": "Free",
+      "placementRate": "100%"
+    }
+  ],
+  "CUET": [
+    {
+      "name": "SRCC, Delhi University",
+      "cutoff": 99.8,
+      "avgPackage": "12 LPA",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹90 K",
+      "placementRate": "85%"
+    },
+    {
+      "name": "Hindu College, DU",
+      "cutoff": 99.5,
+      "avgPackage": "10 LPA",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹75 K",
+      "placementRate": "80%"
+    },
+    {
+      "name": "St. Stephen's College",
+      "cutoff": 99.2,
+      "avgPackage": "11 LPA",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹1.2 L",
+      "placementRate": "82%"
+    },
+    {
+      "name": "LSR, Delhi University",
+      "cutoff": 98.5,
+      "avgPackage": "9 LPA",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹65 K",
+      "placementRate": "78%"
+    },
+    {
+      "name": "Hansraj College",
+      "cutoff": 98,
+      "avgPackage": "8 LPA",
+      "type": "Tier 1",
+      "location": "Delhi",
+      "estFees": "₹70 K",
+      "placementRate": "75%"
+    }
+  ],
+  "BITSAT": [
+    {
+      "name": "BITS Pilani",
+      "cutoff": 327,
+      "avgPackage": "22 LPA",
+      "type": "Tier 1",
+      "location": "Rajasthan",
+      "estFees": "₹24 L",
+      "placementRate": "92%"
+    },
+    {
+      "name": "BITS Goa",
+      "cutoff": 292,
+      "avgPackage": "18 LPA",
+      "type": "Tier 1",
+      "location": "Goa",
+      "estFees": "₹24 L",
+      "placementRate": "88%"
+    },
+    {
+      "name": "BITS Hyderabad",
+      "cutoff": 284,
+      "avgPackage": "16 LPA",
+      "type": "Tier 1",
+      "location": "Telangana",
+      "estFees": "₹24 L",
+      "placementRate": "86%"
+    }
+  ],
+  "WBJEE": [
+    {
+      "name": "Jadavpur University",
+      "cutoff": 89,
+      "avgPackage": "20 LPA",
+      "type": "Tier 1",
+      "location": "West Bengal",
+      "estFees": "₹12 K",
+      "placementRate": "94%"
+    },
+    {
+      "name": "Calcutta University",
+      "cutoff": 580,
+      "avgPackage": "12 LPA",
+      "type": "Tier 1",
+      "location": "West Bengal",
+      "estFees": "₹24 K",
+      "placementRate": "80%"
+    },
+    {
+      "name": "Kalyani Govt Engg College",
+      "cutoff": 1100,
+      "avgPackage": "8 LPA",
+      "type": "Tier 2",
+      "location": "West Bengal",
+      "estFees": "₹45 K",
+      "placementRate": "70%"
+    },
+    {
+      "name": "IEM Kolkata",
+      "cutoff": 1800,
+      "avgPackage": "8 LPA",
+      "type": "Tier 2",
+      "location": "West Bengal",
+      "estFees": "₹6.5 L",
+      "placementRate": "75%"
+    },
+    {
+      "name": "Jalpaiguri Govt Engg College",
+      "cutoff": 1900,
+      "avgPackage": "7 LPA",
+      "type": "Tier 2",
+      "location": "West Bengal",
+      "estFees": "₹40 K",
+      "placementRate": "65%"
+    },
+    {
+      "name": "Heritage Institute",
+      "cutoff": 2400,
+      "avgPackage": "7 LPA",
+      "type": "Tier 2",
+      "location": "West Bengal",
+      "estFees": "₹4.5 L",
+      "placementRate": "70%"
+    },
+    {
+      "name": "Techno Main Salt Lake",
+      "cutoff": 3500,
+      "avgPackage": "6 LPA",
+      "type": "Tier 2",
+      "location": "West Bengal",
+      "estFees": "₹4.2 L",
+      "placementRate": "60%"
+    },
+    {
+      "name": "Haldia Institute of Tech",
+      "cutoff": 4500,
+      "avgPackage": "5.5 LPA",
+      "type": "Tier 3",
+      "location": "West Bengal",
+      "estFees": "₹4.0 L",
+      "placementRate": "55%"
+    }
+  ]
+};
