@@ -96,7 +96,22 @@ export function ReservationModal() {
             <X className="h-4 w-4" strokeWidth={3} />
           </button>
 
-          {!success ? (
+          {!userData ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <div className="mb-6 grid h-16 w-16 place-items-center rounded-full bg-red-100 text-red-600 shadow-sm">
+                <X className="h-8 w-8" strokeWidth={3} />
+              </div>
+              <h3 className="font-display text-xl font-bold text-red-600">
+                PLEASE LOGIN BEFORE YOU RESERVE YOUR SEAT
+              </h3>
+              <button
+                onClick={closeModal}
+                className="mt-8 rounded-full bg-slate-900 px-8 py-3 text-sm font-bold text-white shadow-md transition-all hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:outline-none"
+              >
+                Close
+              </button>
+            </div>
+          ) : !success ? (
             <>
               <div className="eyebrow text-indigo-600">Reserve Your Seat</div>
               <h3 className="mt-2 font-display text-2xl font-bold text-ink">
