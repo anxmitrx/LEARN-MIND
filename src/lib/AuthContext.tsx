@@ -9,6 +9,11 @@ interface AuthContextType {
   userData: any | null;
   showLoginModal: boolean;
   setShowLoginModal: (show: boolean) => void;
+  showPhoneVerificationModal: boolean;
+  setShowPhoneVerificationModal: (show: boolean) => void;
+  requestPhoneVerification: (callback: () => void) => void;
+  phoneVerificationCallback: (() => void) | null;
+  clearPhoneVerificationCallback: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -17,6 +22,11 @@ const AuthContext = createContext<AuthContextType>({
   userData: null,
   showLoginModal: false,
   setShowLoginModal: () => {},
+  showPhoneVerificationModal: false,
+  setShowPhoneVerificationModal: () => {},
+  requestPhoneVerification: () => {},
+  phoneVerificationCallback: null,
+  clearPhoneVerificationCallback: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -26,6 +36,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userData, setUserData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showPhoneVerificationModal, setShowPhoneVerificationModal] = useState(false);
+  const [phoneVerificationCallback, setPhoneVerificationCallback] = useState<(() => void) | null>(null);
+
+  const requestPhoneVerification = (callback: () => void) => {
+    if (userData?.phoneVerified) {
+      callback();
+    } else {
+      setPhoneVerificationCallback(() => callback);
+      setShowPhoneVerificationModal(true);
+    }
+  };
+
+  const clearPhoneVerificationCallback = () => {
+    setPhoneVerificationCallback(null);
+  };
 
   useEffect(() => {
     if (!auth) {
@@ -109,7 +134,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, userData, showLoginModal, setShowLoginModal }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      userData, 
+      showLoginModal, 
+      setShowLoginModal,
+      showPhoneVerificationModal,
+      setShowPhoneVerificationModal,
+      requestPhoneVerification,
+      phoneVerificationCallback,
+      clearPhoneVerificationCallback
+    }}>
       {children}
     </AuthContext.Provider>
   );

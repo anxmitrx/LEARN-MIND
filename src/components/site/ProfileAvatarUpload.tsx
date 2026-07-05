@@ -102,10 +102,10 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
       {isUploading ? (
         <Loader2 className="w-1/2 h-1/2 animate-spin text-indigo-600" />
       ) : displayUrl ? (
-        <img src={displayUrl} alt={user.displayName || "User"} className="h-full w-full object-cover" />
+        <img src={displayUrl} alt={userData?.name || user.displayName || "User"} className="h-full w-full object-cover" />
       ) : (
         <span className={`font-display uppercase ${textClasses}`}>
-          {user.displayName?.[0] || "U"}
+          {(userData?.name || user.displayName || "U")[0].toUpperCase()}
         </span>
       )}
       

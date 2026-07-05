@@ -19,6 +19,7 @@ import { AuthProvider, useAuth } from "@/lib/AuthContext";
 import { GlobalLoginModal } from "@/components/site/GlobalLoginModal";
 import { GlobalOnboardingModal } from "@/components/site/GlobalOnboardingModal";
 import { DashboardDrawer } from "@/components/site/DashboardDrawer";
+import { GlobalPhoneVerificationModal } from "@/components/site/GlobalPhoneVerificationModal";
 
 
 function NotFoundComponent() {
@@ -157,6 +158,7 @@ function RootComponent() {
           <ReservationModal />
           <GlobalLoginModal />
           <GlobalOnboardingModal />
+          <GlobalPhoneVerificationModal />
         </ReservationProvider>
       </AuthProvider>
     </QueryClientProvider>

@@ -102,7 +102,7 @@ function WebinarsPage() {
 }
 
 function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "past" }) {
-  const { user, setShowLoginModal } = useAuth();
+  const { user, userData, setShowLoginModal, requestPhoneVerification } = useAuth();
   const [isRegistering, setIsRegistering] = useState(false);
 
   const handleActionClick = async (e: React.MouseEvent) => {
@@ -114,21 +114,25 @@ function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "
     }
 
     if (type === "upcoming") {
-      setIsRegistering(true);
-      try {
-        await addDoc(collection(db, "webinar_registrations"), {
-          email: user.email,
-          name: user.displayName,
-          webinarTitle: webinar.title,
-          webinarId: webinar.id || webinar.title,
-          webinarDate: webinar.date,
-          webinarTime: webinar.time,
-          timestamp: serverTimestamp()
-        });
-      } catch (err) {
-        console.error("Error registering for webinar:", err);
-      }
-      setIsRegistering(false);
+      requestPhoneVerification(async () => {
+        setIsRegistering(true);
+        try {
+          await addDoc(collection(db, "webinar_registrations"), {
+            email: user.email,
+            name: userData?.name || user.displayName || "User",
+            webinarTitle: webinar.title,
+            webinarId: webinar.id || webinar.title,
+            webinarDate: webinar.date,
+            webinarTime: webinar.time,
+            timestamp: serverTimestamp()
+          });
+        } catch (err) {
+          console.error("Error registering for webinar:", err);
+        }
+        setIsRegistering(false);
+        window.open(webinar.link, "_blank");
+      });
+      return;
     }
     
     window.open(webinar.link, "_blank");

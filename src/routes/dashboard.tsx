@@ -1,10 +1,11 @@
 import { createFileRoute, redirect, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/AuthContext";
-import { LogOut, Calendar, Video, GraduationCap, Home } from "lucide-react";
+import { LogOut, Calendar, Video, GraduationCap, Home, Mail, Phone, Building } from "lucide-react";
 import { auth, db } from "@/lib/firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { ProfileAvatarUpload } from "@/components/site/ProfileAvatarUpload";
+import { EditProfileModal } from "@/components/site/EditProfileModal";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
 const dummySkillData = [
@@ -60,19 +61,45 @@ function DashboardComponent() {
         {/* Header */}
         <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 pointer-events-none" />
-          <div className="flex items-center gap-4">
+          <div className="flex items-start gap-5">
             <ProfileAvatarUpload />
-            <div>
-              <h1 className="font-display text-xl font-bold uppercase tracking-wide">
-                {user.displayName}
+            <div className="flex flex-col justify-center min-h-[80px]">
+              <h1 className="font-display text-2xl font-bold uppercase tracking-wide text-ink leading-none">
+                {userData?.name || user.displayName || "User"}
               </h1>
-              <p className="text-sm font-bold text-slate-600">
-                {userData?.level || "Level 1: Novice"}
-              </p>
+              <div className="flex items-center gap-3 mt-2 flex-wrap">
+                <span className="text-xs font-extrabold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  {userData?.level || "Level 1: Novice"}
+                </span>
+                <span className="text-sm font-medium text-slate-600 flex items-center gap-1.5 ml-2">
+                  <Mail className="w-3.5 h-3.5 text-indigo-400" />
+                  {user.email}
+                </span>
+                {userData?.phone && (
+                  <span className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
+                    <span className="text-slate-300 mx-1">•</span>
+                    <Phone className="w-3.5 h-3.5 text-indigo-400" />
+                    {userData.phone}
+                  </span>
+                )}
+                {userData?.institution && (
+                  <span className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
+                    <span className="text-slate-300 mx-1">•</span>
+                    <Building className="w-3.5 h-3.5 text-indigo-400" />
+                    {userData.institution}
+                  </span>
+                )}
+              </div>
+              {userData?.bio && (
+                <p className="text-sm font-medium text-slate-600 mt-3 max-w-xl leading-relaxed">
+                  {userData.bio}
+                </p>
+              )}
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 self-start md:self-auto mt-4 md:mt-0">
+            <EditProfileModal />
             <Link
               to="/"
               className="flex items-center gap-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 px-5 py-2.5 rounded-full font-display text-xs font-extrabold uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm border border-indigo-100 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"

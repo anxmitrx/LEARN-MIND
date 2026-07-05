@@ -86,7 +86,7 @@ export function DashboardDrawer() {
                 <div className="flex items-center gap-3">
                   <ProfileAvatarUpload />
                   <div>
-                    <h3 className="font-display text-sm font-bold uppercase tracking-wide text-ink">{user.displayName}</h3>
+                    <h3 className="font-display text-sm font-bold uppercase tracking-wide text-ink">{userData?.name || user.displayName || "User"}</h3>
                     <p className="text-xs font-bold text-slate-500">{userData?.level || "Level 1: Novice"}</p>
                   </div>
                 </div>

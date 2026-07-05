@@ -13,7 +13,7 @@ const inputCls =
 
 export function ReservationModal() {
   const { open, closeModal, preferredTrack } = useReservation();
-  const { userData } = useAuth();
+  const { userData, requestPhoneVerification } = useAuth();
   const { workshops: tracks } = useWorkshops();
   
   const [track, setTrack] = useState("");
@@ -48,25 +48,27 @@ export function ReservationModal() {
     e.preventDefault();
     if (!track || !userData || isSubmitting) return;
     
-    setIsSubmitting(true);
-    try {
-      await addDoc(collection(db, "reservations"), {
-        name: userData.name,
-        college: userData.institution || "Unknown",
-        email: userData.email,
-        phone: userData.phone || "Unknown",
-        track: track,
-        status: "pending",
-        source: "website",
-        timestamp: serverTimestamp()
-      });
-      setSuccess(true);
-      setTimeout(fireConfetti, 120);
-    } catch (err) {
-      console.error("Error writing reservation to Firestore:", err);
-    } finally {
-      setIsSubmitting(false);
-    }
+    requestPhoneVerification(async () => {
+      setIsSubmitting(true);
+      try {
+        await addDoc(collection(db, "reservations"), {
+          name: userData.name,
+          college: userData.institution || "Unknown",
+          email: userData.email,
+          phone: userData.phone || "Unknown",
+          track: track,
+          status: "pending",
+          source: "website",
+          timestamp: serverTimestamp()
+        });
+        setSuccess(true);
+        setTimeout(fireConfetti, 120);
+      } catch (err) {
+        console.error("Error writing reservation to Firestore:", err);
+      } finally {
+        setIsSubmitting(false);
+      }
+    });
   };
 
   if (!open) return null;
@@ -131,6 +133,11 @@ export function ReservationModal() {
                   <div className="flex items-center gap-3 text-sm text-slate-700 font-medium">
                     <PhoneIcon className="w-4 h-4 text-indigo-500" />
                     {userData.phone}
+                    {!userData.phoneVerified && (
+                      <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ml-auto">
+                        Unverified
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-3 text-sm text-slate-700 font-medium">
                     <Building className="w-4 h-4 text-indigo-500" />
@@ -166,7 +173,7 @@ export function ReservationModal() {
                     className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
                   >
                     {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="h-5 w-5" />}
-                    Confirm Reservation
+                    {userData?.phoneVerified ? "Confirm Reservation" : "Verify Phone & Reserve"}
                   </button>
                 </div>
               </form>
