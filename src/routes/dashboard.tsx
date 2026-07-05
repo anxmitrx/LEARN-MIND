@@ -80,6 +80,11 @@ function DashboardComponent() {
                     <span className="text-slate-300 mx-1">•</span>
                     <Phone className="w-3.5 h-3.5 text-indigo-400" />
                     {userData.phone}
+                    {userData.phoneVerified ? (
+                      <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ml-1">Verified</span>
+                    ) : (
+                      <span className="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ml-1">Unverified</span>
+                    )}
                   </span>
                 )}
                 {userData?.institution && (
