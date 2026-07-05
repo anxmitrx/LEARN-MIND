@@ -36,7 +36,8 @@ export function GlobalPhoneVerificationModal() {
       setError("");
       setIsLoading(false);
       setIsMockMode(false);
-      setPhoneInput(userData?.phone || "");
+      // Only set initial phone if empty to prevent overwriting user input on re-renders
+      setPhoneInput((prev) => prev || userData?.phone || "");
       
       // Initialize reCAPTCHA
       if (!recaptchaVerifierRef.current && auth) {
@@ -48,8 +49,17 @@ export function GlobalPhoneVerificationModal() {
           console.error("Recaptcha init error:", e);
         }
       }
+
+      return () => {
+        if (recaptchaVerifierRef.current) {
+          try {
+            recaptchaVerifierRef.current.clear();
+          } catch (e) {}
+          recaptchaVerifierRef.current = null;
+        }
+      };
     }
-  }, [showPhoneVerificationModal, userData, auth]);
+  }, [showPhoneVerificationModal, auth]);
 
   const closeModal = () => {
     setShowPhoneVerificationModal(false);
