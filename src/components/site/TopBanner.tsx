@@ -16,7 +16,8 @@ export function TopBanner() {
       >
         <span className="flex items-center justify-center gap-3 text-indigo-950 font-semibold md:text-lg leading-tight">
           <span>
-            🎓 CLASS 12 STUDENTS: Confused about college? Book a 1-on-1 Roadmap Consultation at our lowest price ever.
+            🎓 CLASS 12 STUDENTS: Confused about college? Book a 1-on-1 Roadmap Consultation at our
+            lowest price ever.
           </span>
           <span className="text-indigo-600 font-bold inline-block transition-transform duration-300 group-hover:translate-x-1">
             →

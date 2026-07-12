@@ -11,8 +11,8 @@ export function BentoCard({ children, className, tone = "white", ...rest }: Prop
     tone === "yellow"
       ? "bg-[#F8EDEB]/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-[#F8EDEB]/60 hover:border-white/80"
       : tone === "ink"
-      ? "bg-indigo-950/50 backdrop-blur-xl border border-white/30 text-white shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-indigo-950/65 hover:border-indigo-500/80"
-      : "bg-white/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-white/60 hover:border-white/80";
+        ? "bg-indigo-950/50 backdrop-blur-xl border border-white/30 text-white shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-indigo-950/65 hover:border-indigo-500/80"
+        : "bg-white/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-white/60 hover:border-white/80";
   return (
     <div
       {...rest}

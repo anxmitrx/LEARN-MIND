@@ -40,5 +40,9 @@ export function ScrambleText({ text, className, duration = 800 }: Props) {
     return () => io.disconnect();
   }, [text, duration]);
 
-  return <span ref={ref} className={className}>{out}</span>;
+  return (
+    <span ref={ref} className={className}>
+      {out}
+    </span>
+  );
 }

@@ -84,7 +84,9 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
               <div className="h-12 w-12 bg-indigo-500/10 text-indigo-600 border border-indigo-500/30 rounded-2xl flex items-center justify-center shadow-inner mb-4">
                 <ShieldAlert className="h-6 w-6" />
               </div>
-              <span className="font-mono text-[10px] font-bold text-indigo-600/70 tracking-widest uppercase">// CONTROL ACCESS</span>
+              <span className="font-mono text-[10px] font-bold text-indigo-600/70 tracking-widest uppercase">
+                // CONTROL ACCESS
+              </span>
               <h3 className="mt-2 font-display text-2xl font-extrabold text-slate-900 leading-tight">
                 Admin Authentication
               </h3>
@@ -106,10 +108,10 @@ export function AdminLoginModal({ isOpen, onClose }: AdminLoginModalProps) {
                 disabled={loading}
                 className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-50 text-slate-700 px-6 py-3.5 font-display text-sm font-bold rounded-2xl shadow-sm border border-slate-200 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer"
               >
-                <img 
-                  src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-                  alt="Google" 
-                  className="w-5 h-5" 
+                <img
+                  src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                  alt="Google"
+                  className="w-5 h-5"
                 />
                 {loading ? "Authenticating..." : "Continue with Google"}
               </button>

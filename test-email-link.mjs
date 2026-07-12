@@ -7,7 +7,7 @@ const firebaseConfig = {
   projectId: "learn-and-shine-dbf4d",
   storageBucket: "learn-and-shine-dbf4d.firebasestorage.app",
   messagingSenderId: "210311209668",
-  appId: "1:210311209668:web:a791d9458bd70cad2d9f91"
+  appId: "1:210311209668:web:a791d9458bd70cad2d9f91",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -20,7 +20,9 @@ const testEmailLink = async () => {
       handleCodeInApp: true,
     };
     await sendSignInLinkToEmail(auth, "test@example.com", actionCodeSettings);
-    console.log("SUCCESS: Email link sent to test@example.com. This means Email Link Auth IS enabled in Firebase Console.");
+    console.log(
+      "SUCCESS: Email link sent to test@example.com. This means Email Link Auth IS enabled in Firebase Console.",
+    );
   } catch (error) {
     console.error("ERROR sending email link:", error.code, error.message);
   }

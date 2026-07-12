@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from "fs";
 
 // Base verified data from 2023
 const baseColleges = [
@@ -13,7 +13,7 @@ const baseColleges = [
   { field: "Engineering", exam: "JEE Advanced", name: "IIT Hyderabad (CSE)", rank: 674 },
   { field: "Engineering", exam: "JEE Advanced", name: "IIT BHU (CSE)", rank: 1079 },
   { field: "Engineering", exam: "JEE Advanced", name: "IIT Indore (CSE)", rank: 1385 },
-  
+
   // Engineering (JEE Main) - NITs & IIITs
   { field: "Engineering", exam: "JEE Main", name: "NIT Trichy (CSE)", rank: 1147 },
   { field: "Engineering", exam: "JEE Main", name: "NIT Surathkal (CSE)", rank: 1984 },
@@ -63,11 +63,11 @@ const baseColleges = [
   { field: "Architecture", exam: "JEE Main P2", name: "SPA Vijayawada", rank: 350 },
   { field: "Architecture", exam: "JEE Main P2", name: "NIT Trichy", rank: 420 },
   { field: "Architecture", exam: "NATA", name: "CEPT Ahmedabad", rank: "148 Score" },
-  { field: "Architecture", exam: "NATA", name: "Sir JJ College Mumbai", rank: "155 Score" }
+  { field: "Architecture", exam: "NATA", name: "Sir JJ College Mumbai", rank: "155 Score" },
 ];
 
 function generateYearData(yearOffset) {
-  return baseColleges.map(college => {
+  return baseColleges.map((college) => {
     // Exact verified values for 2022
     if (yearOffset === -1) {
       if (college.name === "IIT Bombay (CSE)") return { ...college, rank: "60" };
@@ -76,7 +76,7 @@ function generateYearData(yearOffset) {
       if (college.name === "AIIMS New Delhi") return { ...college, rank: "61" };
       if (college.name === "BITS Pilani (CSE)") return { ...college, rank: "320 Score" };
     }
-    
+
     // For 2023, return base values exactly as verified
     if (yearOffset === 0) {
       return { ...college, rank: String(college.rank) };
@@ -84,7 +84,7 @@ function generateYearData(yearOffset) {
 
     // For 2024, 2025, 2026, we apply realistic variance to predict/simulate the ranks since 2025/26 don't exist yet
     // Strings like "%ile" or "Score" we keep mostly static or slightly vary
-    if (typeof college.rank === 'string') {
+    if (typeof college.rank === "string") {
       if (college.rank.includes("Score")) {
         const score = parseInt(college.rank);
         const newScore = score + Math.floor(yearOffset * 2);
@@ -96,7 +96,7 @@ function generateYearData(yearOffset) {
     // Numbers (ranks) get slightly harder/more competitive over time
     const rank = college.rank;
     // Decrease rank by ~1-3% per year to simulate growing competition
-    const newRank = Math.max(1, Math.floor(rank * (1 - (0.02 * yearOffset))));
+    const newRank = Math.max(1, Math.floor(rank * (1 - 0.02 * yearOffset)));
     return { ...college, rank: String(newRank) };
   });
 }
@@ -106,9 +106,9 @@ const data = [
   { year: "2025", colleges: generateYearData(2) },
   { year: "2024", colleges: generateYearData(1) },
   { year: "2023", colleges: generateYearData(0) }, // 2023 exact verified base
-  { year: "2022", colleges: generateYearData(-1) } // 2022 exact verified overwrites
+  { year: "2022", colleges: generateYearData(-1) }, // 2022 exact verified overwrites
 ];
 
 const content = "export const historicalData = " + JSON.stringify(data, null, 2) + ";";
-fs.writeFileSync('src/data/historicalCollegeData.ts', content);
-console.log('Successfully wrote data for years 2026, 2025, 2024, 2023, 2022');
+fs.writeFileSync("src/data/historicalCollegeData.ts", content);
+console.log("Successfully wrote data for years 2026, 2025, 2024, 2023, 2022");

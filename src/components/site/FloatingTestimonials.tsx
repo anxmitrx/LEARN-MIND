@@ -4,27 +4,32 @@ import { Quote } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "The business simulation module completely changed how I look at product launches. It's intense but incredibly rewarding.",
+    quote:
+      "The business simulation module completely changed how I look at product launches. It's intense but incredibly rewarding.",
     author: "Riya S.",
     role: "Engineering Student",
   },
   {
-    quote: "1:1 mentoring with an IIM alum gave me the exact roadmap I needed to pivot into product management.",
+    quote:
+      "1:1 mentoring with an IIM alum gave me the exact roadmap I needed to pivot into product management.",
     author: "Aditya M.",
     role: "Management Trainee",
   },
   {
-    quote: "You don't just learn theory here; you build and ship. The 48-hour sprints forced me out of my comfort zone.",
+    quote:
+      "You don't just learn theory here; you build and ship. The 48-hour sprints forced me out of my comfort zone.",
     author: "Sneha P.",
     role: "Computer Science Major",
   },
   {
-    quote: "The Inner Engineering sessions brought a surprising amount of clarity to my chaotic final semester.",
+    quote:
+      "The Inner Engineering sessions brought a surprising amount of clarity to my chaotic final semester.",
     author: "Vikram K.",
     role: "Final Year Student",
   },
   {
-    quote: "I landed my dream internship purely because of the industry visits and connections I made here.",
+    quote:
+      "I landed my dream internship purely because of the industry visits and connections I made here.",
     author: "Ananya D.",
     role: "Marketing Analytics",
   },
@@ -64,7 +69,7 @@ export function FloatingTestimonials() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 mb-16">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -103,13 +108,13 @@ export function FloatingTestimonials() {
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Quote className="h-20 w-20 text-indigo-300" />
               </div>
-              
+
               <Quote className="h-8 w-8 text-fuchsia-400 mb-6" />
-              
+
               <p className="text-lg font-medium leading-relaxed text-slate-200 mb-8 relative z-10">
                 "{t.quote}"
               </p>
-              
+
               <div className="flex items-center gap-4 border-t border-white/10 pt-6 relative z-10">
                 <div className="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
                   {t.author.charAt(0)}

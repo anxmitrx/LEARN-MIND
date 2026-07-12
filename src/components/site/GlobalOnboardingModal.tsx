@@ -31,9 +31,14 @@ const formatPhone = (raw: string) => {
 export function GlobalOnboardingModal() {
   const { user, userData, loading } = useAuth();
   const location = useLocation();
-  
+
   // Show if user is logged in, userData is loaded, onboardingComplete is not true, AND we are not on an admin page
-  const show = !loading && user && userData && !userData.onboardingComplete && !location.pathname.startsWith("/admin");
+  const show =
+    !loading &&
+    user &&
+    userData &&
+    !userData.onboardingComplete &&
+    !location.pathname.startsWith("/admin");
 
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -54,7 +59,7 @@ export function GlobalOnboardingModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit || !user) return;
-    
+
     setIsSubmitting(true);
     try {
       const userRef = doc(db, "users", user.uid);
@@ -64,7 +69,7 @@ export function GlobalOnboardingModal() {
         status,
         institution,
         phone: whatsapp,
-        onboardingComplete: true
+        onboardingComplete: true,
       });
       // The local AuthContext userData should automatically update via the onAuthStateChanged listener,
       // or at least a full page reload or state update will hide this modal.
@@ -92,9 +97,7 @@ export function GlobalOnboardingModal() {
           transition={{ type: "spring", stiffness: 220, damping: 24 }}
           className="relative w-full max-w-md overflow-hidden bg-white/90 backdrop-blur-xl border border-white/50 p-6 sm:p-8 shadow-2xl rounded-3xl text-center"
         >
-          <h3 className="font-display text-2xl font-bold text-ink">
-            Complete your profile
-          </h3>
+          <h3 className="font-display text-2xl font-bold text-ink">Complete your profile</h3>
           <p className="mt-2 text-sm font-semibold text-slate-600 mb-6">
             We need a few more details to personalize your Learn & Shine experience.
           </p>
@@ -135,13 +138,13 @@ export function GlobalOnboardingModal() {
               </Field>
             </div>
 
-            <Field label={status === 'working' ? "Company Name" : "School / College Name"}>
+            <Field label={status === "working" ? "Company Name" : "School / College Name"}>
               <input
                 type="text"
                 value={institution}
                 onChange={(e) => setInstitution(e.target.value)}
                 className={inputCls}
-                placeholder={status === 'working' ? "Google" : "VIT Vellore"}
+                placeholder={status === "working" ? "Google" : "VIT Vellore"}
               />
             </Field>
 

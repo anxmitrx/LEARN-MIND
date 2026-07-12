@@ -1,6 +1,16 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Trophy, MapPin, Building, GraduationCap, ChevronRight, AlertCircle, Sparkles, TrendingUp } from "lucide-react";
+import {
+  Search,
+  Trophy,
+  MapPin,
+  Building,
+  GraduationCap,
+  ChevronRight,
+  AlertCircle,
+  Sparkles,
+  TrendingUp,
+} from "lucide-react";
 import { MOCK_EXAM_DATA } from "@/lib/collegeData";
 
 interface RankVsCollegeProps {
@@ -46,7 +56,7 @@ export function RankVsCollege({ onSwitchTab }: RankVsCollegeProps) {
       <div className="bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6 md:p-10 mb-8 overflow-hidden relative">
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl" />
-        
+
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
             <span className="grid h-10 w-10 place-items-center bg-indigo-100 text-indigo-600 rounded-full shadow-sm">
@@ -56,15 +66,22 @@ export function RankVsCollege({ onSwitchTab }: RankVsCollegeProps) {
               Powered by 5-Year Data Report
             </span>
           </div>
-          
+
           <h2 className="font-display text-3xl md:text-5xl font-bold text-ink tracking-tight mb-4">
-            Find your <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Dream College</span>
+            Find your{" "}
+            <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Dream College
+            </span>
           </h2>
           <p className="text-slate-600 font-medium text-lg max-w-2xl mb-8">
-            Enter your competitive exam and expected rank to instantly discover which top colleges and courses you qualify for based on historical admission trends.
+            Enter your competitive exam and expected rank to instantly discover which top colleges
+            and courses you qualify for based on historical admission trends.
           </p>
 
-          <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4 items-end bg-white/40 p-4 rounded-2xl border border-white/50 shadow-sm">
+          <form
+            onSubmit={handleSearch}
+            className="grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4 items-end bg-white/40 p-4 rounded-2xl border border-white/50 shadow-sm"
+          >
             <div>
               <label className="block text-xs font-display font-extrabold uppercase tracking-wider text-ink mb-2">
                 Select Exam
@@ -127,7 +144,10 @@ export function RankVsCollege({ onSwitchTab }: RankVsCollegeProps) {
           >
             <div className="flex items-center justify-between">
               <h3 className="font-display text-2xl font-bold text-ink">
-                Predicted Options <span className="text-slate-400 text-lg font-medium">({matchedColleges.length})</span>
+                Predicted Options{" "}
+                <span className="text-slate-400 text-lg font-medium">
+                  ({matchedColleges.length})
+                </span>
               </h3>
             </div>
 
@@ -149,11 +169,11 @@ export function RankVsCollege({ onSwitchTab }: RankVsCollegeProps) {
                         <TrendingUp className="w-3 h-3" /> Safe
                       </span>
                     </div>
-                    
+
                     <h4 className="font-display text-lg font-bold text-slate-900 leading-tight mb-2 group-hover:text-indigo-600 transition-colors">
                       {college.name}
                     </h4>
-                    
+
                     <div className="space-y-2 mt-4">
                       <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
                         <MapPin className="w-4 h-4 text-slate-400" /> {college.location}
@@ -164,7 +184,10 @@ export function RankVsCollege({ onSwitchTab }: RankVsCollegeProps) {
                         </div>
                       )}
                       <div className="flex items-center gap-2 text-sm text-slate-600 font-medium border-t border-slate-100 pt-2 mt-2">
-                        <Trophy className="w-4 h-4 text-slate-400" /> Cutoff Rank: <strong className="text-slate-900">{college.closingRank.toLocaleString()}</strong>
+                        <Trophy className="w-4 h-4 text-slate-400" /> Cutoff Rank:{" "}
+                        <strong className="text-slate-900">
+                          {college.closingRank.toLocaleString()}
+                        </strong>
                       </div>
                     </div>
                   </motion.div>
@@ -175,9 +198,13 @@ export function RankVsCollege({ onSwitchTab }: RankVsCollegeProps) {
                 <div className="mx-auto grid h-16 w-16 place-items-center bg-orange-100 text-orange-500 rounded-full mb-4">
                   <AlertCircle className="h-8 w-8" />
                 </div>
-                <h4 className="font-display text-xl font-bold text-slate-900 mb-2">No exact matches found</h4>
+                <h4 className="font-display text-xl font-bold text-slate-900 mb-2">
+                  No exact matches found
+                </h4>
                 <p className="text-slate-600 font-medium max-w-md mx-auto">
-                  Based on the 5-year historical data, a rank of {rankInput} in {selectedExam?.examName} might be highly competitive for our listed top-tier colleges. 
+                  Based on the 5-year historical data, a rank of {rankInput} in{" "}
+                  {selectedExam?.examName} might be highly competitive for our listed top-tier
+                  colleges.
                 </p>
               </div>
             )}
@@ -196,7 +223,9 @@ export function RankVsCollege({ onSwitchTab }: RankVsCollegeProps) {
                 Want a personalized roadmap?
               </h3>
               <p className="text-indigo-200 font-medium mb-8 max-w-xl mx-auto">
-                These are just historical predictions. Talk to an expert counselor to build a foolproof backup strategy, explore alternative exams, and find the perfect college fit for your profile.
+                These are just historical predictions. Talk to an expert counselor to build a
+                foolproof backup strategy, explore alternative exams, and find the perfect college
+                fit for your profile.
               </p>
               <button
                 onClick={onSwitchTab}

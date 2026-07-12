@@ -11,10 +11,10 @@ const db = getFirestore(app);
 async function check() {
   const res = await getDocs(collection(db, "reservations"));
   console.log("Reservations count:", res.size);
-  
+
   const quizzes = await getDocs(collection(db, "quiz_results"));
   console.log("Quiz Results count:", quizzes.size);
-  
+
   process.exit(0);
 }
 

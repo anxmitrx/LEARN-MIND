@@ -15,23 +15,27 @@ export function useWebinars() {
     }
 
     const q = query(collection(db, "webinars"));
-    
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      if (snapshot.empty) {
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        if (snapshot.empty) {
+          setWebinars(localWebinars);
+        } else {
+          const list = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })) as Webinar[];
+          setWebinars(list);
+        }
+        setLoading(false);
+      },
+      (err) => {
+        console.error("Error fetching webinars:", err);
         setWebinars(localWebinars);
-      } else {
-        const list = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Webinar[];
-        setWebinars(list);
-      }
-      setLoading(false);
-    }, (err) => {
-      console.error("Error fetching webinars:", err);
-      setWebinars(localWebinars);
-      setLoading(false);
-    });
+        setLoading(false);
+      },
+    );
 
     return () => unsubscribe();
   }, []);

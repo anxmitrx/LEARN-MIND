@@ -16,12 +16,19 @@ export function DashboardDrawer() {
     if (!user || !db) return;
 
     const wq = query(collection(db, "reservations"), where("email", "==", user.email));
-    const unsubW = onSnapshot(wq, (snap) => setMyWorkshops(snap.docs.map(d => ({id: d.id, ...d.data()}))));
+    const unsubW = onSnapshot(wq, (snap) =>
+      setMyWorkshops(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    );
 
     const webq = query(collection(db, "webinar_registrations"), where("email", "==", user.email));
-    const unsubWeb = onSnapshot(webq, (snap) => setMyWebinars(snap.docs.map(d => ({id: d.id, ...d.data()}))));
+    const unsubWeb = onSnapshot(webq, (snap) =>
+      setMyWebinars(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    );
 
-    return () => { unsubW(); unsubWeb(); };
+    return () => {
+      unsubW();
+      unsubWeb();
+    };
   }, [user]);
 
   if (!user) return null;
@@ -71,7 +78,9 @@ export function DashboardDrawer() {
             className="fixed top-0 right-0 bottom-0 z-[60] w-full max-w-md bg-white/90 backdrop-blur-2xl border-l border-white/50 shadow-2xl overflow-y-auto flex flex-col"
           >
             <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-white/50 px-6 py-4 flex items-center justify-between">
-              <h2 className="font-display text-lg font-bold text-ink uppercase tracking-wider">Dashboard</h2>
+              <h2 className="font-display text-lg font-bold text-ink uppercase tracking-wider">
+                Dashboard
+              </h2>
               <button
                 onClick={() => setIsOpen(false)}
                 className="grid h-8 w-8 place-items-center bg-slate-100 text-slate-600 rounded-full hover:bg-slate-200 transition-colors cursor-pointer"
@@ -86,8 +95,12 @@ export function DashboardDrawer() {
                 <div className="flex items-center gap-3">
                   <ProfileAvatarUpload />
                   <div>
-                    <h3 className="font-display text-sm font-bold uppercase tracking-wide text-ink">{userData?.name || user.displayName || "User"}</h3>
-                    <p className="text-xs font-bold text-slate-500">{userData?.level || "Level 1: Novice"}</p>
+                    <h3 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+                      {userData?.name || user.displayName || "User"}
+                    </h3>
+                    <p className="text-xs font-bold text-slate-500">
+                      {userData?.level || "Level 1: Novice"}
+                    </p>
                   </div>
                 </div>
                 <button
@@ -102,14 +115,18 @@ export function DashboardDrawer() {
               {/* Stats Overview */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white/60 border border-white/50 shadow-sm rounded-2xl p-4 text-center">
-                  <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Workshops</div>
+                  <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">
+                    Workshops
+                  </div>
                   <div className="mt-1 flex items-center justify-center gap-2 text-indigo-600">
                     <GraduationCap className="h-4 w-4" />
                     <span className="text-2xl font-display font-bold">{myWorkshops.length}</span>
                   </div>
                 </div>
                 <div className="bg-white/60 border border-white/50 shadow-sm rounded-2xl p-4 text-center">
-                  <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Webinars</div>
+                  <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">
+                    Webinars
+                  </div>
                   <div className="mt-1 flex items-center justify-center gap-2 text-purple-600">
                     <Video className="h-4 w-4" />
                     <span className="text-2xl font-display font-bold">{myWebinars.length}</span>
@@ -132,7 +149,10 @@ export function DashboardDrawer() {
 
                 <div className="grid gap-3">
                   {myWorkshops.map((w, i) => (
-                    <div key={i} className="flex items-center gap-3 bg-white border border-slate-100 p-3 rounded-xl shadow-sm">
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"
+                    >
                       <div className="h-8 w-8 shrink-0 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center">
                         <GraduationCap className="h-4 w-4" />
                       </div>
@@ -140,13 +160,18 @@ export function DashboardDrawer() {
                         <div className="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider mb-0.5">
                           Workshop • {w.status || "Pending"}
                         </div>
-                        <div className="font-bold text-sm text-slate-800 leading-tight">{w.track || "Reserved Workshop"}</div>
+                        <div className="font-bold text-sm text-slate-800 leading-tight">
+                          {w.track || "Reserved Workshop"}
+                        </div>
                       </div>
                     </div>
                   ))}
 
                   {myWebinars.map((w, i) => (
-                    <div key={i} className="flex items-center gap-3 bg-white border border-slate-100 p-3 rounded-xl shadow-sm">
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 bg-white border border-slate-100 p-3 rounded-xl shadow-sm"
+                    >
                       <div className="h-8 w-8 shrink-0 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center">
                         <Video className="h-4 w-4" />
                       </div>
@@ -154,13 +179,14 @@ export function DashboardDrawer() {
                         <div className="text-[10px] font-extrabold text-purple-600 uppercase tracking-wider mb-0.5">
                           Webinar • {w.webinarDate}
                         </div>
-                        <div className="font-bold text-sm text-slate-800 leading-tight">{w.webinarTitle}</div>
+                        <div className="font-bold text-sm text-slate-800 leading-tight">
+                          {w.webinarTitle}
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-
             </div>
           </motion.div>
         )}

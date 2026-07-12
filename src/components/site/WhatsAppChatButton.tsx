@@ -1,6 +1,6 @@
 export function WhatsAppChatButton() {
   // Replace this with your actual WhatsApp phone number (including country code, e.g., 91 for India)
-  const phoneNumber = "919874796057"; 
+  const phoneNumber = "919874796057";
   const message = "Hi! I'd like to know more about the courses."; // Optional default message
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 

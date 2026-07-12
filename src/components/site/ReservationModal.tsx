@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, X, Building, Phone as PhoneIcon, Mail, User as UserIcon, Loader2 } from "lucide-react";
+import {
+  Check,
+  X,
+  Building,
+  Phone as PhoneIcon,
+  Mail,
+  User as UserIcon,
+  Loader2,
+} from "lucide-react";
 import confetti from "canvas-confetti";
 import { useReservation } from "./ReservationContext";
 import { useWorkshops } from "@/hooks/useWorkshops";
@@ -15,7 +23,7 @@ export function ReservationModal() {
   const { open, closeModal, preferredTrack } = useReservation();
   const { userData, requestPhoneVerification } = useAuth();
   const { workshops: tracks } = useWorkshops();
-  
+
   const [track, setTrack] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -47,7 +55,7 @@ export function ReservationModal() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!track || !userData || isSubmitting) return;
-    
+
     requestPhoneVerification(async () => {
       setIsSubmitting(true);
       try {
@@ -59,7 +67,7 @@ export function ReservationModal() {
           track: track,
           status: "pending",
           source: "website",
-          timestamp: serverTimestamp()
+          timestamp: serverTimestamp(),
         });
         setSuccess(true);
         setTimeout(fireConfetti, 120);
@@ -119,7 +127,7 @@ export function ReservationModal() {
               <h3 className="mt-2 font-display text-2xl font-bold text-ink">
                 Confirm your details
               </h3>
-              
+
               {userData && (
                 <div className="mt-6 space-y-3 bg-white/30 border border-white/40 p-4 rounded-2xl">
                   <div className="flex items-center gap-3 text-sm text-slate-700 font-medium">
@@ -149,7 +157,9 @@ export function ReservationModal() {
               <form onSubmit={submit} className="mt-6 space-y-5">
                 <label className="block">
                   <div className="mb-1.5 flex items-baseline justify-between gap-2">
-                    <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink">Preferred Track</span>
+                    <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink">
+                      Preferred Track
+                    </span>
                   </div>
                   <select
                     autoFocus
@@ -172,7 +182,11 @@ export function ReservationModal() {
                     disabled={!track || isSubmitting}
                     className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
                   >
-                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="h-5 w-5" />}
+                    {isSubmitting ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <Check className="h-5 w-5" />
+                    )}
                     {userData?.phoneVerified ? "Confirm Reservation" : "Verify Phone & Reserve"}
                   </button>
                 </div>
@@ -189,7 +203,8 @@ export function ReservationModal() {
               </div>
               <h3 className="mt-6 font-display text-2xl font-bold text-ink">You're on the list!</h3>
               <p className="mt-3 text-sm font-medium text-slate-600 leading-relaxed max-w-[280px]">
-                We've successfully secured your reservation. Keep an eye on your inbox for the official invite.
+                We've successfully secured your reservation. Keep an eye on your inbox for the
+                official invite.
               </p>
               <button
                 onClick={closeModal}

@@ -32,7 +32,7 @@ export function useWorkshops() {
       (error) => {
         console.error("Error fetching workshops:", error);
         setLoading(false);
-      }
+      },
     );
 
     return () => unsubscribe();
@@ -42,14 +42,14 @@ export function useWorkshops() {
 }
 
 export async function fetchWorkshopBySlug(slug: string): Promise<Track | null> {
-  if (!db) return localTracks.find(t => t.slug === slug) || null;
+  if (!db) return localTracks.find((t) => t.slug === slug) || null;
   try {
     const q = query(collection(db, "workshops"), where("slug", "==", slug));
     const snapshot = await getDocs(q);
-    if (snapshot.empty) return localTracks.find(t => t.slug === slug) || null;
+    if (snapshot.empty) return localTracks.find((t) => t.slug === slug) || null;
     return snapshot.docs[0].data() as unknown as Track;
   } catch (error) {
     console.error("Error fetching workshop by slug:", error);
-    return localTracks.find(t => t.slug === slug) || null;
+    return localTracks.find((t) => t.slug === slug) || null;
   }
 }

@@ -12,7 +12,7 @@ const mentorBenefits = [
     iconColor: "text-blue-600",
     bg: "bg-blue-50",
     image: "/assets/images/live_mentorship.png",
-    slug: "live-mentorship"
+    slug: "live-mentorship",
   },
   {
     icon: FileText,
@@ -23,7 +23,7 @@ const mentorBenefits = [
     iconColor: "text-emerald-600",
     bg: "bg-emerald-50",
     image: "/assets/images/resume_reviews.png",
-    slug: "resume-reviews"
+    slug: "resume-reviews",
   },
   {
     icon: MessageCircle,
@@ -34,7 +34,7 @@ const mentorBenefits = [
     iconColor: "text-fuchsia-600",
     bg: "bg-fuchsia-50",
     image: "/assets/images/slack_access.png",
-    slug: "slack-access"
+    slug: "slack-access",
   },
   {
     icon: Briefcase,
@@ -45,7 +45,7 @@ const mentorBenefits = [
     iconColor: "text-amber-600",
     bg: "bg-amber-50",
     image: "/assets/images/direct_referrals.png",
-    slug: "direct-referrals"
+    slug: "direct-referrals",
   },
 ];
 
@@ -54,10 +54,10 @@ export function MentorBenefitsBento() {
     <section className="relative bg-slate-50 py-24 sm:py-32 overflow-hidden">
       {/* Decorative background grids */}
       <div className="absolute inset-0 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.05] pointer-events-none" />
-      
+
       <div className="container relative mx-auto max-w-7xl px-4 sm:px-6 z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -66,22 +66,26 @@ export function MentorBenefitsBento() {
             <Sparkles className="h-4 w-4" />
             The Mentorship Advantage
           </motion.span>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="font-display text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight"
           >
-            An ecosystem built to <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600">accelerate you.</span>
+            An ecosystem built to{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600">
+              accelerate you.
+            </span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             className="mt-6 text-lg text-slate-600 max-w-2xl mx-auto"
           >
-            We don't just give you advice; we provide the tools, the network, and the direct access you need to break into the industry.
+            We don't just give you advice; we provide the tools, the network, and the direct access
+            you need to break into the industry.
           </motion.p>
         </div>
 
@@ -97,13 +101,22 @@ export function MentorBenefitsBento() {
                 transition={{ delay: i * 0.1, duration: 0.5, type: "spring", stiffness: 100 }}
                 className={`group relative overflow-hidden bg-white border border-slate-200/60 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-500/10 rounded-[2rem] p-8 lg:p-10 transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between ${item.colSpan}`}
               >
-                <Link to="/blog/$slug" params={{ slug: item.slug }} className="absolute inset-0 z-30" aria-label={`Read more about ${item.title}`} />
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: item.slug }}
+                  className="absolute inset-0 z-30"
+                  aria-label={`Read more about ${item.title}`}
+                />
                 {/* Hover Gradient Overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
-                
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`}
+                />
+
                 <div className="relative z-10 w-full flex flex-col h-full pointer-events-none">
                   <div className="flex justify-between items-start mb-6">
-                    <div className={`w-14 h-14 rounded-2xl ${item.bg} border border-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-white transition-all duration-500 z-20`}>
+                    <div
+                      className={`w-14 h-14 rounded-2xl ${item.bg} border border-white flex items-center justify-center shadow-sm group-hover:scale-110 group-hover:bg-white transition-all duration-500 z-20`}
+                    >
                       <Icon className={`w-7 h-7 ${item.iconColor}`} />
                     </div>
                     <div className="h-10 w-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center opacity-0 -translate-x-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-0 z-20">
@@ -115,14 +128,14 @@ export function MentorBenefitsBento() {
                     <div className="relative flex-grow min-h-[160px] w-full mb-6 rounded-2xl overflow-hidden -mt-16 group-hover:scale-[1.02] transition-transform duration-500">
                       {/* Gradient overlay to ensure text/icons contrast */}
                       <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-transparent z-10" />
-                      <img 
-                        src={item.image} 
-                        alt={item.title} 
-                        className="absolute inset-0 w-full h-full object-cover rounded-2xl grayscale-[20%] group-hover:grayscale-0 transition-all duration-700" 
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="absolute inset-0 w-full h-full object-cover rounded-2xl grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
                       />
                     </div>
                   )}
-                  
+
                   <div className={item.image ? "mt-0" : "mt-auto"}>
                     <h3 className="text-2xl font-bold text-slate-900 font-display mb-4 group-hover:text-indigo-900 transition-colors duration-300 tracking-tight">
                       {item.title}

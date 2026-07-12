@@ -44,7 +44,7 @@ export function WebinarFeaturesBento() {
   return (
     <section className="relative bg-slate-50 py-24 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-100 via-transparent to-transparent opacity-60 pointer-events-none" />
-      
+
       <div className="container relative mx-auto max-w-7xl px-4 sm:px-6 z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,7 +52,9 @@ export function WebinarFeaturesBento() {
           viewport={{ once: true }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="eyebrow text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">Why Join Live?</span>
+          <span className="eyebrow text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+            Why Join Live?
+          </span>
           <h2 className="mt-6 font-display text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">
             More than just a presentation.
           </h2>
@@ -71,20 +73,22 @@ export function WebinarFeaturesBento() {
                 className={`group relative overflow-hidden bg-white/70 backdrop-blur-xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] rounded-3xl p-8 transition-all duration-500 hover:-translate-y-1 flex flex-col justify-between ${item.colSpan}`}
               >
                 {/* Hover Gradient Overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                />
+
                 <div className="relative z-10 flex flex-col h-full">
-                  <div className={`w-14 h-14 rounded-2xl ${item.bg} border border-white flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shrink-0`}>
+                  <div
+                    className={`w-14 h-14 rounded-2xl ${item.bg} border border-white flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shrink-0`}
+                  >
                     <Icon className={`w-7 h-7 ${item.iconColor}`} />
                   </div>
-                  
+
                   <div>
                     <h3 className="text-2xl font-bold text-slate-900 font-display mb-3">
                       {item.title}
                     </h3>
-                    <p className="text-slate-600 font-medium leading-relaxed">
-                      {item.text}
-                    </p>
+                    <p className="text-slate-600 font-medium leading-relaxed">{item.text}</p>
                   </div>
                 </div>
               </motion.div>

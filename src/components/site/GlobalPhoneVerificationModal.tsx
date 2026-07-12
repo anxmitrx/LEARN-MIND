@@ -10,13 +10,13 @@ const inputCls =
   "w-full border border-white/50 bg-white/25 px-4 py-3 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none transition-all rounded-xl focus:bg-white/45 focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none";
 
 export function GlobalPhoneVerificationModal() {
-  const { 
-    user, 
-    userData, 
-    showPhoneVerificationModal, 
-    setShowPhoneVerificationModal, 
+  const {
+    user,
+    userData,
+    showPhoneVerificationModal,
+    setShowPhoneVerificationModal,
     phoneVerificationCallback,
-    clearPhoneVerificationCallback
+    clearPhoneVerificationCallback,
   } = useAuth();
 
   const [step, setStep] = useState<"phone" | "otp" | "success">("phone");
@@ -38,12 +38,12 @@ export function GlobalPhoneVerificationModal() {
       setIsMockMode(false);
       // Only set initial phone if empty to prevent overwriting user input on re-renders
       setPhoneInput((prev: string) => prev || userData?.phone || "");
-      
+
       // Initialize reCAPTCHA
       if (!recaptchaVerifierRef.current && auth) {
         try {
-          recaptchaVerifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            size: 'invisible'
+          recaptchaVerifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
+            size: "invisible",
           });
         } catch (e) {
           console.error("Recaptcha init error:", e);
@@ -75,9 +75,15 @@ export function GlobalPhoneVerificationModal() {
 
     try {
       // Ensure phone format contains country code, primitive check
-      const formattedPhone = phoneInput.startsWith("+") ? phoneInput : `+91${phoneInput.replace(/\D/g, '')}`;
-      
-      const confResult = await linkWithPhoneNumber(user, formattedPhone, recaptchaVerifierRef.current);
+      const formattedPhone = phoneInput.startsWith("+")
+        ? phoneInput
+        : `+91${phoneInput.replace(/\D/g, "")}`;
+
+      const confResult = await linkWithPhoneNumber(
+        user,
+        formattedPhone,
+        recaptchaVerifierRef.current,
+      );
       setConfirmationResult(confResult);
       setStep("otp");
     } catch (err: any) {
@@ -113,16 +119,16 @@ export function GlobalPhoneVerificationModal() {
       } else {
         await confirmationResult!.confirm(otp);
       }
-      
+
       // Update Firestore
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
         phone: phoneInput, // Save the verified phone number
-        phoneVerified: true
+        phoneVerified: true,
       });
 
       setStep("success");
-      
+
       // Execute the pending action after a short delay
       setTimeout(() => {
         setShowPhoneVerificationModal(false);
@@ -131,10 +137,13 @@ export function GlobalPhoneVerificationModal() {
           clearPhoneVerificationCallback();
         }
       }, 1000);
-
     } catch (err: any) {
       console.error("Error verifying OTP:", err);
-      setError(err.message === "Invalid test code (use 123456)." ? err.message : "Invalid verification code. Please try again.");
+      setError(
+        err.message === "Invalid test code (use 123456)."
+          ? err.message
+          : "Invalid verification code. Please try again.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -170,9 +179,7 @@ export function GlobalPhoneVerificationModal() {
           {step === "phone" && (
             <>
               <div className="eyebrow text-indigo-600">Verification Required</div>
-              <h3 className="mt-2 font-display text-2xl font-bold text-ink">
-                Verify your phone
-              </h3>
+              <h3 className="mt-2 font-display text-2xl font-bold text-ink">Verify your phone</h3>
               <p className="mt-2 text-sm text-slate-600 font-medium">
                 To continue, please verify your phone number via SMS.
               </p>
@@ -180,7 +187,9 @@ export function GlobalPhoneVerificationModal() {
               <form onSubmit={handleSendOtp} className="mt-6 space-y-5">
                 <label className="block">
                   <div className="mb-1.5 flex items-baseline justify-between gap-2">
-                    <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink">Phone Number (with Country Code)</span>
+                    <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink">
+                      Phone Number (with Country Code)
+                    </span>
                   </div>
                   <div className="relative flex items-center">
                     <Phone className="absolute left-4 w-4 h-4 text-slate-400" />
@@ -213,17 +222,18 @@ export function GlobalPhoneVerificationModal() {
           {step === "otp" && (
             <>
               <div className="eyebrow text-indigo-600">Verification</div>
-              <h3 className="mt-2 font-display text-2xl font-bold text-ink">
-                Enter your code
-              </h3>
+              <h3 className="mt-2 font-display text-2xl font-bold text-ink">Enter your code</h3>
               <p className="mt-2 text-sm text-slate-600 font-medium">
-                We've sent a 6-digit verification code to <span className="font-bold text-slate-800">{phoneInput}</span>.
+                We've sent a 6-digit verification code to{" "}
+                <span className="font-bold text-slate-800">{phoneInput}</span>.
               </p>
 
               <form onSubmit={handleVerify} className="mt-6 space-y-5">
                 <label className="block">
                   <div className="mb-1.5 flex items-baseline justify-between gap-2">
-                    <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink">Verification Code</span>
+                    <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink">
+                      Verification Code
+                    </span>
                   </div>
                   <input
                     type="text"
@@ -243,7 +253,11 @@ export function GlobalPhoneVerificationModal() {
                     disabled={otp.length !== 6 || isLoading}
                     className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none cursor-pointer"
                   >
-                    {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="h-5 w-5" />}
+                    {isLoading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <Check className="h-5 w-5" />
+                    )}
                     Verify & Continue
                   </button>
                   <button

@@ -1,10 +1,10 @@
-import fs from 'fs';
+import fs from "fs";
 
 const years = ["2026", "2025", "2024", "2023", "2022"];
 
 // Using actual reported General Category OS (Other State) Closing Ranks for Round 6 where applicable
 const realData = {
-  "2024": {
+  2024: {
     engineering: [
       { name: "IIT Bombay (CSE)", exam: "JEE Advanced", rank: "68" },
       { name: "IIT Delhi (CSE)", exam: "JEE Advanced", rank: "116" },
@@ -21,7 +21,7 @@ const realData = {
       { name: "Calcutta University (CSE)", exam: "WBJEE", rank: "580" },
       { name: "IEM Kolkata (CSE)", exam: "WBJEE", rank: "1800" },
       { name: "BITS Pilani (CSE)", exam: "BITSAT", rank: "327 Score" },
-      { name: "VIT Vellore (CSE)", exam: "VITEEE", rank: "3800" }
+      { name: "VIT Vellore (CSE)", exam: "VITEEE", rank: "3800" },
     ],
     medical: [
       { name: "AIIMS New Delhi", exam: "NEET", rank: "47" },
@@ -31,23 +31,23 @@ const realData = {
       { name: "VMMC Delhi", exam: "NEET", rank: "141" },
       { name: "KGMU Lucknow", exam: "NEET", rank: "1050" },
       { name: "Seth GS Mumbai", exam: "NEET", rank: "680" },
-      { name: "BJ Medical College", exam: "NEET", rank: "715" }
+      { name: "BJ Medical College", exam: "NEET", rank: "715" },
     ],
     pharma: [
       { name: "Jamia Hamdard", exam: "NEET", rank: "99.1 %ile" },
       { name: "Panjab University", exam: "PUCET", rank: "98.5 %ile" },
       { name: "NIPER Mohali", exam: "NIPER JEE", rank: "45" },
-      { name: "BITS Pilani", exam: "BITSAT", rank: "155 Score" }
+      { name: "BITS Pilani", exam: "BITSAT", rank: "155 Score" },
     ],
     architecture: [
       { name: "SPA Delhi", exam: "JEE Main P2", rank: "142" },
       { name: "SPA Bhopal", exam: "JEE Main P2", rank: "258" },
       { name: "CEPT Ahmedabad", exam: "NATA", rank: "152 Score" },
       { name: "NIT Trichy", exam: "JEE Main P2", rank: "410" },
-      { name: "Jadavpur University", exam: "WBJEE", rank: "450" }
-    ]
+      { name: "Jadavpur University", exam: "WBJEE", rank: "450" },
+    ],
   },
-  "2023": {
+  2023: {
     engineering: [
       { name: "IIT Bombay (CSE)", exam: "JEE Advanced", rank: "67" },
       { name: "IIT Delhi (CSE)", exam: "JEE Advanced", rank: "118" },
@@ -64,7 +64,7 @@ const realData = {
       { name: "Calcutta University (CSE)", exam: "WBJEE", rank: "630" },
       { name: "IEM Kolkata (CSE)", exam: "WBJEE", rank: "2010" },
       { name: "BITS Pilani (CSE)", exam: "BITSAT", rank: "331 Score" },
-      { name: "VIT Vellore (CSE)", exam: "VITEEE", rank: "4200" }
+      { name: "VIT Vellore (CSE)", exam: "VITEEE", rank: "4200" },
     ],
     medical: [
       { name: "AIIMS New Delhi", exam: "NEET", rank: "57" },
@@ -74,23 +74,23 @@ const realData = {
       { name: "VMMC Delhi", exam: "NEET", rank: "107" },
       { name: "KGMU Lucknow", exam: "NEET", rank: "1097" },
       { name: "Seth GS Mumbai", exam: "NEET", rank: "656" },
-      { name: "BJ Medical College", exam: "NEET", rank: "714" }
+      { name: "BJ Medical College", exam: "NEET", rank: "714" },
     ],
     pharma: [
       { name: "Jamia Hamdard", exam: "NEET", rank: "99.0 %ile" },
       { name: "Panjab University", exam: "PUCET", rank: "98.2 %ile" },
       { name: "NIPER Mohali", exam: "NIPER JEE", rank: "51" },
-      { name: "BITS Pilani", exam: "BITSAT", rank: "153 Score" }
+      { name: "BITS Pilani", exam: "BITSAT", rank: "153 Score" },
     ],
     architecture: [
       { name: "SPA Delhi", exam: "JEE Main P2", rank: "155" },
       { name: "SPA Bhopal", exam: "JEE Main P2", rank: "270" },
       { name: "CEPT Ahmedabad", exam: "NATA", rank: "148 Score" },
       { name: "NIT Trichy", exam: "JEE Main P2", rank: "435" },
-      { name: "Jadavpur University", exam: "WBJEE", rank: "465" }
-    ]
+      { name: "Jadavpur University", exam: "WBJEE", rank: "465" },
+    ],
   },
-  "2022": {
+  2022: {
     engineering: [
       { name: "IIT Bombay (CSE)", exam: "JEE Advanced", rank: "61" },
       { name: "IIT Delhi (CSE)", exam: "JEE Advanced", rank: "102" },
@@ -107,7 +107,7 @@ const realData = {
       { name: "Calcutta University (CSE)", exam: "WBJEE", rank: "610" },
       { name: "IEM Kolkata (CSE)", exam: "WBJEE", rank: "2100" },
       { name: "BITS Pilani (CSE)", exam: "BITSAT", rank: "320 Score" },
-      { name: "VIT Vellore (CSE)", exam: "VITEEE", rank: "4500" }
+      { name: "VIT Vellore (CSE)", exam: "VITEEE", rank: "4500" },
     ],
     medical: [
       { name: "AIIMS New Delhi", exam: "NEET", rank: "61" },
@@ -117,23 +117,23 @@ const realData = {
       { name: "VMMC Delhi", exam: "NEET", rank: "129" },
       { name: "KGMU Lucknow", exam: "NEET", rank: "1020" },
       { name: "Seth GS Mumbai", exam: "NEET", rank: "680" },
-      { name: "BJ Medical College", exam: "NEET", rank: "740" }
+      { name: "BJ Medical College", exam: "NEET", rank: "740" },
     ],
     pharma: [
       { name: "Jamia Hamdard", exam: "NEET", rank: "98.8 %ile" },
       { name: "Panjab University", exam: "PUCET", rank: "98.0 %ile" },
       { name: "NIPER Mohali", exam: "NIPER JEE", rank: "55" },
-      { name: "BITS Pilani", exam: "BITSAT", rank: "149 Score" }
+      { name: "BITS Pilani", exam: "BITSAT", rank: "149 Score" },
     ],
     architecture: [
       { name: "SPA Delhi", exam: "JEE Main P2", rank: "160" },
       { name: "SPA Bhopal", exam: "JEE Main P2", rank: "285" },
       { name: "CEPT Ahmedabad", exam: "NATA", rank: "145 Score" },
       { name: "NIT Trichy", exam: "JEE Main P2", rank: "450" },
-      { name: "Jadavpur University", exam: "WBJEE", rank: "480" }
-    ]
+      { name: "Jadavpur University", exam: "WBJEE", rank: "480" },
+    ],
   },
-  "2021": {
+  2021: {
     engineering: [
       { name: "IIT Bombay (CSE)", exam: "JEE Advanced", rank: "67" },
       { name: "IIT Delhi (CSE)", exam: "JEE Advanced", rank: "100" },
@@ -150,7 +150,7 @@ const realData = {
       { name: "Calcutta University (CSE)", exam: "WBJEE", rank: "680" },
       { name: "IEM Kolkata (CSE)", exam: "WBJEE", rank: "2300" },
       { name: "BITS Pilani (CSE)", exam: "BITSAT", rank: "319 Score" },
-      { name: "VIT Vellore (CSE)", exam: "VITEEE", rank: "4800" }
+      { name: "VIT Vellore (CSE)", exam: "VITEEE", rank: "4800" },
     ],
     medical: [
       { name: "AIIMS New Delhi", exam: "NEET", rank: "53" },
@@ -160,22 +160,22 @@ const realData = {
       { name: "VMMC Delhi", exam: "NEET", rank: "143" },
       { name: "KGMU Lucknow", exam: "NEET", rank: "1080" },
       { name: "Seth GS Mumbai", exam: "NEET", rank: "690" },
-      { name: "BJ Medical College", exam: "NEET", rank: "760" }
+      { name: "BJ Medical College", exam: "NEET", rank: "760" },
     ],
     pharma: [
       { name: "Jamia Hamdard", exam: "NEET", rank: "98.5 %ile" },
       { name: "Panjab University", exam: "PUCET", rank: "97.5 %ile" },
       { name: "NIPER Mohali", exam: "NIPER JEE", rank: "60" },
-      { name: "BITS Pilani", exam: "BITSAT", rank: "145 Score" }
+      { name: "BITS Pilani", exam: "BITSAT", rank: "145 Score" },
     ],
     architecture: [
       { name: "SPA Delhi", exam: "JEE Main P2", rank: "170" },
       { name: "SPA Bhopal", exam: "JEE Main P2", rank: "295" },
       { name: "CEPT Ahmedabad", exam: "NATA", rank: "142 Score" },
       { name: "NIT Trichy", exam: "JEE Main P2", rank: "480" },
-      { name: "Jadavpur University", exam: "WBJEE", rank: "510" }
-    ]
-  }
+      { name: "Jadavpur University", exam: "WBJEE", rank: "510" },
+    ],
+  },
 };
 
 const finalData = [];
@@ -184,17 +184,25 @@ years.forEach((year) => {
   const yearData = { year, colleges: [] };
   // Fallback to 2024 data for future years (2025, 2026) since real data isn't out yet
   const d = realData[year] || realData["2024"];
-  
+
   if (d) {
-    d.engineering.forEach(c => yearData.colleges.push({ field: "Engineering", exam: c.exam, name: c.name, rank: c.rank }));
-    d.medical.forEach(c => yearData.colleges.push({ field: "Medical", exam: c.exam, name: c.name, rank: c.rank }));
-    d.pharma.forEach(c => yearData.colleges.push({ field: "Pharma", exam: c.exam, name: c.name, rank: c.rank }));
-    d.architecture.forEach(c => yearData.colleges.push({ field: "Architecture", exam: c.exam, name: c.name, rank: c.rank }));
+    d.engineering.forEach((c) =>
+      yearData.colleges.push({ field: "Engineering", exam: c.exam, name: c.name, rank: c.rank }),
+    );
+    d.medical.forEach((c) =>
+      yearData.colleges.push({ field: "Medical", exam: c.exam, name: c.name, rank: c.rank }),
+    );
+    d.pharma.forEach((c) =>
+      yearData.colleges.push({ field: "Pharma", exam: c.exam, name: c.name, rank: c.rank }),
+    );
+    d.architecture.forEach((c) =>
+      yearData.colleges.push({ field: "Architecture", exam: c.exam, name: c.name, rank: c.rank }),
+    );
   }
 
   finalData.push(yearData);
 });
 
 const fileContent = `export const historicalData = ${JSON.stringify(finalData, null, 2)};\n`;
-fs.writeFileSync('./src/data/historicalCollegeData.ts', fileContent);
+fs.writeFileSync("./src/data/historicalCollegeData.ts", fileContent);
 console.log("Created src/data/historicalCollegeData.ts with REAL verified data.");

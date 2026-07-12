@@ -46,7 +46,7 @@ export function AboutMissionGrid() {
       {/* Decorative background gradients */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-500/10 blur-[100px] rounded-full pointer-events-none" />
-      
+
       <div className="container relative mx-auto max-w-7xl px-4 sm:px-6 z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -56,13 +56,16 @@ export function AboutMissionGrid() {
         >
           <div className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-indigo-100 shadow-sm mb-6">
             <Sparkles className="h-4 w-4 text-indigo-600" />
-            <span className="text-sm font-bold text-indigo-900 tracking-wide uppercase">Who We Are</span>
+            <span className="text-sm font-bold text-indigo-900 tracking-wide uppercase">
+              Who We Are
+            </span>
           </div>
           <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">
             Driven by purpose.
           </h2>
           <p className="mt-4 text-lg text-slate-600 font-medium">
-            Learn & Shine isn't just another ed-tech platform. We are the bridge between your college campus and your dream corporate role.
+            Learn & Shine isn't just another ed-tech platform. We are the bridge between your
+            college campus and your dream corporate role.
           </p>
         </motion.div>
 
@@ -79,20 +82,22 @@ export function AboutMissionGrid() {
                 className={`group relative overflow-hidden bg-white/60 backdrop-blur-xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] rounded-3xl p-8 transition-all duration-500 hover:-translate-y-1 ${item.colSpan}`}
               >
                 {/* Hover Gradient Overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                />
+
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className={`w-14 h-14 rounded-2xl ${item.bg} border border-white flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}>
+                  <div
+                    className={`w-14 h-14 rounded-2xl ${item.bg} border border-white flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500`}
+                  >
                     <Icon className={`w-7 h-7 ${item.iconColor}`} />
                   </div>
-                  
+
                   <h3 className="text-2xl font-bold text-slate-900 font-display mb-3">
                     {item.title}
                   </h3>
-                  
-                  <p className="text-slate-600 font-medium leading-relaxed">
-                    {item.text}
-                  </p>
+
+                  <p className="text-slate-600 font-medium leading-relaxed">{item.text}</p>
                 </div>
               </motion.div>
             );

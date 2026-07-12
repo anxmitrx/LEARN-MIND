@@ -63,7 +63,7 @@ export function FloatingTeam() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 mb-16">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -101,19 +101,19 @@ export function FloatingTeam() {
             >
               <div className="relative h-48 sm:h-56 w-full rounded-2xl overflow-hidden mb-6 border border-white/10">
                 <div className="absolute inset-0 bg-indigo-500/20 mix-blend-overlay z-10 group-hover:bg-transparent transition-colors duration-500" />
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
+                <img
+                  src={member.image}
+                  alt={member.name}
                   className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100"
                 />
               </div>
-              
+
               <h3 className="text-2xl font-bold text-white font-display mb-1">{member.name}</h3>
               <p className="text-fuchsia-400 font-bold text-sm mb-4">{member.role}</p>
               <p className="text-slate-300 font-medium text-sm leading-relaxed mb-6">
                 {member.bio}
               </p>
-              
+
               <div className="flex items-center gap-3 pt-4 border-t border-white/10">
                 <button className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-indigo-600 transition-colors">
                   <Linkedin className="h-4 w-4" />

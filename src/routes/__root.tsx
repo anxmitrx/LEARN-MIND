@@ -21,7 +21,6 @@ import { GlobalOnboardingModal } from "@/components/site/GlobalOnboardingModal";
 import { DashboardDrawer } from "@/components/site/DashboardDrawer";
 import { GlobalPhoneVerificationModal } from "@/components/site/GlobalPhoneVerificationModal";
 
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -85,10 +84,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Learn & Shine" },
-      { name: "description", content: "Making college students industry-ready since day one. Live workshops, real mentors, 5 mentoring tracks." },
+      {
+        name: "description",
+        content:
+          "Making college students industry-ready since day one. Live workshops, real mentors, 5 mentoring tracks.",
+      },
       { name: "author", content: "Learn & Shine" },
       { property: "og:title", content: "Learn & Shine" },
-      { property: "og:description", content: "Stop hoping you'll figure it out. Start training for the job you actually want." },
+      {
+        property: "og:description",
+        content: "Stop hoping you'll figure it out. Start training for the job you actually want.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Learn & Shine" },
@@ -123,10 +129,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function GlobalLoginTrigger() {
   const { user, loading, setShowLoginModal } = useAuth();
-  
+
   useEffect(() => {
     if (loading) return;
-    
+
     if (!user) {
       setShowLoginModal(true);
     } else {
@@ -148,8 +154,14 @@ function RootComponent() {
           {/* Animated Soothing Aurora Blobs */}
           <div className="pointer-events-none fixed inset-0 -z-50 overflow-hidden select-none">
             <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] rounded-full bg-[#E0C3FC]/30 blur-3xl animate-float-slow" />
-            <div className="absolute bottom-[10%] right-[-10%] w-[60vw] h-[60vw] max-w-[700px] rounded-full bg-[#8EC5FC]/30 blur-3xl animate-float-slow" style={{ animationDelay: "-3s" }} />
-            <div className="absolute top-[35%] left-[25%] w-[40vw] h-[40vw] max-w-[500px] rounded-full bg-[#F8EDEB]/50 blur-3xl animate-float-slow" style={{ animationDelay: "-6s" }} />
+            <div
+              className="absolute bottom-[10%] right-[-10%] w-[60vw] h-[60vw] max-w-[700px] rounded-full bg-[#8EC5FC]/30 blur-3xl animate-float-slow"
+              style={{ animationDelay: "-3s" }}
+            />
+            <div
+              className="absolute top-[35%] left-[25%] w-[40vw] h-[40vw] max-w-[500px] rounded-full bg-[#F8EDEB]/50 blur-3xl animate-float-slow"
+              style={{ animationDelay: "-6s" }}
+            />
           </div>
           <CurtainReveal />
           <ScrollProgress />

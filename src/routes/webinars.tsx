@@ -17,7 +17,7 @@ export const Route = createFileRoute("/webinars")({
 
 function WebinarsPage() {
   const { webinars, loading } = useWebinars();
-  
+
   const upcomingWebinars = webinars.filter((w) => w.status === "upcoming");
   const pastWebinars = webinars.filter((w) => w.status === "past");
 
@@ -40,10 +40,14 @@ function WebinarsPage() {
               Live & Recorded Sessions
             </span>
             <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900 tracking-tight">
-              Exclusive <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Webinars</span>
+              Exclusive{" "}
+              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                Webinars
+              </span>
             </h1>
             <p className="mt-4 text-lg text-slate-600 font-medium">
-              Join industry experts for deep-dive sessions. Watch live or catch up on past recordings through our portal.
+              Join industry experts for deep-dive sessions. Watch live or catch up on past
+              recordings through our portal.
             </p>
           </div>
 
@@ -95,7 +99,7 @@ function WebinarsPage() {
       </section>
 
       <WebinarFeaturesBento />
-      
+
       <CtaFooter />
     </main>
   );
@@ -107,7 +111,7 @@ function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "
 
   const handleActionClick = async (e: React.MouseEvent) => {
     e.preventDefault();
-    
+
     if (!user) {
       setShowLoginModal(true);
       return;
@@ -124,7 +128,7 @@ function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "
             webinarId: webinar.id || webinar.title,
             webinarDate: webinar.date,
             webinarTime: webinar.time,
-            timestamp: serverTimestamp()
+            timestamp: serverTimestamp(),
           });
         } catch (err) {
           console.error("Error registering for webinar:", err);
@@ -134,7 +138,7 @@ function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "
       });
       return;
     }
-    
+
     window.open(webinar.link, "_blank");
   };
 
@@ -151,18 +155,16 @@ function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "
             {webinar.time}
           </span>
         </div>
-        
+
         <h3 className="font-display text-xl sm:text-2xl font-bold leading-snug text-slate-900 group-hover:text-indigo-950 transition-colors">
           {webinar.title}
         </h3>
-        
+
         <div className="mt-4 flex items-center gap-2">
           <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-200 to-purple-200 flex items-center justify-center border border-white/60 shadow-sm">
             <span className="text-xs font-bold text-indigo-700">{webinar.presenter.charAt(0)}</span>
           </div>
-          <span className="text-sm font-semibold text-slate-600">
-            by {webinar.presenter}
-          </span>
+          <span className="text-sm font-semibold text-slate-600">by {webinar.presenter}</span>
         </div>
       </div>
 

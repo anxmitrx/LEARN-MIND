@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { User, onAuthStateChanged, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
+import {
+  User,
+  onAuthStateChanged,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
+} from "firebase/auth";
 import { auth, db } from "./firebase";
 import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
 
@@ -37,7 +42,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showPhoneVerificationModal, setShowPhoneVerificationModal] = useState(false);
-  const [phoneVerificationCallback, setPhoneVerificationCallback] = useState<(() => void) | null>(null);
+  const [phoneVerificationCallback, setPhoneVerificationCallback] = useState<(() => void) | null>(
+    null,
+  );
 
   const requestPhoneVerification = (callback: () => void) => {
     if (userData?.phoneVerified) {
@@ -79,13 +86,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .then(async (result) => {
             window.localStorage.removeItem("emailForSignIn");
             const user = result.user;
-            
+
             // Create or update user document if this is a new sign-in
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
             if (!userSnap.exists()) {
               await setDoc(userRef, {
-                name: user.displayName || email?.split('@')[0] || "User",
+                name: user.displayName || email?.split("@")[0] || "User",
                 email: user.email,
                 photoURL: user.photoURL,
                 xp: 0,
@@ -94,7 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 createdAt: new Date().toISOString(),
               });
             }
-            
+
             // Optionally remove the sign-in parameters from the URL
             window.history.replaceState(null, "", window.location.pathname);
           })
@@ -108,7 +115,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      
+
       // Clear previous snapshot listener if it exists
       if (unsubscribeSnapshot) {
         unsubscribeSnapshot();
@@ -118,15 +125,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const docRef = doc(db, "users", currentUser.uid);
           // Listen to real-time updates of the user profile
-          unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-              setUserData(docSnap.data());
-            } else {
-              setUserData(null);
-            }
-          }, (error) => {
-            console.warn("Firestore snapshot error (expected during logout):", error);
-          });
+          unsubscribeSnapshot = onSnapshot(
+            docRef,
+            (docSnap) => {
+              if (docSnap.exists()) {
+                setUserData(docSnap.data());
+              } else {
+                setUserData(null);
+              }
+            },
+            (error) => {
+              console.warn("Firestore snapshot error (expected during logout):", error);
+            },
+          );
         } catch (err) {
           console.error("Error fetching user data from Firestore:", err);
         }
@@ -143,18 +154,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      loading, 
-      userData, 
-      showLoginModal, 
-      setShowLoginModal,
-      showPhoneVerificationModal,
-      setShowPhoneVerificationModal,
-      requestPhoneVerification,
-      phoneVerificationCallback,
-      clearPhoneVerificationCallback
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        userData,
+        showLoginModal,
+        setShowLoginModal,
+        showPhoneVerificationModal,
+        setShowPhoneVerificationModal,
+        requestPhoneVerification,
+        phoneVerificationCallback,
+        clearPhoneVerificationCallback,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

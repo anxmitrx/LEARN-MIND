@@ -8,7 +8,13 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "md" | "lg";
 };
 
-export function MagneticButton({ children, className, variant = "primary", size = "md", ...props }: Props) {
+export function MagneticButton({
+  children,
+  className,
+  variant = "primary",
+  size = "md",
+  ...props
+}: Props) {
   const ref = useRef<HTMLButtonElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -21,7 +27,10 @@ export function MagneticButton({ children, className, variant = "primary", size 
     x.set((e.clientX - (r.left + r.width / 2)) * 0.3);
     y.set((e.clientY - (r.top + r.height / 2)) * 0.3);
   };
-  const onLeave = () => { x.set(0); y.set(0); };
+  const onLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   const base =
     "relative inline-flex items-center justify-center gap-2 font-display font-extrabold uppercase tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 rounded-3xl cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:outline-none will-change-transform";
@@ -30,8 +39,8 @@ export function MagneticButton({ children, className, variant = "primary", size 
     variant === "primary"
       ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-500/30 border border-white/20"
       : variant === "outline"
-      ? "border border-white/50 bg-white/20 backdrop-blur-md text-indigo-700 shadow-sm hover:bg-white/30"
-      : "bg-indigo-950 text-white shadow-md shadow-indigo-950/20 hover:bg-indigo-900";
+        ? "border border-white/50 bg-white/20 backdrop-blur-md text-indigo-700 shadow-sm hover:bg-white/30"
+        : "bg-indigo-950 text-white shadow-md shadow-indigo-950/20 hover:bg-indigo-900";
 
   return (
     <motion.button

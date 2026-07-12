@@ -9,21 +9,22 @@ const firebaseConfig = {
   projectId: "learn-and-shine-dbf4d",
   storageBucket: "learn-and-shine-dbf4d.firebasestorage.app",
   messagingSenderId: "210311209668",
-  appId: "1:210311209668:web:a791d9458bd70cad2d9f91"
+  appId: "1:210311209668:web:a791d9458bd70cad2d9f91",
 };
 
-console.log("FIREBASE INIT CHECK:", { apiKeyExists: !!firebaseConfig.apiKey, domainExists: !!firebaseConfig.authDomain });
+console.log("FIREBASE INIT CHECK:", {
+  apiKeyExists: !!firebaseConfig.apiKey,
+  domainExists: !!firebaseConfig.authDomain,
+});
 
 const hasApiKey = !!firebaseConfig.apiKey;
 
 // Safely initialize Firebase app, auth, and firestore without throwing errors during SSR pass if API key is not yet available.
-const app = getApps().length > 0 
-  ? getApp() 
-  : (hasApiKey ? initializeApp(firebaseConfig) : null);
+const app = getApps().length > 0 ? getApp() : hasApiKey ? initializeApp(firebaseConfig) : null;
 
-const auth = app ? getAuth(app) : null as any;
-const db = app ? getFirestore(app) : null as any;
-const storage = app ? getStorage(app) : null as any;
+const auth = app ? getAuth(app) : (null as any);
+const db = app ? getFirestore(app) : (null as any);
+const storage = app ? getStorage(app) : (null as any);
 const googleProvider = new GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {

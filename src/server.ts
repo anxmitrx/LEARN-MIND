@@ -12,7 +12,7 @@ let serverEntryPromise: Promise<ServerEntry> | undefined;
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
     serverEntryPromise = import("@tanstack/react-start/server-entry").then(
-      (m) => ((m as { default?: ServerEntry }).default ?? (m as unknown as ServerEntry)),
+      (m) => (m as { default?: ServerEntry }).default ?? (m as unknown as ServerEntry),
     );
   }
   return serverEntryPromise;
@@ -78,7 +78,7 @@ export default {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type",
-        }
+        },
       });
     }
 
@@ -91,12 +91,12 @@ export default {
       };
 
       try {
-        const body = await request.json() as any;
+        const body = (await request.json()) as any;
         const email = body.email;
         if (!email) {
           return new Response(JSON.stringify({ success: false, error: "Missing email address" }), {
             status: 400,
-            headers: { ...corsHeaders, "Content-Type": "application/json" }
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
           });
         }
 
@@ -118,41 +118,47 @@ export default {
             track: { stringValue: track },
             status: { stringValue: status },
             source: { stringValue: source },
-            timestamp: { timestampValue: timestampIso }
-          }
+            timestamp: { timestampValue: timestampIso },
+          },
         };
 
         const firestoreResponse = await fetch(firestoreUrl, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(firestorePayload)
+          body: JSON.stringify(firestorePayload),
         });
 
-        const responseData = await firestoreResponse.json() as any;
+        const responseData = (await firestoreResponse.json()) as any;
 
         if (!firestoreResponse.ok) {
-          return new Response(JSON.stringify({ 
-            success: false, 
-            error: responseData.error?.message || "Firestore REST API error" 
-          }), {
-            status: firestoreResponse.status,
-            headers: { ...corsHeaders, "Content-Type": "application/json" }
-          });
+          return new Response(
+            JSON.stringify({
+              success: false,
+              error: responseData.error?.message || "Firestore REST API error",
+            }),
+            {
+              status: firestoreResponse.status,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            },
+          );
         }
 
-        return new Response(JSON.stringify({ 
-          success: true, 
-          documentId: responseData.name ? responseData.name.split("/").pop() : null 
-        }), {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
+        return new Response(
+          JSON.stringify({
+            success: true,
+            documentId: responseData.name ? responseData.name.split("/").pop() : null,
+          }),
+          {
+            status: 200,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
       } catch (err: any) {
         return new Response(JSON.stringify({ success: false, error: err.message }), {
           status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
     }

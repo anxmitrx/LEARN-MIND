@@ -21,7 +21,9 @@ function MentorCard({ m }: { m: (typeof mentors)[number] }) {
       <div className="flex-grow flex flex-col">
         <div
           className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0"
-          style={{ background: `linear-gradient(135deg, hsl(${m.hue}, 70%, 88%), hsl(${m.hue}, 60%, 78%))` }}
+          style={{
+            background: `linear-gradient(135deg, hsl(${m.hue}, 70%, 88%), hsl(${m.hue}, 60%, 78%))`,
+          }}
         >
           <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
             <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-500 group-hover:scale-105">
@@ -31,11 +33,19 @@ function MentorCard({ m }: { m: (typeof mentors)[number] }) {
         </div>
         <h4 className="mt-6 font-display text-xl md:text-2xl font-bold text-ink">{m.name}</h4>
         <p className="text-sm md:text-base font-bold text-indigo-600 mt-1">{m.title}</p>
-        <p className="mt-2 text-xs md:text-sm text-slate-700 font-semibold line-clamp-3 leading-relaxed flex-grow" title={m.bio}>{m.bio}</p>
+        <p
+          className="mt-2 text-xs md:text-sm text-slate-700 font-semibold line-clamp-3 leading-relaxed flex-grow"
+          title={m.bio}
+        >
+          {m.bio}
+        </p>
       </div>
       <div className="mt-6 mt-auto flex flex-wrap gap-2">
         {m.topics.map((t) => (
-          <span key={t} className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-xs font-bold rounded-full shadow-sm">
+          <span
+            key={t}
+            className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-xs font-bold rounded-full shadow-sm"
+          >
             {t}
           </span>
         ))}
@@ -52,7 +62,10 @@ export function MentorsMarquee() {
           <div>
             <span className="eyebrow text-ink">Premium Mentors</span>
             <h2 className="mt-3 max-w-2xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-6xl">
-              Learn from people <br /> who <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">hire people.</span>
+              Learn from people <br /> who{" "}
+              <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+                hire people.
+              </span>
             </h2>
           </div>
           <p className="max-w-2xl text-lg text-slate-700 leading-relaxed">

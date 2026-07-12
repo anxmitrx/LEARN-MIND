@@ -6,7 +6,7 @@ const techCompanies = [
   { name: "Zoho", url: "https://www.zoho.com", logo: "/assets/zoho.svg" },
   { name: "Razorpay", url: "https://razorpay.com", logo: "/assets/razorpay.svg" },
   { name: "Zerodha", url: "https://zerodha.com", logo: "/assets/zerodha.svg" },
-  { name: "Flipkart", url: "https://www.flipkart.com", logo: "/assets/flipkart.svg" }
+  { name: "Flipkart", url: "https://www.flipkart.com", logo: "/assets/flipkart.svg" },
 ];
 
 export function HiringPartners() {
@@ -15,14 +15,16 @@ export function HiringPartners() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="text-center mb-6">
           <span className="eyebrow text-indigo-600/70">Top tech hiring partners</span>
-          <h3 className="mt-2 font-display text-2xl font-bold text-ink">Get prepared for premium teams</h3>
+          <h3 className="mt-2 font-display text-2xl font-bold text-ink">
+            Get prepared for premium teams
+          </h3>
         </div>
-        
+
         <div className="relative w-full overflow-hidden marquee-pause">
           {/* Left and Right Gradient Fades */}
           <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-24 bg-gradient-to-r from-[#F8EDEB] to-transparent" />
           <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-24 bg-gradient-to-l from-[#8EC5FC] to-transparent" />
-          
+
           <div className="flex w-max animate-marquee-reverse gap-8 py-4">
             {[...techCompanies, ...techCompanies, ...techCompanies].map((company, index) => (
               <a

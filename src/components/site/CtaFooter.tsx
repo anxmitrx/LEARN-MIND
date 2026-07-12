@@ -13,11 +13,12 @@ export function CtaFooter() {
         <div className="absolute inset-0 grid-bg opacity-50" />
         <div className="container relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <h2 className="font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-7xl">
-            Be ready <span className="bg-indigo-600 px-4 py-1 text-white rounded-full">before</span> <br /> the offer drops.
+            Be ready <span className="bg-indigo-600 px-4 py-1 text-white rounded-full">before</span>{" "}
+            <br /> the offer drops.
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg font-bold text-slate-700">
-            Join 1,000+ students training weekly for the careers they actually want.
-            Limited seats per cohort.
+            Join 1,000+ students training weekly for the careers they actually want. Limited seats
+            per cohort.
           </p>
           <div className="mt-10 flex justify-center">
             <MagneticButton variant="ghost" size="lg" onClick={() => openModal()}>
@@ -30,12 +31,11 @@ export function CtaFooter() {
       <footer className="bg-white/20 backdrop-blur-xl border-t border-white/40 text-slate-800">
         <div className="container mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link to="/" className="flex items-center gap-2 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-xl">
-              <img
-                src="/assets/logo.png"
-                alt="Learn & Shine Logo"
-                className="h-8 w-auto md:h-10"
-              />
+            <Link
+              to="/"
+              className="flex items-center gap-2 whitespace-nowrap focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded-xl"
+            >
+              <img src="/assets/logo.png" alt="Learn & Shine Logo" className="h-8 w-auto md:h-10" />
             </Link>
             <p className="mt-5 max-w-sm text-sm text-slate-600 font-semibold">
               Making college students industry-ready since day one. Stop hoping. Start training.
@@ -45,16 +45,44 @@ export function CtaFooter() {
           <div>
             <div className="eyebrow text-indigo-600">Explore</div>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><Link to="/workshops" className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">Workshops</Link></li>
-              <li><Link to="/mentors" className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">Mentors</Link></li>
-              <li><Link to="/about" className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">About</Link></li>
+              <li>
+                <Link
+                  to="/workshops"
+                  className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1"
+                >
+                  Workshops
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/mentors"
+                  className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1"
+                >
+                  Mentors
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/about"
+                  className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1"
+                >
+                  About
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <div className="eyebrow text-indigo-600">Contact</div>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><a href="mailto:hello@learnandshine.in" className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1">hello@learnandshine.in</a></li>
+              <li>
+                <a
+                  href="mailto:hello@learnandshine.in"
+                  className="text-slate-700 hover:text-indigo-600 font-semibold focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none rounded px-1"
+                >
+                  hello@learnandshine.in
+                </a>
+              </li>
               <li className="text-slate-500 font-semibold">Bengaluru · Online cohorts</li>
             </ul>
           </div>

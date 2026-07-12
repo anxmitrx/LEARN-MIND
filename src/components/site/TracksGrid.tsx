@@ -66,69 +66,67 @@ export function TracksGrid() {
           })}
         </div>
 
-
-
         {loading ? (
           <div className="mt-12 flex items-center justify-center py-20">
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-600"></div>
           </div>
         ) : (
           <motion.div layout className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
-            {filteredTracks.map((t) => (
-              <motion.div
-                key={t.slug}
-                layout
-                initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-              >
-                <Link
-                  to="/workshops/$slug"
-                  params={{ slug: t.slug }}
-                  className="bento-card group block h-full bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 md:p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform"
+            <AnimatePresence mode="popLayout">
+              {filteredTracks.map((t) => (
+                <motion.div
+                  key={t.slug}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="font-mono text-xs font-bold text-indigo-600/60">
-                      // TRACK {t.number}
+                  <Link
+                    to="/workshops/$slug"
+                    params={{ slug: t.slug }}
+                    className="bento-card group block h-full bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-5 md:p-7 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="font-mono text-xs font-bold text-indigo-600/60">
+                        // TRACK {t.number}
+                      </div>
+                      <ArrowUpRight className="h-5 w-5 text-indigo-600 transition-transform group-hover:rotate-12" />
                     </div>
-                    <ArrowUpRight className="h-5 w-5 text-indigo-600 transition-transform group-hover:rotate-12" />
-                  </div>
-                  <h3 className="mt-4 font-display text-2xl font-bold leading-tight text-ink">
-                    {t.title}
-                  </h3>
-                  <p className="mt-3 text-sm text-slate-600 font-semibold">{t.tagline}</p>
+                    <h3 className="mt-4 font-display text-2xl font-bold leading-tight text-ink">
+                      {t.title}
+                    </h3>
+                    <p className="mt-3 text-sm text-slate-600 font-semibold">{t.tagline}</p>
 
-                  <div className="mt-6 flex flex-wrap gap-1.5">
-                    {t.topics.slice(0, 3).map((tp) => (
-                      <span
-                        key={tp.title}
-                        className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-[11px] font-bold rounded-full shadow-sm"
-                      >
-                        {tp.title}
-                      </span>
-                    ))}
-                    {t.topics.length > 3 && (
-                      <span className="bg-indigo-500/20 backdrop-blur-md text-indigo-700 border border-indigo-500/30 px-3 py-1 text-[11px] font-extrabold rounded-full shadow-sm">
-                        +{t.topics.length - 3}
-                      </span>
-                    )}
-                  </div>
+                    <div className="mt-6 flex flex-wrap gap-1.5">
+                      {t.topics.slice(0, 3).map((tp) => (
+                        <span
+                          key={tp.title}
+                          className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-[11px] font-bold rounded-full shadow-sm"
+                        >
+                          {tp.title}
+                        </span>
+                      ))}
+                      {t.topics.length > 3 && (
+                        <span className="bg-indigo-500/20 backdrop-blur-md text-indigo-700 border border-indigo-500/30 px-3 py-1 text-[11px] font-extrabold rounded-full shadow-sm">
+                          +{t.topics.length - 3}
+                        </span>
+                      )}
+                    </div>
 
-                  <div className="mt-7 flex items-center justify-between border-t border-white/40 pt-4">
-                    <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
-                      {t.short}
-                    </span>
-                    <span className="font-display text-xs font-extrabold uppercase tracking-wider text-indigo-600 opacity-0 transition-opacity group-hover:opacity-100">
-                      Explore →
-                    </span>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                    <div className="mt-7 flex items-center justify-between border-t border-white/40 pt-4">
+                      <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
+                        {t.short}
+                      </span>
+                      <span className="font-display text-xs font-extrabold uppercase tracking-wider text-indigo-600 opacity-0 transition-opacity group-hover:opacity-100">
+                        Explore →
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         )}
       </div>
     </section>

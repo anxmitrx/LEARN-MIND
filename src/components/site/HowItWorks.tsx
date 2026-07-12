@@ -2,10 +2,26 @@ import { motion } from "framer-motion";
 import { ClipboardList, Video, Dumbbell, Rocket } from "lucide-react";
 
 const steps = [
-  { icon: ClipboardList, title: "Pick a Track", text: "Choose from 5 mentoring tracks built for engineering & management students." },
-  { icon: Video, title: "Learn Live", text: "Join weekend live workshops with mentors from MNCs, IIMs, and IITs." },
-  { icon: Dumbbell, title: "Practice Real", text: "Run business simulations, mock interviews, and case studies — not theory." },
-  { icon: Rocket, title: "Walk In Ready", text: "Show up to your first job already thinking like a 2-year professional." },
+  {
+    icon: ClipboardList,
+    title: "Pick a Track",
+    text: "Choose from 5 mentoring tracks built for engineering & management students.",
+  },
+  {
+    icon: Video,
+    title: "Learn Live",
+    text: "Join weekend live workshops with mentors from MNCs, IIMs, and IITs.",
+  },
+  {
+    icon: Dumbbell,
+    title: "Practice Real",
+    text: "Run business simulations, mock interviews, and case studies — not theory.",
+  },
+  {
+    icon: Rocket,
+    title: "Walk In Ready",
+    text: "Show up to your first job already thinking like a 2-year professional.",
+  },
 ];
 
 export function HowItWorks() {
@@ -15,7 +31,10 @@ export function HowItWorks() {
         <div className="max-w-3xl">
           <span className="eyebrow text-ink">How it works · 04 Steps</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            Four steps from <br /> classroom to <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">career.</span>
+            Four steps from <br /> classroom to{" "}
+            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+              career.
+            </span>
           </h2>
         </div>
 

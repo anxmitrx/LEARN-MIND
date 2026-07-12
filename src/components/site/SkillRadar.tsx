@@ -62,7 +62,12 @@ export function SkillRadar({ data, size = 320 }: { data: Datum[]; size?: number 
             textAnchor="middle"
             dominantBaseline="middle"
             fill="#3A3532"
-            style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: 1.2 }}
+            style={{
+              fontSize: 11,
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: 1.2,
+            }}
           >
             {d.label}
           </text>

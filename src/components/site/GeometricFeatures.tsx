@@ -5,7 +5,8 @@ import { Hexagon, Layers, Zap, Code2, Target, Globe } from "lucide-react";
 const features = [
   {
     title: "Real-world Simulations",
-    description: "Experience actual startup problems and build solutions that matter, no theoretical fluff.",
+    description:
+      "Experience actual startup problems and build solutions that matter, no theoretical fluff.",
     icon: <Globe className="h-6 w-6 text-indigo-400" />,
     gradient: "from-indigo-500/20 to-blue-500/20",
     border: "group-hover:border-indigo-400/50",
@@ -27,7 +28,7 @@ const features = [
 ];
 
 // 3D Tilt Card Component
-function TiltCard({ feature }: { feature: typeof features[0] }) {
+function TiltCard({ feature }: { feature: (typeof features)[0] }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -45,7 +46,7 @@ function TiltCard({ feature }: { feature: typeof features[0] }) {
     const rect = ref.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    
+
     // Normalize mouse position between -0.5 and 0.5
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
@@ -72,9 +73,12 @@ function TiltCard({ feature }: { feature: typeof features[0] }) {
     >
       {/* Glossy overlay */}
       <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      
+
       {/* Background Gradient */}
-      <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${feature.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100 blur-xl`} style={{ transform: "translateZ(-50px)" }} />
+      <div
+        className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${feature.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100 blur-xl`}
+        style={{ transform: "translateZ(-50px)" }}
+      />
 
       <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
         <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-slate-800 border border-slate-700 shadow-xl">
@@ -83,9 +87,7 @@ function TiltCard({ feature }: { feature: typeof features[0] }) {
         <h3 className="mb-3 font-display text-xl font-bold text-white tracking-wide">
           {feature.title}
         </h3>
-        <p className="text-slate-400 leading-relaxed font-medium">
-          {feature.description}
-        </p>
+        <p className="text-slate-400 leading-relaxed font-medium">{feature.description}</p>
       </div>
     </motion.div>
   );
@@ -110,7 +112,7 @@ export function GeometricFeatures() {
   }, [mouseX, mouseY]);
 
   return (
-    <section 
+    <section
       ref={containerRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -126,7 +128,8 @@ export function GeometricFeatures() {
           opacity: isHovered ? 1 : 0,
           background: useTransform(
             [mouseX, mouseY],
-            ([x, y]) => `radial-gradient(800px circle at ${x}px ${y}px, rgba(99,102,241,0.15), transparent 40%)`
+            ([x, y]) =>
+              `radial-gradient(800px circle at ${x}px ${y}px, rgba(99,102,241,0.15), transparent 40%)`,
           ),
         }}
       />
@@ -172,7 +175,7 @@ export function GeometricFeatures() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -181,23 +184,27 @@ export function GeometricFeatures() {
             <Layers className="h-4 w-4" />
             Designed for Impact
           </motion.div>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl"
           >
-            Not just another <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400">theory course</span>
+            Not just another{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400">
+              theory course
+            </span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             className="mt-6 text-lg text-slate-400 font-medium"
           >
-            We've engineered an immersive learning environment that forces you to think, build, and ship like a senior engineer.
+            We've engineered an immersive learning environment that forces you to think, build, and
+            ship like a senior engineer.
           </motion.p>
         </div>
 

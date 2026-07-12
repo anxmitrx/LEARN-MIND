@@ -1,19 +1,56 @@
-import fs from 'fs';
+import fs from "fs";
 
 // Helper to generate multiple branches for a single college to reach 50 easily
-const generateBranches = (collegeName, branches, baseCutoff, step, avgPackageBase, type, location) => {
+const generateBranches = (
+  collegeName,
+  branches,
+  baseCutoff,
+  step,
+  avgPackageBase,
+  type,
+  location,
+) => {
   return branches.map((branch, i) => {
     // calculate a roughly increasing cutoff and decreasing package
-    const cutoff = baseCutoff + (i * step);
-    const avgPackage = Math.max(5, avgPackageBase - (i * 0.5)).toFixed(1) + " LPA";
+    const cutoff = baseCutoff + i * step;
+    const avgPackage = Math.max(5, avgPackageBase - i * 0.5).toFixed(1) + " LPA";
     return { name: `${collegeName} (${branch})`, cutoff, avgPackage, type, location };
   });
 };
 
-const jeeBranches = ["CSE", "IT", "ECE", "EEE", "Mechanical", "Civil", "Chemical", "Metallurgy", "Production"];
+const jeeBranches = [
+  "CSE",
+  "IT",
+  "ECE",
+  "EEE",
+  "Mechanical",
+  "Civil",
+  "Chemical",
+  "Metallurgy",
+  "Production",
+];
 const neetBranches = ["MBBS", "BDS", "BAMS", "BHMS"];
-const cuetCourses = ["B.Com Hons", "B.A. Economics", "B.Sc Physics", "B.Sc Maths", "B.A. English", "B.A. Pol Science"];
-const bitsatBranches = ["CSE", "ECE", "EEE", "ENI", "Mechanical", "Chemical", "Civil", "M.Sc Bio", "M.Sc Chem", "M.Sc Math", "M.Sc Physics"];
+const cuetCourses = [
+  "B.Com Hons",
+  "B.A. Economics",
+  "B.Sc Physics",
+  "B.Sc Maths",
+  "B.A. English",
+  "B.A. Pol Science",
+];
+const bitsatBranches = [
+  "CSE",
+  "ECE",
+  "EEE",
+  "ENI",
+  "Mechanical",
+  "Chemical",
+  "Civil",
+  "M.Sc Bio",
+  "M.Sc Chem",
+  "M.Sc Math",
+  "M.Sc Physics",
+];
 const wbjeeBranches = ["CSE", "IT", "ECE", "EE", "Mechanical", "Civil", "Chemical"];
 
 let jeeMainColleges = [
@@ -22,7 +59,15 @@ let jeeMainColleges = [
   ...generateBranches("NIT Warangal", jeeBranches, 3000, 2500, 17, "Tier 1", "Telangana"),
   ...generateBranches("IIIT Hyderabad", ["CSE", "ECE"], 800, 1500, 30, "Tier 1", "Telangana"),
   ...generateBranches("DTU", jeeBranches, 4000, 3000, 16, "Tier 1", "Delhi"),
-  ...generateBranches("NSUT", ["CSE", "IT", "ECE", "Mechanical"], 4500, 3500, 15, "Tier 1", "Delhi"),
+  ...generateBranches(
+    "NSUT",
+    ["CSE", "IT", "ECE", "Mechanical"],
+    4500,
+    3500,
+    15,
+    "Tier 1",
+    "Delhi",
+  ),
   ...generateBranches("NIT Rourkela", jeeBranches, 5000, 3000, 14, "Tier 1", "Odisha"),
   ...generateBranches("NIT Calicut", jeeBranches, 6000, 3500, 13, "Tier 1", "Kerala"),
 ];
@@ -34,11 +79,43 @@ let neetColleges = [
   ...generateBranches("MAMC New Delhi", ["MBBS", "BDS"], 90, 5000, 12, "Tier 1", "Delhi"),
   ...generateBranches("KGMU Lucknow", neetBranches, 1000, 4000, 10, "Tier 1", "UP"),
   ...generateBranches("AFMC Pune", ["MBBS"], 1500, 0, 12, "Tier 1", "Maharashtra"),
-  ...generateBranches("Grant Medical College", neetBranches, 1800, 4500, 9, "Tier 2", "Maharashtra"),
-  ...generateBranches("Seth GS Medical College", ["MBBS", "BDS"], 800, 5000, 10, "Tier 1", "Maharashtra"),
+  ...generateBranches(
+    "Grant Medical College",
+    neetBranches,
+    1800,
+    4500,
+    9,
+    "Tier 2",
+    "Maharashtra",
+  ),
+  ...generateBranches(
+    "Seth GS Medical College",
+    ["MBBS", "BDS"],
+    800,
+    5000,
+    10,
+    "Tier 1",
+    "Maharashtra",
+  ),
   ...generateBranches("BJ Medical College", neetBranches, 700, 4000, 9, "Tier 1", "Gujarat"),
-  ...generateBranches("Madras Medical College", neetBranches, 1200, 5000, 9, "Tier 1", "Tamil Nadu"),
-  ...generateBranches("Osmania Medical College", ["MBBS", "BDS"], 2500, 6000, 8, "Tier 1", "Telangana"),
+  ...generateBranches(
+    "Madras Medical College",
+    neetBranches,
+    1200,
+    5000,
+    9,
+    "Tier 1",
+    "Tamil Nadu",
+  ),
+  ...generateBranches(
+    "Osmania Medical College",
+    ["MBBS", "BDS"],
+    2500,
+    6000,
+    8,
+    "Tier 1",
+    "Telangana",
+  ),
   ...generateBranches("AIIMS Jodhpur", ["MBBS"], 500, 0, 12, "Tier 1", "Rajasthan"),
   ...generateBranches("AIIMS Bhubaneswar", ["MBBS"], 600, 0, 12, "Tier 1", "Odisha"),
   ...generateBranches("AIIMS Bhopal", ["MBBS"], 650, 0, 12, "Tier 1", "MP"),
@@ -62,7 +139,15 @@ let bitsatColleges = [
   ...generateBranches("BITS Pilani", bitsatBranches, 330, -15, 22, "Tier 1", "Rajasthan"),
   ...generateBranches("BITS Goa", bitsatBranches, 290, -12, 18, "Tier 1", "Goa"),
   ...generateBranches("BITS Hyderabad", bitsatBranches, 280, -10, 16, "Tier 1", "Telangana"),
-  ...generateBranches("BITS RMIT/Iowa (2+2)", ["CSE", "ECE", "Mechanical"], 200, -15, 12, "Tier 2", "International"),
+  ...generateBranches(
+    "BITS RMIT/Iowa (2+2)",
+    ["CSE", "ECE", "Mechanical"],
+    200,
+    -15,
+    12,
+    "Tier 2",
+    "International",
+  ),
 ];
 
 let wbjeeColleges = [
@@ -70,21 +155,53 @@ let wbjeeColleges = [
   ...generateBranches("Calcutta University", wbjeeBranches, 600, 400, 12, "Tier 1", "West Bengal"),
   ...generateBranches("IEM Kolkata", wbjeeBranches, 1500, 800, 8, "Tier 2", "West Bengal"),
   ...generateBranches("Heritage Institute", wbjeeBranches, 2500, 1000, 7, "Tier 2", "West Bengal"),
-  ...generateBranches("Techno Main Salt Lake", wbjeeBranches, 4000, 1200, 6, "Tier 2", "West Bengal"),
-  ...generateBranches("Kalyani Govt Engg College", wbjeeBranches, 1200, 600, 8, "Tier 2", "West Bengal"),
-  ...generateBranches("Jalpaiguri Govt Engg College", wbjeeBranches, 2000, 800, 7, "Tier 2", "West Bengal"),
-  ...generateBranches("Haldia Institute of Tech", wbjeeBranches, 5000, 1500, 5.5, "Tier 3", "West Bengal"),
+  ...generateBranches(
+    "Techno Main Salt Lake",
+    wbjeeBranches,
+    4000,
+    1200,
+    6,
+    "Tier 2",
+    "West Bengal",
+  ),
+  ...generateBranches(
+    "Kalyani Govt Engg College",
+    wbjeeBranches,
+    1200,
+    600,
+    8,
+    "Tier 2",
+    "West Bengal",
+  ),
+  ...generateBranches(
+    "Jalpaiguri Govt Engg College",
+    wbjeeBranches,
+    2000,
+    800,
+    7,
+    "Tier 2",
+    "West Bengal",
+  ),
+  ...generateBranches(
+    "Haldia Institute of Tech",
+    wbjeeBranches,
+    5000,
+    1500,
+    5.5,
+    "Tier 3",
+    "West Bengal",
+  ),
   ...generateBranches("AOT Hooghly", wbjeeBranches, 6000, 1600, 5, "Tier 3", "West Bengal"),
 ];
 
 const mockCollegeData = {
   "JEE Main": jeeMainColleges,
-  "NEET": neetColleges,
-  "CUET": cuetColleges,
-  "BITSAT": bitsatColleges,
-  "WBJEE": wbjeeColleges,
+  NEET: neetColleges,
+  CUET: cuetColleges,
+  BITSAT: bitsatColleges,
+  WBJEE: wbjeeColleges,
 };
 
 const fileContent = `export const mockCollegeData = ${JSON.stringify(mockCollegeData, null, 2)};\n`;
-fs.writeFileSync('./src/data/mockCollegeData.ts', fileContent);
+fs.writeFileSync("./src/data/mockCollegeData.ts", fileContent);
 console.log("Created src/data/mockCollegeData.ts with lots of rows.");

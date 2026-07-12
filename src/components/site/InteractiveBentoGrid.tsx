@@ -46,7 +46,7 @@ export function InteractiveBentoGrid() {
     <section id="beyond" className="relative bg-slate-50 py-24 sm:py-32 overflow-hidden">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="max-w-3xl mb-16">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -55,13 +55,16 @@ export function InteractiveBentoGrid() {
             <Sparkles className="h-4 w-4" />
             Beyond Workshops
           </motion.span>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mt-6 font-display text-5xl font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-6xl"
           >
-            The full <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600">industry stack.</span>
+            The full{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600">
+              industry stack.
+            </span>
           </motion.h2>
         </div>
 
@@ -75,15 +78,24 @@ export function InteractiveBentoGrid() {
               transition={{ duration: 0.5, delay: i * 0.1, type: "spring", stiffness: 100 }}
               className={`group relative overflow-hidden rounded-[2rem] bg-white border border-slate-200/60 shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:-translate-y-1 ${p.colSpan}`}
             >
-              <Link to="/blog/$slug" params={{ slug: p.slug }} className="absolute inset-0 z-20" aria-label={`Read more about ${p.title}`} />
+              <Link
+                to="/blog/$slug"
+                params={{ slug: p.slug }}
+                className="absolute inset-0 z-20"
+                aria-label={`Read more about ${p.title}`}
+              />
               {/* Geometric Hover Gradients */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${p.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-              
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${p.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
+              />
+
               {/* Optional Background Pattern */}
               {p.bgPattern && (
-                <div className={`absolute inset-0 ${p.bgPattern} opacity-[0.03] transition-transform duration-700 group-hover:scale-110`} />
+                <div
+                  className={`absolute inset-0 ${p.bgPattern} opacity-[0.03] transition-transform duration-700 group-hover:scale-110`}
+                />
               )}
-              
+
               <div className="relative h-full flex flex-col justify-between p-8 sm:p-10 z-10">
                 <div className="flex justify-between items-start">
                   <div className="inline-grid h-16 w-16 place-items-center rounded-2xl bg-slate-50 border border-slate-100 shadow-sm transition-transform duration-500 group-hover:scale-110 group-hover:bg-white">

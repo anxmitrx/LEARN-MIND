@@ -37,7 +37,10 @@ export function Pillars() {
         <div className="max-w-3xl">
           <span className="eyebrow text-ink">Beyond Workshops</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            The full <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">industry stack.</span>
+            The full{" "}
+            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+              industry stack.
+            </span>
           </h2>
         </div>
 
@@ -45,19 +48,19 @@ export function Pillars() {
           {pillars.map((p, i) => {
             const isInk = p.tone === "ink";
             const isYellow = p.tone === "yellow";
-            
-            const bg = isInk 
-              ? "bg-indigo-950/50 backdrop-blur-xl border border-white/30 text-white shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-indigo-950/65 hover:border-indigo-500/80" 
-              : isYellow 
-              ? "bg-[#F8EDEB]/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-[#F8EDEB]/60 hover:border-white/80" 
-              : "bg-white/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-white/60 hover:border-white/80";
-              
-            const iconBg = isInk 
-              ? "bg-indigo-100 text-indigo-700 border border-indigo-200/50 shadow-sm" 
-              : isYellow 
-              ? "bg-purple-100 text-purple-700 border border-purple-200/50 shadow-sm" 
-              : "bg-[#E0C3FC]/20 text-[#1E1B4B] border border-[#E0C3FC]/40 shadow-sm";
-              
+
+            const bg = isInk
+              ? "bg-indigo-950/50 backdrop-blur-xl border border-white/30 text-white shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-indigo-950/65 hover:border-indigo-500/80"
+              : isYellow
+                ? "bg-[#F8EDEB]/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-[#F8EDEB]/60 hover:border-white/80"
+                : "bg-white/50 backdrop-blur-xl border border-white/60 text-slate-800 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:bg-white/60 hover:border-white/80";
+
+            const iconBg = isInk
+              ? "bg-indigo-100 text-indigo-700 border border-indigo-200/50 shadow-sm"
+              : isYellow
+                ? "bg-purple-100 text-purple-700 border border-purple-200/50 shadow-sm"
+                : "bg-[#E0C3FC]/20 text-[#1E1B4B] border border-[#E0C3FC]/40 shadow-sm";
+
             const subText = isInk ? "text-zinc-300 font-semibold" : "text-slate-600 font-semibold";
             return (
               <motion.div

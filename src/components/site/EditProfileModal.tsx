@@ -73,15 +73,20 @@ export function EditProfileModal() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] border-white/40 bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl">
         <DialogHeader>
-          <DialogTitle className="font-display uppercase tracking-wide text-ink text-xl">Edit Profile</DialogTitle>
+          <DialogTitle className="font-display uppercase tracking-wide text-ink text-xl">
+            Edit Profile
+          </DialogTitle>
           <DialogDescription className="text-slate-500 font-medium text-sm">
             Update your personal information below. This will be displayed on your dashboard.
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="grid gap-5 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <Label
+              htmlFor="name"
+              className="text-xs font-bold uppercase tracking-wider text-slate-500"
+            >
               Full Name
             </Label>
             <Input
@@ -92,10 +97,13 @@ export function EditProfileModal() {
               placeholder="e.g. Jane Doe"
             />
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="phone" className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              <Label
+                htmlFor="phone"
+                className="text-xs font-bold uppercase tracking-wider text-slate-500"
+              >
                 Phone Number
               </Label>
               <Input
@@ -107,7 +115,10 @@ export function EditProfileModal() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="institution" className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              <Label
+                htmlFor="institution"
+                className="text-xs font-bold uppercase tracking-wider text-slate-500"
+              >
                 Institution / Company
               </Label>
               <Input
@@ -120,7 +131,10 @@ export function EditProfileModal() {
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="bio" className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <Label
+              htmlFor="bio"
+              className="text-xs font-bold uppercase tracking-wider text-slate-500"
+            >
               Short Bio
             </Label>
             <Textarea
@@ -135,15 +149,15 @@ export function EditProfileModal() {
         </div>
 
         <DialogFooter>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setOpen(false)}
             className="rounded-full font-display uppercase tracking-wider font-bold text-xs bg-white hover:bg-slate-50"
           >
             Cancel
           </Button>
-          <Button 
-            onClick={handleSave} 
+          <Button
+            onClick={handleSave}
             disabled={loading}
             className="rounded-full bg-indigo-600 hover:bg-indigo-700 font-display uppercase tracking-wider font-bold text-xs"
           >

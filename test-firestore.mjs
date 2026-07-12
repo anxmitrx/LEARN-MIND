@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  getDocs,
+  query,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA191wT69wauFXqMbUEbqatsjRnM8g-HjA",
@@ -7,7 +14,7 @@ const firebaseConfig = {
   projectId: "learn-and-shine-dbf4d",
   storageBucket: "learn-and-shine-dbf4d.firebasestorage.app",
   messagingSenderId: "210311209668",
-  appId: "1:210311209668:web:a791d9458bd70cad2d9f91"
+  appId: "1:210311209668:web:a791d9458bd70cad2d9f91",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -24,7 +31,7 @@ async function run() {
       track: "engineering",
       status: "pending",
       source: "website",
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
     });
     console.log("SUCCESS! Document written with ID: ", docRef.id);
   } catch (e) {
@@ -39,7 +46,7 @@ async function run() {
   } catch (e) {
     console.error("FAILED to read documents:", e.message);
   }
-  
+
   process.exit();
 }
 

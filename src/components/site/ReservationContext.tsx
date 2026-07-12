@@ -18,7 +18,10 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
       value={{
         open,
         preferredTrack,
-        openModal: (t) => { setPreferredTrack(t); setOpen(true); },
+        openModal: (t) => {
+          setPreferredTrack(t);
+          setOpen(true);
+        },
         closeModal: () => setOpen(false),
       }}
     >

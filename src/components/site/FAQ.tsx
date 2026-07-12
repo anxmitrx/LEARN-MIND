@@ -38,7 +38,10 @@ export function FAQ() {
         <div>
           <span className="eyebrow text-ink">FAQ</span>
           <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            Quick answers, <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">straight up.</span>
+            Quick answers,{" "}
+            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+              straight up.
+            </span>
           </h2>
         </div>
 
@@ -54,10 +57,14 @@ export function FAQ() {
                   onClick={() => setOpen(isOpen ? null : i)}
                   className="flex w-full items-center justify-between gap-6 p-4 md:p-8 text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none focus-visible:ring-offset-2 focus-visible:ring-offset-white/20 rounded-t-3xl"
                 >
-                  <span className="font-display text-base font-bold text-ink sm:text-lg tracking-wide">{f.q}</span>
+                  <span className="font-display text-base font-bold text-ink sm:text-lg tracking-wide">
+                    {f.q}
+                  </span>
                   <span
                     className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition-all duration-300 ${
-                      isOpen ? "rotate-45 bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50"
+                      isOpen
+                        ? "rotate-45 bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                        : "bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50"
                     }`}
                   >
                     <Plus className="h-5 w-5" strokeWidth={3} />
@@ -72,7 +79,9 @@ export function FAQ() {
                       transition={{ duration: 0.25, ease: "easeOut" }}
                       className="overflow-hidden border-t border-white/40"
                     >
-                      <p className="p-4 md:px-8 md:pb-8 md:pt-6 text-sm leading-relaxed text-slate-700 font-semibold">{f.a}</p>
+                      <p className="p-4 md:px-8 md:pb-8 md:pt-6 text-sm leading-relaxed text-slate-700 font-semibold">
+                        {f.a}
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>

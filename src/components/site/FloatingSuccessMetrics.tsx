@@ -49,7 +49,7 @@ export function FloatingSuccessMetrics() {
 
       <div className="relative z-10 container mx-auto max-w-7xl px-4 sm:px-6">
         <div className="text-center mb-16">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -74,16 +74,20 @@ export function FloatingSuccessMetrics() {
               >
                 {/* Glow effect on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
+
                 <div className="relative z-10 flex flex-col items-center text-center">
                   <div className="w-14 h-14 bg-indigo-500/20 text-indigo-300 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 group-hover:text-indigo-200 transition-all duration-300">
                     <Icon className="w-7 h-7" />
                   </div>
-                  <h3 className="text-slate-300 font-bold text-sm uppercase tracking-widest mb-2">{metric.title}</h3>
+                  <h3 className="text-slate-300 font-bold text-sm uppercase tracking-widest mb-2">
+                    {metric.title}
+                  </h3>
                   <div className="text-5xl font-display font-extrabold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-indigo-300 group-hover:to-fuchsia-300 transition-all duration-300">
                     {metric.value}
                   </div>
-                  <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">{metric.subtitle}</p>
+                  <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                    {metric.subtitle}
+                  </p>
                 </div>
               </motion.div>
             );

@@ -29,9 +29,15 @@ export const Route = createFileRoute("/workshops/")({
   head: () => ({
     meta: [
       { title: "Mentoring Tracks — Learn & Shine" },
-      { name: "description", content: "5 structured tracks for Engineering and Management students." },
+      {
+        name: "description",
+        content: "5 structured tracks for Engineering and Management students.",
+      },
       { property: "og:title", content: "Mentoring Tracks — Learn & Shine" },
-      { property: "og:description", content: "Pick your track. Train with mentors. Walk in ready." },
+      {
+        property: "og:description",
+        content: "Pick your track. Train with mentors. Walk in ready.",
+      },
     ],
   }),
 });
@@ -144,14 +150,14 @@ function TracksIndex() {
       const focusLabels: Record<string, string> = {
         tech: "Tech & Engineering",
         mgmt: "Management & Consulting",
-        general: "Open-Ended Professional prep"
+        general: "Open-Ended Professional prep",
       };
       const gapLabels: Record<string, string> = {
         brand: "Building networking skills & high-converting LinkedIn profiles",
         communication: "Perfecting verbal pitching, workplace reports, and email loops",
         technical: "Bridging academic coding gaps to ship clean enterprise software",
         business: "Mastering roadmap cycles, product specs, and spreadsheet math",
-        placement: "Acing recruiters AMAs, ATS resumes, and salary negotiations"
+        placement: "Acing recruiters AMAs, ATS resumes, and salary negotiations",
       };
 
       const focusLabel = focusLabels[focus] || focus;
@@ -163,7 +169,7 @@ function TracksIndex() {
           educationLevel: focusLabel,
           challenge: gapLabel,
           recommendedTrack: recommendedTrackObj.title,
-          timestamp: serverTimestamp()
+          timestamp: serverTimestamp(),
         });
       } else {
         console.warn("Firestore db instance is null. Skipping quiz result log.");
@@ -209,8 +215,14 @@ function TracksIndex() {
 
       {/* Aurora Mesh Blobs Local Overlay for Extra Visual Pop */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none">
-        <div className="absolute top-[20%] right-[10%] w-[45vw] h-[45vw] max-w-[500px] rounded-full bg-purple-200/20 blur-3xl animate-pulse" style={{ animationDuration: "12s" }} />
-        <div className="absolute top-[50%] left-[5%] w-[40vw] h-[40vw] max-w-[450px] rounded-full bg-indigo-200/20 blur-3xl animate-pulse" style={{ animationDuration: "16s", animationDelay: "2s" }} />
+        <div
+          className="absolute top-[20%] right-[10%] w-[45vw] h-[45vw] max-w-[500px] rounded-full bg-purple-200/20 blur-3xl animate-pulse"
+          style={{ animationDuration: "12s" }}
+        />
+        <div
+          className="absolute top-[50%] left-[5%] w-[40vw] h-[40vw] max-w-[450px] rounded-full bg-indigo-200/20 blur-3xl animate-pulse"
+          style={{ animationDuration: "16s", animationDelay: "2s" }}
+        />
       </div>
 
       {/* Hero Section */}
@@ -227,26 +239,36 @@ function TracksIndex() {
               </span>
             </h1>
             <p className="mt-4 max-w-3xl text-lg font-medium leading-relaxed text-slate-600">
-              Five structured, mentor-led programs designed to bridge the gap between academic theory and real-world execution. Select a track to explore curriculum modules, time commitments, and career outcomes.
+              Five structured, mentor-led programs designed to bridge the gap between academic
+              theory and real-world execution. Select a track to explore curriculum modules, time
+              commitments, and career outcomes.
             </p>
 
             {/* Platform Metrics Grid */}
             <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl pt-6 border-t border-slate-200/30">
               <div className="p-4 bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl">
                 <div className="text-3xl font-display font-extrabold text-indigo-600">5</div>
-                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Core Tracks</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">
+                  Core Tracks
+                </div>
               </div>
               <div className="p-4 bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl">
                 <div className="text-3xl font-display font-extrabold text-indigo-600">40+</div>
-                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Industry Topics</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">
+                  Industry Topics
+                </div>
               </div>
               <div className="p-4 bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl">
                 <div className="text-3xl font-display font-extrabold text-indigo-600">1:1</div>
-                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Mentor Access</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">
+                  Mentor Access
+                </div>
               </div>
               <div className="p-4 bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl">
                 <div className="text-3xl font-display font-extrabold text-indigo-600">100%</div>
-                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">Practical Labs</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">
+                  Practical Labs
+                </div>
               </div>
             </div>
           </div>
@@ -257,7 +279,6 @@ function TracksIndex() {
       <section className="bg-transparent py-2">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 bg-white/25 backdrop-blur-xl border border-white/50 rounded-3xl p-4 sm:p-6 shadow-sm">
-            
             {/* Tag Filters */}
             <div className="flex flex-wrap items-center gap-2">
               {filters.map((filter) => {
@@ -297,13 +318,14 @@ function TracksIndex() {
                 <Sparkles className="h-4 w-4" />
               </div>
               <div className="text-left">
-                <div className="text-xs font-extrabold text-slate-800">Not sure which track fits your goals?</div>
+                <div className="text-xs font-extrabold text-slate-800">
+                  Not sure which track fits your goals?
+                </div>
                 <div className="text-[11px] font-bold text-indigo-600 mt-0.5 flex items-center gap-1 group-hover:underline">
                   Take the Matchmaker Quiz (30s) <ArrowRight className="h-3 w-3" />
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -323,7 +345,9 @@ function TracksIndex() {
               return (
                 <motion.div
                   key={t.slug}
-                  ref={(el) => { cardRefs.current[t.slug] = el; }}
+                  ref={(el) => {
+                    cardRefs.current[t.slug] = el;
+                  }}
                   variants={cardReveal}
                   layout="position"
                   onClick={() => toggleExpandTrack(t.slug)}
@@ -361,7 +385,7 @@ function TracksIndex() {
                       <p className="mt-2 text-slate-600 font-semibold text-sm leading-relaxed max-w-3xl">
                         {t.oneLinerPromise}
                       </p>
-                      
+
                       {/* Topic Tags */}
                       <div className="mt-4 flex flex-wrap gap-1.5">
                         {t.topics.slice(0, 4).map((tp) => (
@@ -414,7 +438,10 @@ function TracksIndex() {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{
                           height: { duration: durationTransition, ease: globalEase },
-                          opacity: { duration: durationTransition * 0.8, delay: durationTransition * 0.1 },
+                          opacity: {
+                            duration: durationTransition * 0.8,
+                            delay: durationTransition * 0.1,
+                          },
                         }}
                         style={{ overflow: "hidden" }}
                       >
@@ -423,10 +450,8 @@ function TracksIndex() {
 
                         {/* Detailed Grid */}
                         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-                          
                           {/* Left Column: Who it is for & You'll learn */}
                           <div className="space-y-6">
-                            
                             {/* Who it's for */}
                             <div>
                               <h3 className="font-display text-sm font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-2">
@@ -447,7 +472,8 @@ function TracksIndex() {
                             {/* You'll learn */}
                             <div>
                               <h3 className="font-display text-sm font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-                                <Compass className="h-4 w-4 text-indigo-600" /> Core Syllabus Modules
+                                <Compass className="h-4 w-4 text-indigo-600" /> Core Syllabus
+                                Modules
                               </h3>
                               <ul className="mt-3 space-y-2">
                                 {t.youWillLearn.map((item, idx) => (
@@ -466,7 +492,6 @@ function TracksIndex() {
 
                           {/* Right Column: Outcomes, Sessions & Workload */}
                           <div className="space-y-6">
-                            
                             {/* Example Sessions */}
                             <div>
                               <h3 className="font-display text-sm font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-2">
@@ -490,13 +515,17 @@ function TracksIndex() {
                             {/* Outcomes */}
                             <div>
                               <h3 className="font-display text-sm font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-2">
-                                <Briefcase className="h-4 w-4 text-indigo-600" /> Concrete Recruiter Deliverables
+                                <Briefcase className="h-4 w-4 text-indigo-600" /> Concrete Recruiter
+                                Deliverables
                               </h3>
                               <ul className="mt-3 space-y-2">
                                 {t.outcomes.map((o, idx) => (
                                   <li key={idx} className="flex items-start gap-2.5">
                                     <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center bg-indigo-100 text-indigo-700 rounded-full">
-                                      <Check className="h-2.5 w-2.5 text-indigo-700" strokeWidth={3} />
+                                      <Check
+                                        className="h-2.5 w-2.5 text-indigo-700"
+                                        strokeWidth={3}
+                                      />
                                     </span>
                                     <span className="text-xs font-bold text-indigo-950 leading-relaxed">
                                       {o}
@@ -513,15 +542,18 @@ function TracksIndex() {
                                   <Clock className="h-4 w-4" />
                                 </div>
                                 <div>
-                                  <div className="text-xs font-bold text-slate-800">Time commitment</div>
-                                  <div className="text-[10px] font-semibold text-slate-500 mt-0.5">Flexible schedule</div>
+                                  <div className="text-xs font-bold text-slate-800">
+                                    Time commitment
+                                  </div>
+                                  <div className="text-[10px] font-semibold text-slate-500 mt-0.5">
+                                    Flexible schedule
+                                  </div>
                                 </div>
                               </div>
                               <span className="bg-indigo-600 text-white font-display text-[11px] font-extrabold uppercase px-3 py-1.5 rounded-xl shadow-sm">
                                 {t.timeCommitment}
                               </span>
                             </div>
-
                           </div>
                         </div>
 
@@ -533,10 +565,10 @@ function TracksIndex() {
                             onClick={(e) => e.stopPropagation()}
                             className="inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-600 hover:text-indigo-800 hover:underline"
                           >
-                            Explore Syllabus In-Depth & Radar Stats <ArrowUpRight className="h-4. w-4" />
+                            Explore Syllabus In-Depth & Radar Stats{" "}
+                            <ArrowUpRight className="h-4. w-4" />
                           </Link>
                         </div>
-
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -571,7 +603,8 @@ function TracksIndex() {
               <div className="flex items-center gap-1.5 text-slate-500">
                 <Clock className="h-3.5 w-3.5 text-indigo-600" />
                 <span className="text-xs font-bold text-slate-600">
-                  {tracks.find((t) => t.slug === selectedTrackSlug)?.timeCommitment.split(" ")[0]} hrs/wk
+                  {tracks.find((t) => t.slug === selectedTrackSlug)?.timeCommitment.split(" ")[0]}{" "}
+                  hrs/wk
                 </span>
               </div>
             </div>
@@ -600,7 +633,6 @@ function TracksIndex() {
       <AnimatePresence>
         {quizOpen && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-md">
-            
             {/* Modal Box */}
             <motion.div
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -642,7 +674,9 @@ function TracksIndex() {
                         >
                           <div>
                             <div className="text-sm text-slate-900">Tech & Engineering</div>
-                            <div className="text-[10px] text-slate-500 mt-0.5">Software Development, CS, IT, Data, Core Fields</div>
+                            <div className="text-[10px] text-slate-500 mt-0.5">
+                              Software Development, CS, IT, Data, Core Fields
+                            </div>
                           </div>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
@@ -655,7 +689,9 @@ function TracksIndex() {
                         >
                           <div>
                             <div className="text-sm text-slate-900">Management & Consulting</div>
-                            <div className="text-[10px] text-slate-500 mt-0.5">MBA, Business Development, PM, Corporate Functions</div>
+                            <div className="text-[10px] text-slate-500 mt-0.5">
+                              MBA, Business Development, PM, Corporate Functions
+                            </div>
                           </div>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
@@ -667,8 +703,12 @@ function TracksIndex() {
                           className="w-full text-left p-4 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
                           <div>
-                            <div className="text-sm text-slate-900">Open-Ended Professional prep</div>
-                            <div className="text-[10px] text-slate-500 mt-0.5">Still testing parameters / flexible goal pathways</div>
+                            <div className="text-sm text-slate-900">
+                              Open-Ended Professional prep
+                            </div>
+                            <div className="text-[10px] text-slate-500 mt-0.5">
+                              Still testing parameters / flexible goal pathways
+                            </div>
                           </div>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
@@ -686,7 +726,9 @@ function TracksIndex() {
                           }}
                           className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
-                          <span className="text-xs text-slate-900">Building networking skills & high-converting LinkedIn profiles</span>
+                          <span className="text-xs text-slate-900">
+                            Building networking skills & high-converting LinkedIn profiles
+                          </span>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
                         <button
@@ -698,7 +740,9 @@ function TracksIndex() {
                           }}
                           className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
-                          <span className="text-xs text-slate-900">Perfecting verbal pitching, workplace reports, and email loops</span>
+                          <span className="text-xs text-slate-900">
+                            Perfecting verbal pitching, workplace reports, and email loops
+                          </span>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
                         {quizAnswers.focus === "tech" && (
@@ -711,7 +755,9 @@ function TracksIndex() {
                             }}
                             className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                           >
-                            <span className="text-xs text-slate-900">Bridging academic coding gaps to ship clean enterprise software</span>
+                            <span className="text-xs text-slate-900">
+                              Bridging academic coding gaps to ship clean enterprise software
+                            </span>
                             <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </button>
                         )}
@@ -725,7 +771,9 @@ function TracksIndex() {
                             }}
                             className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                           >
-                            <span className="text-xs text-slate-900">Mastering roadmap cycles, product specs, and spreadsheet math</span>
+                            <span className="text-xs text-slate-900">
+                              Mastering roadmap cycles, product specs, and spreadsheet math
+                            </span>
                             <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                           </button>
                         )}
@@ -738,7 +786,9 @@ function TracksIndex() {
                           }}
                           className="w-full text-left p-3.5 bg-white/40 hover:bg-white/70 border border-white/60 hover:border-indigo-300 rounded-2xl shadow-sm transition-all duration-300 font-semibold text-slate-700 flex items-center justify-between group cursor-pointer"
                         >
-                          <span className="text-xs text-slate-900">Acing recruiters AMAs, ATS resumes, and salary negotiations</span>
+                          <span className="text-xs text-slate-900">
+                            Acing recruiters AMAs, ATS resumes, and salary negotiations
+                          </span>
                           <ArrowRight className="h-4 w-4 text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
                       </>
@@ -770,7 +820,7 @@ function TracksIndex() {
                   <div className="mx-auto w-16 h-16 bg-indigo-100 border border-indigo-200/50 text-indigo-600 rounded-full flex items-center justify-center shadow-sm">
                     <GraduationCap className="h-8 w-8" />
                   </div>
-                  
+
                   <h3 className="mt-4 font-display text-2xl font-extrabold text-slate-900 leading-tight">
                     Your Curated Pathway
                   </h3>

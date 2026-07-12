@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from "fs";
 
 const years = ["2026", "2025", "2024", "2023", "2022", "2021"];
 
@@ -78,7 +78,7 @@ const engineeringColleges = [
   { name: "Meghnad Saha Institute (CSE)", exam: "WBJEE", baseRank: 10000 },
   { name: "Asansol Engg College (CSE)", exam: "WBJEE", baseRank: 12000 },
   { name: "Narula Institute (CSE)", exam: "WBJEE", baseRank: 15000 },
-  { name: "JIS College of Engg (CSE)", exam: "WBJEE", baseRank: 18000 }
+  { name: "JIS College of Engg (CSE)", exam: "WBJEE", baseRank: 18000 },
 ];
 
 const medicalColleges = [
@@ -131,7 +131,7 @@ const medicalColleges = [
   { name: "MMC Muzaffarnagar", exam: "NEET", baseRank: 12000 },
   { name: "GSVM Kanpur", exam: "NEET", baseRank: 3800 },
   { name: "MLN Allahabad", exam: "NEET", baseRank: 4200 },
-  { name: "LLRM Meerut", exam: "NEET", baseRank: 4600 }
+  { name: "LLRM Meerut", exam: "NEET", baseRank: 4600 },
 ];
 
 const pharmaColleges = [
@@ -184,7 +184,7 @@ const pharmaColleges = [
   { name: "SOA University", exam: "SAAT", baseRank: 4000 },
   { name: "Raja Muthiah Medical (Pharma)", exam: "State Level", baseRank: 88, isPercentile: true },
   { name: "Sri Ramachandra Institute", exam: "All India", baseRank: 2500 },
-  { name: "SVKM's Dr. Bhanuben Nanavati", exam: "MHT CET", baseRank: 90, isPercentile: true }
+  { name: "SVKM's Dr. Bhanuben Nanavati", exam: "MHT CET", baseRank: 90, isPercentile: true },
 ];
 
 const architectureColleges = [
@@ -237,7 +237,7 @@ const architectureColleges = [
   { name: "Vaishnavi School of Arch", exam: "NATA", baseRank: 90, isScore: true },
   { name: "Aurora's Design Institute", exam: "NATA", baseRank: 85, isScore: true },
   { name: "CSI Institute of Technology", exam: "NATA", baseRank: 80, isScore: true },
-  { name: "McGan's Ooty School", exam: "NATA", baseRank: 100, isScore: true }
+  { name: "McGan's Ooty School", exam: "NATA", baseRank: 100, isScore: true },
 ];
 
 const generateData = () => {
@@ -245,18 +245,18 @@ const generateData = () => {
 
   years.forEach((year, yIdx) => {
     // Modify ranks slightly based on the year (e.g. earlier years might have slightly lower or higher cutoffs)
-    const factor = 1 + (yIdx * 0.05); // ranks increase/change slightly back in time
+    const factor = 1 + yIdx * 0.05; // ranks increase/change slightly back in time
 
     const yearData = { year, colleges: [] };
 
     // Engineering
-    engineeringColleges.forEach(c => {
+    engineeringColleges.forEach((c) => {
       let rankStr = "";
       if (c.isScore) {
         const score = Math.floor(c.baseRank / factor);
         rankStr = `${score} Score`;
       } else if (c.isPercentile) {
-        const perc = Math.min(99.9, c.baseRank + (yIdx * 0.1)).toFixed(1);
+        const perc = Math.min(99.9, c.baseRank + yIdx * 0.1).toFixed(1);
         rankStr = `${perc} %ile`;
       } else {
         const rank = Math.floor(c.baseRank * factor);
@@ -266,13 +266,13 @@ const generateData = () => {
     });
 
     // Medical
-    medicalColleges.forEach(c => {
+    medicalColleges.forEach((c) => {
       let rankStr = "";
       if (c.isScore) {
         const score = Math.floor(c.baseRank / factor);
         rankStr = `${score} Score`;
       } else if (c.isPercentile) {
-        const perc = Math.min(99.9, c.baseRank + (yIdx * 0.1)).toFixed(1);
+        const perc = Math.min(99.9, c.baseRank + yIdx * 0.1).toFixed(1);
         rankStr = `${perc} %ile`;
       } else {
         const rank = Math.floor(c.baseRank * factor);
@@ -282,13 +282,13 @@ const generateData = () => {
     });
 
     // Pharma
-    pharmaColleges.forEach(c => {
+    pharmaColleges.forEach((c) => {
       let rankStr = "";
       if (c.isScore) {
         const score = Math.floor(c.baseRank / factor);
         rankStr = `${score} Score`;
       } else if (c.isPercentile) {
-        const perc = Math.min(99.9, c.baseRank - (yIdx * 0.2)).toFixed(1);
+        const perc = Math.min(99.9, c.baseRank - yIdx * 0.2).toFixed(1);
         rankStr = `${perc} %ile`;
       } else {
         const rank = Math.floor(c.baseRank * factor);
@@ -298,13 +298,13 @@ const generateData = () => {
     });
 
     // Architecture
-    architectureColleges.forEach(c => {
+    architectureColleges.forEach((c) => {
       let rankStr = "";
       if (c.isScore) {
         const score = Math.floor(c.baseRank / factor);
         rankStr = `${score} Score`;
       } else if (c.isPercentile) {
-        const perc = Math.min(99.9, c.baseRank + (yIdx * 0.1)).toFixed(1);
+        const perc = Math.min(99.9, c.baseRank + yIdx * 0.1).toFixed(1);
         rankStr = `${perc} %ile`;
       } else {
         const rank = Math.floor(c.baseRank * factor);
@@ -317,13 +317,13 @@ const generateData = () => {
   });
 
   const fileContent = `export const historicalData = ${JSON.stringify(finalData, null, 2)};\n`;
-  fs.writeFileSync('./src/data/historicalCollegeData.ts', fileContent);
+  fs.writeFileSync("./src/data/historicalCollegeData.ts", fileContent);
   console.log("Created src/data/historicalCollegeData.ts");
 };
 
 // ensure dir
-if (!fs.existsSync('./src/data')) {
-  fs.mkdirSync('./src/data', { recursive: true });
+if (!fs.existsSync("./src/data")) {
+  fs.mkdirSync("./src/data", { recursive: true });
 }
 
 generateData();
