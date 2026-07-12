@@ -120,7 +120,7 @@ function BlogPost() {
         <div className="absolute inset-0 bg-[radial-gradient(#4f46e5_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03]"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <Link to="/#beyond" className="inline-flex items-center gap-2 text-indigo-600 font-medium mb-6 hover:text-indigo-800 transition-colors">
+            <Link to="/" hash="beyond" className="inline-flex items-center gap-2 text-indigo-600 font-medium mb-6 hover:text-indigo-800 transition-colors">
               <ArrowLeft className="h-4 w-4" />
               Back to Programs
             </Link>

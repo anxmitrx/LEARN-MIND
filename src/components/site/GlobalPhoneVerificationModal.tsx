@@ -37,7 +37,7 @@ export function GlobalPhoneVerificationModal() {
       setIsLoading(false);
       setIsMockMode(false);
       // Only set initial phone if empty to prevent overwriting user input on re-renders
-      setPhoneInput((prev) => prev || userData?.phone || "");
+      setPhoneInput((prev: string) => prev || userData?.phone || "");
       
       // Initialize reCAPTCHA
       if (!recaptchaVerifierRef.current && auth) {

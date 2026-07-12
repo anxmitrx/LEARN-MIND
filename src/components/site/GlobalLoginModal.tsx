@@ -1,17 +1,20 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { X, LogIn, Loader2, Mail, ArrowLeft } from "lucide-react";
+import { X, LogIn, Loader2, Mail, ArrowLeft, Phone, Check } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { signInWithGoogle, auth, db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { useState } from "react";
-import { sendSignInLinkToEmail } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useState, useEffect, useRef } from "react";
+import { sendSignInLinkToEmail, signInWithPhoneNumber, RecaptchaVerifier, ConfirmationResult } from "firebase/auth";
 import { useNavigate } from "@tanstack/react-router";
+
+const inputCls =
+  "w-full border border-slate-200 bg-slate-50 px-5 py-3.5 text-sm font-semibold text-slate-800 placeholder:text-slate-400 outline-none transition-all rounded-full focus:bg-white focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600";
 
 export function GlobalLoginModal() {
   const { showLoginModal, setShowLoginModal, user, loading } = useAuth();
   const navigate = useNavigate();
   
-  const [mode, setMode] = useState<"initial" | "email">("initial");
+  const [mode, setMode] = useState<"initial" | "email" | "phone">("initial");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [loginError, setLoginError] = useState("");
   
@@ -20,6 +23,53 @@ export function GlobalLoginModal() {
   const [isSendingLink, setIsSendingLink] = useState(false);
   const [linkSent, setLinkSent] = useState(false);
   const [linkError, setLinkError] = useState("");
+
+  // Phone Auth State
+  const [phoneStep, setPhoneStep] = useState<"phone" | "otp">("phone");
+  const [phoneInput, setPhoneInput] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [phoneError, setPhoneError] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
+  const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
+
+  useEffect(() => {
+    if (showLoginModal && mode === "phone") {
+      if (!recaptchaVerifierRef.current && auth) {
+        try {
+          recaptchaVerifierRef.current = new RecaptchaVerifier(auth, 'login-recaptcha-container', {
+            size: 'invisible'
+          });
+        } catch (e) {
+          console.error("Recaptcha init error:", e);
+        }
+      }
+    }
+
+    return () => {
+      // We don't necessarily clear it here because component might just re-render, 
+      // but it's good practice. We'll leave it attached to avoid re-init issues.
+    };
+  }, [showLoginModal, mode]);
+
+  const resetState = () => {
+    setMode("initial");
+    setLoginError("");
+    setLinkError("");
+    setPhoneError("");
+    setEmail("");
+    setLinkSent(false);
+    setPhoneStep("phone");
+    setPhoneInput("");
+    setOtp("");
+    setConfirmationResult(null);
+  };
+
+  const handleClose = () => {
+    setShowLoginModal(false);
+    setTimeout(resetState, 300); // reset after animation
+  };
 
   // If they're already logged in, or checking state, don't render yet
   if (user || loading) return null;
@@ -48,6 +98,66 @@ export function GlobalLoginModal() {
     }
   };
 
+  const handleSendPhoneOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneInput || !auth || !recaptchaVerifierRef.current) return;
+
+    setPhoneError("");
+    setIsSendingOtp(true);
+
+    try {
+      const formattedPhone = phoneInput.startsWith("+") ? phoneInput : `+91${phoneInput.replace(/\D/g, '')}`;
+      const confResult = await signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifierRef.current);
+      setConfirmationResult(confResult);
+      setPhoneStep("otp");
+    } catch (err: any) {
+      console.error("Error sending OTP:", err);
+      if (err.code === "auth/invalid-phone-number") {
+        setPhoneError("Invalid phone number format. Please include country code (e.g. +91).");
+      } else {
+        setPhoneError(err.message || "Failed to send verification code. Try again.");
+      }
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  const handleVerifyPhoneOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!otp || !confirmationResult) return;
+
+    setPhoneError("");
+    setIsVerifyingOtp(true);
+
+    try {
+      const result = await confirmationResult.confirm(otp);
+      const authUser = result.user;
+      
+      const userRef = doc(db, "users", authUser.uid);
+      const userSnap = await getDoc(userRef);
+      
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          name: "User",
+          phone: phoneInput,
+          phoneVerified: true,
+          xp: 0,
+          level: "Level 1: Novice",
+          onboardingComplete: false,
+          createdAt: new Date().toISOString(),
+        });
+      }
+      
+      handleClose();
+      navigate({ to: "/dashboard" });
+    } catch (err: any) {
+      console.error("Error verifying OTP:", err);
+      setPhoneError("Invalid verification code. Please try again.");
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
   const handleGoogleSignIn = async () => {
     try {
       setIsAuthenticating(true);
@@ -59,12 +169,18 @@ export function GlobalLoginModal() {
       const userSnap = await getDoc(userRef);
       
       if (!userSnap.exists()) {
-        await auth.signOut();
-        setLoginError("Account not found. Please create an account.");
-        return;
+        await setDoc(userRef, {
+          name: authUser.displayName || "User",
+          email: authUser.email,
+          photoURL: authUser.photoURL,
+          xp: 0,
+          level: "Level 1: Novice",
+          onboardingComplete: false,
+          createdAt: new Date().toISOString(),
+        });
       }
       
-      setShowLoginModal(false);
+      handleClose();
       navigate({ to: "/dashboard" });
     } catch (error: any) {
       console.error(error);
@@ -82,7 +198,7 @@ export function GlobalLoginModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/80 p-4 backdrop-blur-md"
-          onClick={() => setShowLoginModal(false)}
+          onClick={handleClose}
         >
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -92,9 +208,13 @@ export function GlobalLoginModal() {
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-sm overflow-hidden bg-white/90 backdrop-blur-xl border border-white/50 p-6 sm:p-8 shadow-2xl rounded-3xl text-center"
           >
-            {mode === "email" && !linkSent && (
+            {mode !== "initial" && (
               <button
-                onClick={() => setMode("initial")}
+                onClick={() => {
+                  setMode("initial");
+                  setLinkError("");
+                  setPhoneError("");
+                }}
                 aria-label="Back"
                 className="absolute left-4 top-4 grid h-9 w-9 place-items-center bg-slate-100/50 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-all rounded-full focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none z-10"
               >
@@ -102,7 +222,7 @@ export function GlobalLoginModal() {
               </button>
             )}
             <button
-              onClick={() => setShowLoginModal(false)}
+              onClick={handleClose}
               aria-label="Close"
               className="absolute right-4 top-4 grid h-9 w-9 place-items-center bg-slate-100/50 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-all rounded-full focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none z-10"
             >
@@ -110,21 +230,38 @@ export function GlobalLoginModal() {
             </button>
 
             <div className="mx-auto mt-2 grid h-16 w-16 place-items-center bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-inner mb-6">
-              <LogIn className="h-8 w-8" strokeWidth={2.5} />
+              {mode === "phone" ? (
+                <Phone className="h-7 w-7" strokeWidth={2.5} />
+              ) : (
+                <LogIn className="h-8 w-8" strokeWidth={2.5} />
+              )}
             </div>
 
             <h3 className="font-display text-2xl font-bold text-ink">
-              Welcome to Learn & Shine
+              {mode === "phone" ? "Continue with Phone" : "Welcome to Learn & Shine"}
             </h3>
             <p className="mt-3 text-sm font-semibold text-slate-600">
-              {mode === "initial" ? "Please log in or create an account to reserve your seat." : "Enter your email to receive a magic link to create your account."}
+              {mode === "initial" && "Please log in or create an account to reserve your seat."}
+              {mode === "email" && !linkSent && "Enter your email to receive a magic link."}
+              {mode === "phone" && phoneStep === "phone" && "Enter your phone number to sign in or create an account."}
+              {mode === "phone" && phoneStep === "otp" && `We've sent a code to ${phoneInput}.`}
             </p>
 
-            {mode === "initial" ? (
+            {mode === "initial" && (
               <div className="mt-8 flex flex-col gap-3">
                 {loginError && (
                   <p className="text-xs font-bold text-red-600 mb-2 bg-red-50 p-2 rounded-lg border border-red-100">{loginError}</p>
                 )}
+                
+                <button
+                  onClick={() => { setMode("phone"); setLoginError(""); }}
+                  disabled={isAuthenticating}
+                  className="flex w-full items-center justify-center gap-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider rounded-full shadow-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
+                >
+                  <Phone className="h-5 w-5" />
+                  Continue with Phone
+                </button>
+
                 <button
                   onClick={handleGoogleSignIn}
                   disabled={isAuthenticating}
@@ -140,20 +277,21 @@ export function GlobalLoginModal() {
                       <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                     </svg>
                   )}
-                  Login with Google
+                  Continue with Google
                 </button>
+                
                 <button
                   onClick={() => { setMode("email"); setLoginError(""); }}
                   disabled={isAuthenticating}
                   className="flex w-full items-center justify-center gap-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none"
                 >
-                  Create an Account
+                  <Mail className="h-5 w-5" />
+                  Continue with Email
                 </button>
-                <p className="mt-4 text-[11px] font-semibold text-slate-500 px-4 leading-relaxed">
-                  Please create an account before trying to log in.
-                </p>
               </div>
-            ) : linkSent ? (
+            )}
+
+            {mode === "email" && linkSent && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
@@ -169,15 +307,19 @@ export function GlobalLoginModal() {
                   <p className="text-xs font-bold text-red-600 mt-2">{linkError}</p>
                 )}
               </motion.div>
-            ) : (
+            )}
+
+            {mode === "email" && !linkSent && (
               <div className="mt-8 flex flex-col gap-3">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-slate-200 bg-slate-50 px-5 py-3.5 text-sm font-semibold text-slate-800 placeholder:text-slate-400 outline-none transition-all rounded-full focus:bg-white focus:border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600 text-center"
+                  className={`${inputCls} text-center`}
                   placeholder="you@example.com"
                 />
+                
+                {linkError && <p className="text-xs font-bold text-red-500">{linkError}</p>}
                 
                 <button
                   onClick={handleSendMagicLink}
@@ -189,9 +331,73 @@ export function GlobalLoginModal() {
                 </button>
               </div>
             )}
+
+            {mode === "phone" && phoneStep === "phone" && (
+              <form onSubmit={handleSendPhoneOtp} className="mt-8 flex flex-col gap-3 text-left">
+                <div className="relative flex items-center">
+                  <Phone className="absolute left-4 w-4 h-4 text-slate-400" />
+                  <input
+                    type="tel"
+                    autoFocus
+                    value={phoneInput}
+                    onChange={(e) => setPhoneInput(e.target.value)}
+                    placeholder="+91 9876543210"
+                    className={`${inputCls} pl-10`}
+                  />
+                </div>
+                {phoneError && <p className="text-xs font-bold text-red-500">{phoneError}</p>}
+                
+                <button
+                  type="submit"
+                  disabled={!phoneInput || isSendingOtp}
+                  className="flex w-full items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600"
+                >
+                  {isSendingOtp && <Loader2 className="w-4 h-4 animate-spin" />}
+                  Send Verification Code
+                </button>
+              </form>
+            )}
+
+            {mode === "phone" && phoneStep === "otp" && (
+              <form onSubmit={handleVerifyPhoneOtp} className="mt-8 flex flex-col gap-3 text-left">
+                <input
+                  type="text"
+                  autoFocus
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="123456"
+                  maxLength={6}
+                  className={`${inputCls} text-center tracking-widest text-lg`}
+                />
+                {phoneError && <p className="text-xs font-bold text-red-500">{phoneError}</p>}
+                
+                <button
+                  type="submit"
+                  disabled={otp.length !== 6 || isVerifyingOtp}
+                  className="flex w-full items-center justify-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-indigo-600"
+                >
+                  {isVerifyingOtp ? <Loader2 className="w-5 h-5 animate-spin" /> : <Check className="w-5 h-5" />}
+                  Verify & Continue
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPhoneStep("phone");
+                    setOtp("");
+                    setPhoneError("");
+                  }}
+                  className="mt-2 w-full text-center text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer"
+                >
+                  Back to Phone Entry
+                </button>
+              </form>
+            )}
+
+            <div id="login-recaptcha-container"></div>
           </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
   );
 }
+

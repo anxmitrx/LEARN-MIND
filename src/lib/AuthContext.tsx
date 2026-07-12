@@ -48,6 +48,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  useEffect(() => {
+    if (user && userData && !userData.phoneVerified) {
+      setShowPhoneVerificationModal(true);
+    } else if (user && userData && userData.phoneVerified) {
+      // Optional: hide modal if verified somehow without the callback triggering
+      // setShowPhoneVerificationModal(false);
+    }
+  }, [user, userData]);
+
   const clearPhoneVerificationCallback = () => {
     setPhoneVerificationCallback(null);
   };
