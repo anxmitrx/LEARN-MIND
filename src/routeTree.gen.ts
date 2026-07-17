@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebinarsRouteImport } from './routes/webinars'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as MentorsRouteImport } from './routes/mentors'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as Class12ConsultRouteImport } from './routes/class-12-consult'
@@ -23,6 +24,11 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 const WebinarsRoute = WebinarsRouteImport.update({
   id: '/webinars',
   path: '/webinars',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MentorsRoute = MentorsRouteImport.update({
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/class-12-consult': typeof Class12ConsultRoute
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/webinars': typeof WebinarsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/class-12-consult': typeof Class12ConsultRoute
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/webinars': typeof WebinarsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/class-12-consult': typeof Class12ConsultRoute
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/webinars': typeof WebinarsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/class-12-consult'
     | '/dashboard'
     | '/mentors'
+    | '/verify-email'
     | '/webinars'
     | '/blog/$slug'
     | '/workshops/$slug'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/class-12-consult'
     | '/dashboard'
     | '/mentors'
+    | '/verify-email'
     | '/webinars'
     | '/blog/$slug'
     | '/workshops/$slug'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/class-12-consult'
     | '/dashboard'
     | '/mentors'
+    | '/verify-email'
     | '/webinars'
     | '/blog/$slug'
     | '/workshops/$slug'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   Class12ConsultRoute: typeof Class12ConsultRoute
   DashboardRoute: typeof DashboardRoute
   MentorsRoute: typeof MentorsRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
   WebinarsRoute: typeof WebinarsRoute
   BlogSlugRoute: typeof BlogSlugRoute
   WorkshopsSlugRoute: typeof WorkshopsSlugRoute
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/webinars'
       fullPath: '/webinars'
       preLoaderRoute: typeof WebinarsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mentors': {
@@ -242,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   Class12ConsultRoute: Class12ConsultRoute,
   DashboardRoute: DashboardRoute,
   MentorsRoute: MentorsRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
   WebinarsRoute: WebinarsRoute,
   BlogSlugRoute: BlogSlugRoute,
   WorkshopsSlugRoute: WorkshopsSlugRoute,

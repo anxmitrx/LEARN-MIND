@@ -16,7 +16,7 @@ import { CurtainReveal } from "@/components/site/CurtainReveal";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
 import { WhatsAppChatButton } from "@/components/site/WhatsAppChatButton";
 import { AuthProvider, useAuth } from "@/lib/AuthContext";
-import { GlobalLoginModal } from "@/components/site/GlobalLoginModal";
+import { GlobalAuthModal } from "@/components/site/GlobalAuthModal";
 import { GlobalOnboardingModal } from "@/components/site/GlobalOnboardingModal";
 import { DashboardDrawer } from "@/components/site/DashboardDrawer";
 import { GlobalPhoneVerificationModal } from "@/components/site/GlobalPhoneVerificationModal";
@@ -168,7 +168,7 @@ function RootComponent() {
           <WhatsAppChatButton />
           <Outlet />
           <ReservationModal />
-          <GlobalLoginModal />
+          <GlobalAuthModal />
           <GlobalOnboardingModal />
           <GlobalPhoneVerificationModal />
         </ReservationProvider>

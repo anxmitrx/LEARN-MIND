@@ -6,7 +6,7 @@ import {
   signInWithEmailLink,
 } from "firebase/auth";
 import { auth, db } from "./firebase";
-import { doc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
 
 interface AuthContextType {
   user: User | null;
@@ -56,12 +56,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (user && userData && !userData.phoneVerified) {
+    // DONT WANT THIS FOR NOW: User requested to disable the automatic phone verification modal popup
+    /*
+    if (user && userData && userData.onboardingComplete && !userData.phoneVerified) {
       setShowPhoneVerificationModal(true);
     } else if (user && userData && userData.phoneVerified) {
       // Optional: hide modal if verified somehow without the callback triggering
       // setShowPhoneVerificationModal(false);
     }
+    */
   }, [user, userData]);
 
   const clearPhoneVerificationCallback = () => {
@@ -129,7 +132,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             docRef,
             (docSnap) => {
               if (docSnap.exists()) {
-                setUserData(docSnap.data());
+                const data = docSnap.data();
+                if (!data.role) {
+                  // Default existing users to 'student'
+                  updateDoc(docRef, { role: "student" }).catch(console.error);
+                  data.role = "student";
+                }
+                setUserData(data);
               } else {
                 setUserData(null);
               }

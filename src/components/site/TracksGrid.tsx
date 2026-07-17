@@ -73,9 +73,9 @@ export function TracksGrid() {
         ) : (
           <motion.div layout className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             <AnimatePresence mode="popLayout">
-              {filteredTracks.map((t) => (
+              {filteredTracks.map((t, i) => (
                 <motion.div
-                  key={t.slug}
+                  key={`${t.slug}-${i}`}
                   layout
                   initial={{ opacity: 0, scale: 0.95, y: 15 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}

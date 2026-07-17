@@ -30,48 +30,45 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
     try {
       setIsUploading(true);
 
-      // Convert and resize to base64
-      const base64Url = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const MAX_SIZE = 256;
-            let width = img.width;
-            let height = img.height;
+      if (!storage) {
+        throw new Error("Firebase Storage is not initialized.");
+      }
 
-            if (width > height) {
-              if (width > MAX_SIZE) {
-                height *= MAX_SIZE / width;
-                width = MAX_SIZE;
-              }
-            } else {
-              if (height > MAX_SIZE) {
-                width *= MAX_SIZE / height;
-                height = MAX_SIZE;
-              }
-            }
+      // Create a unique file name
+      const filename = `${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, `profiles/${user.uid}/${filename}`);
 
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext("2d");
-            ctx?.drawImage(img, 0, 0, width, height);
-            resolve(canvas.toDataURL("image/jpeg", 0.8));
-          };
-          img.onerror = () => reject(new Error("Failed to load image"));
-          img.src = event.target?.result as string;
-        };
-        reader.onerror = () => reject(new Error("Failed to read file"));
-        reader.readAsDataURL(file);
+      // Upload file
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      await new Promise<void>((resolve, reject) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // Can add progress indicator here if needed
+          },
+          (error) => {
+            reject(error);
+          },
+          () => {
+            resolve();
+          }
+        );
       });
+
+      // Get download URL
+      const downloadURL = await getDownloadURL(storageRef);
 
       // Update Firestore user document
       const userDocRef = doc(db, "users", user.uid);
-      await updateDoc(userDocRef, { photoURL: base64Url });
+      await updateDoc(userDocRef, { photoURL: downloadURL });
 
-      // Note: We skip updating auth.currentUser.photoURL because Firebase Auth has a strict length limit that rejects base64 strings.
-      // We rely entirely on Firestore (userData.photoURL) instead.
+      // Optional: Update auth profile
+      try {
+        await updateProfile(auth.currentUser, { photoURL: downloadURL });
+      } catch (err) {
+        console.warn("Could not update auth profile photoURL:", err);
+      }
     } catch (error) {
       console.error("Error saving profile picture:", error);
       alert("Failed to save profile picture. Please try again.");

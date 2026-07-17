@@ -29,7 +29,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [isDarkBg, setIsDarkBg] = useState(false);
   const { openModal } = useReservation();
-  const { user, setShowLoginModal } = useAuth();
+  const { user, userData, setShowLoginModal } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -122,13 +122,25 @@ export function Navbar() {
 
         {/* Right: Actions */}
         <div className="flex justify-end items-center gap-3 shrink-0">
-          {/* Reserve Seat */}
-          <button
-            onClick={() => openModal()}
-            className={`hidden md:flex items-center text-[15px] font-bold transition-colors cursor-pointer mr-2 ${isDarkBg ? "text-indigo-300 hover:text-indigo-100" : "text-blue-600 hover:text-blue-800"}`}
-          >
-            Reserve Seat
-          </button>
+          {/* Sign Up */}
+          {!user && (
+            <button
+              onClick={() => setShowLoginModal(true)}
+              className={`hidden md:flex items-center px-5 py-2 text-sm font-bold rounded-full transition-colors cursor-pointer mr-2 bg-blue-600 text-white hover:bg-blue-700 shadow-sm focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:outline-none`}
+            >
+              Sign Up
+            </button>
+          )}
+
+          {/* Reserve Seat (Students only) */}
+          {user && userData?.role === "student" && (
+            <button
+              onClick={() => openModal()}
+              className="hidden sm:flex items-center px-5 py-2 text-sm font-bold rounded-full transition-colors cursor-pointer mr-1 bg-[#f39c12] text-white hover:bg-[#d68910] shadow-sm focus-visible:ring-2 focus-visible:ring-[#f39c12] focus-visible:outline-none"
+            >
+              Reserve Seat
+            </button>
+          )}
 
           {/* Login / Dashboard */}
           {!user ? (
@@ -201,15 +213,17 @@ export function Navbar() {
                 )
               ),
             )}
-            <button
-              onClick={() => {
-                setOpen(false);
-                openModal();
-              }}
-              className="mt-4 w-full bg-blue-600 text-white px-5 py-3 text-sm font-bold rounded-full text-center"
-            >
-              Reserve Seat
-            </button>
+            {!user && (
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  setShowLoginModal(true);
+                }}
+                className="mt-4 w-full bg-blue-600 text-white px-5 py-3 text-sm font-bold rounded-full text-center"
+              >
+                Sign Up
+              </button>
+            )}
           </nav>
         </div>
       )}

@@ -40,22 +40,36 @@ export function GlobalPhoneVerificationModal() {
       setPhoneInput((prev: string) => prev || userData?.phone || "");
 
       // Initialize reCAPTCHA
-      if (!recaptchaVerifierRef.current && auth) {
-        try {
-          recaptchaVerifierRef.current = new RecaptchaVerifier(auth, "recaptcha-container", {
-            size: "invisible",
-          });
-        } catch (e) {
-          console.error("Recaptcha init error:", e);
+      setTimeout(() => {
+        if (!document.getElementById("recaptcha-container-phone")) return;
+        if (!(window as any).phoneRecaptchaVerifier) {
+          try {
+            (window as any).phoneRecaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container-phone", {
+              size: "normal",
+              callback: (response: any) => {
+                console.log("Phone Recaptcha solved");
+              },
+              "expired-callback": () => {
+                setError("reCAPTCHA expired. Please solve it again.");
+                if ((window as any).phoneRecaptchaVerifier) {
+                  (window as any).phoneRecaptchaVerifier.clear();
+                  (window as any).phoneRecaptchaVerifier = null;
+                }
+              }
+            });
+            (window as any).phoneRecaptchaVerifier.render();
+          } catch (e) {
+            console.error("Recaptcha init error:", e);
+          }
         }
-      }
+      }, 300);
 
       return () => {
-        if (recaptchaVerifierRef.current) {
+        if ((window as any).phoneRecaptchaVerifier) {
           try {
-            recaptchaVerifierRef.current.clear();
+            (window as any).phoneRecaptchaVerifier.clear();
           } catch (e) {}
-          recaptchaVerifierRef.current = null;
+          (window as any).phoneRecaptchaVerifier = null;
         }
       };
     }
@@ -68,7 +82,8 @@ export function GlobalPhoneVerificationModal() {
 
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phoneInput || !auth || !user || !recaptchaVerifierRef.current) return;
+    const appVerifier = (window as any).phoneRecaptchaVerifier;
+    if (!phoneInput || !auth || !user || !appVerifier) return;
 
     setError("");
     setIsLoading(true);
@@ -82,7 +97,7 @@ export function GlobalPhoneVerificationModal() {
       const confResult = await linkWithPhoneNumber(
         user,
         formattedPhone,
-        recaptchaVerifierRef.current,
+        appVerifier,
       );
       setConfirmationResult(confResult);
       setStep("otp");
@@ -96,8 +111,28 @@ export function GlobalPhoneVerificationModal() {
         setError("This phone number is already verified on another account.");
       } else if (err.code === "auth/invalid-phone-number") {
         setError("Invalid phone number format. Please include country code (e.g. +91).");
+      } else if (err.code === "auth/too-many-requests") {
+        setError("Too many attempts. Please try again later or use a different number.");
       } else {
         setError(err.message || "Failed to send verification code. Try again.");
+      }
+
+      // Reset ReCAPTCHA so the user can try again without reloading the page
+      if ((window as any).phoneRecaptchaVerifier) {
+        try {
+          (window as any).phoneRecaptchaVerifier.clear();
+        } catch (e) {}
+        (window as any).phoneRecaptchaVerifier = null;
+        
+        setTimeout(() => {
+          if (!document.getElementById("recaptcha-container-phone")) return;
+          try {
+            (window as any).phoneRecaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container-phone", {
+              size: "normal"
+            });
+            (window as any).phoneRecaptchaVerifier.render();
+          } catch (e) {}
+        }, 100);
       }
     } finally {
       setIsLoading(false);
@@ -289,7 +324,7 @@ export function GlobalPhoneVerificationModal() {
           )}
 
           {/* Invisible recaptcha container must be in the DOM */}
-          <div id="recaptcha-container"></div>
+          <div id="recaptcha-container-phone" className="mt-4 flex justify-center"></div>
         </motion.div>
       </motion.div>
     </AnimatePresence>

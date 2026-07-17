@@ -58,9 +58,10 @@ function AdminComponent() {
   const [workshops, setWorkshops] = useState<any[]>([]);
   const [webinars, setWebinars] = useState<any[]>([]);
   const [usersList, setUsersList] = useState<any[]>([]);
+  const [mentorEvents, setMentorEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
-    "waitlist" | "quiz" | "consult" | "workshops" | "webinars" | "users"
+    "waitlist" | "quiz" | "consult" | "workshops" | "webinars" | "students" | "mentors" | "pending_events"
   >("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -239,6 +240,23 @@ function AdminComponent() {
       },
     );
 
+  // ... previous effects ...
+
+    const eventsQuery = query(collection(db, "mentor_events"), orderBy("createdAt", "desc"));
+    const unsubscribeEvents = onSnapshot(
+      eventsQuery,
+      (snap) => {
+        const eList = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setMentorEvents(eList);
+      },
+      (err) => {
+        console.error("Error fetching mentor events:", err);
+      },
+    );
+
     // We store these unsubscribers to clean them up when auth changes
     return () => {
       unsubscribeRes();
@@ -247,6 +265,7 @@ function AdminComponent() {
       unsubscribeWorkshops();
       unsubscribeWebinars();
       unsubscribeUsers();
+      unsubscribeEvents();
     };
   }, [db]);
 
@@ -328,48 +347,55 @@ function AdminComponent() {
   };
 
   // Filter lists based on search query
+  const matchesSearch = (val: any) => String(val || "").toLowerCase().includes(searchQuery.toLowerCase());
+
   const filteredReservations = reservations.filter(
     (r) =>
-      r.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.phone?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.track?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.college?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.status?.toLowerCase().includes(searchQuery.toLowerCase()),
+      matchesSearch(r.name) ||
+      matchesSearch(r.email) ||
+      matchesSearch(r.phone) ||
+      matchesSearch(r.track) ||
+      matchesSearch(r.college) ||
+      matchesSearch(r.status),
   );
 
   const filteredQuizResults = quizResults.filter(
     (q) =>
-      q.educationLevel?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      q.challenge?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      q.recommendedTrack?.toLowerCase().includes(searchQuery.toLowerCase()),
+      matchesSearch(q.educationLevel) ||
+      matchesSearch(q.challenge) ||
+      matchesSearch(q.recommendedTrack),
   );
 
   const filteredConsultations = consultations.filter(
     (c) =>
-      c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.phone?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.stream?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      c.career?.toLowerCase().includes(searchQuery.toLowerCase()),
+      matchesSearch(c.name) ||
+      matchesSearch(c.phone) ||
+      matchesSearch(c.stream) ||
+      matchesSearch(c.career),
   );
 
   const filteredWorkshops = workshops.filter(
-    (w) =>
-      w.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      w.slug?.toLowerCase().includes(searchQuery.toLowerCase()),
+    (w) => matchesSearch(w.title) || matchesSearch(w.slug),
   );
 
   const filteredWebinars = webinars.filter(
-    (w) =>
-      w.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      w.presenter?.toLowerCase().includes(searchQuery.toLowerCase()),
+    (w) => matchesSearch(w.title) || matchesSearch(w.presenter),
   );
 
-  const filteredUsers = usersList.filter(
+  const filteredStudents = usersList.filter(
     (u) =>
-      u.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      u.level?.toLowerCase().includes(searchQuery.toLowerCase()),
+      u.role !== "mentor" &&
+      (matchesSearch(u.name) || matchesSearch(u.email) || matchesSearch(u.college)),
+  );
+
+  const filteredMentors = usersList.filter(
+    (u) =>
+      u.role === "mentor" &&
+      (matchesSearch(u.name) || matchesSearch(u.email) || matchesSearch(u.profession)),
+  );
+
+  const filteredPendingEvents = mentorEvents.filter(
+    (e) => !e.approved && (matchesSearch(e.title) || matchesSearch(e.hostName)),
   );
 
   return (
@@ -561,14 +587,34 @@ function AdminComponent() {
               Webinars ({filteredWebinars.length})
             </button>
             <button
-              onClick={() => setActiveTab("users")}
+              onClick={() => setActiveTab("students")}
               className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
-                activeTab === "users"
+                activeTab === "students"
                   ? "bg-slate-900 text-white shadow-sm"
                   : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
               }`}
             >
-              Users ({filteredUsers.length})
+              Students ({filteredStudents.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("mentors")}
+              className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
+                activeTab === "mentors"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-white/40 hover:bg-white/60 text-slate-600 border border-white/40"
+              }`}
+            >
+              Mentors ({filteredMentors.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("pending_events")}
+              className={`px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider rounded-2xl transition-all duration-300 cursor-pointer ${
+                activeTab === "pending_events"
+                  ? "bg-amber-500 text-white shadow-sm"
+                  : "bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200"
+              }`}
+            >
+              Pending Events ({filteredPendingEvents.length})
             </button>
           </div>
 
@@ -1132,51 +1178,31 @@ function AdminComponent() {
                 </table>
               )}
             </div>
-          ) : activeTab === "users" ? (
-            /* Users Table */
+          ) : activeTab === "students" ? (
+            /* Students Table */
             <div className="w-full overflow-x-auto rounded-2xl">
-              {filteredUsers.length === 0 ? (
+              {filteredStudents.length === 0 ? (
                 <div className="text-center py-20">
-                  <div className="text-slate-400 font-bold text-sm">No users found.</div>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Users who log in with Google will appear here.
-                  </p>
+                  <div className="text-slate-400 font-bold text-sm">No students found.</div>
                 </div>
               ) : (
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-indigo-100/50 bg-indigo-50/20">
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
-                        Name
-                      </th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
-                        Email
-                      </th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
-                        Level
-                      </th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
-                        XP
-                      </th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
-                        Joined
-                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Name</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Email</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">College</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Stream</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Joined</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredUsers.map((row) => (
-                      <tr
-                        key={row.id}
-                        className="border-b border-white/20 hover:bg-white/30 transition-colors duration-150"
-                      >
+                    {filteredStudents.map((row) => (
+                      <tr key={row.id} className="border-b border-white/20 hover:bg-white/30 transition-colors">
                         <td className="p-4 text-xs font-bold text-slate-900">
                           <div className="flex items-center gap-3">
                             {row.photoURL ? (
-                              <img
-                                src={row.photoURL}
-                                alt={row.name}
-                                className="h-8 w-8 rounded-full border border-slate-200"
-                              />
+                              <img src={row.photoURL} alt={row.name} className="h-8 w-8 rounded-full border border-slate-200" />
                             ) : (
                               <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center border border-indigo-200">
                                 {row.name?.charAt(0) || "U"}
@@ -1185,19 +1211,127 @@ function AdminComponent() {
                             {row.name || "N/A"}
                           </div>
                         </td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">{row.email || "N/A"}</td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">{row.college || "N/A"}</td>
+                        <td className="p-4 text-xs"><span className="px-2.5 py-1 bg-indigo-50 border border-indigo-100/50 text-indigo-700 font-bold rounded-lg text-[10px]">{row.stream || "N/A"}</span></td>
+                        <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ) : activeTab === "mentors" ? (
+            /* Mentors Table */
+            <div className="w-full overflow-x-auto rounded-2xl">
+              {filteredMentors.length === 0 ? (
+                <div className="text-center py-20">
+                  <div className="text-slate-400 font-bold text-sm">No mentors found.</div>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-indigo-100/50 bg-indigo-50/20">
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Name</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Email</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Profession</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Expertise</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Joined</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredMentors.map((row) => (
+                      <tr key={row.id} className="border-b border-white/20 hover:bg-white/30 transition-colors">
+                        <td className="p-4 text-xs font-bold text-slate-900">
+                          <div className="flex items-center gap-3">
+                            {row.photoURL ? (
+                              <img src={row.photoURL} alt={row.name} className="h-8 w-8 rounded-full border border-slate-200" />
+                            ) : (
+                              <div className="h-8 w-8 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center border border-purple-200">
+                                {row.name?.charAt(0) || "M"}
+                              </div>
+                            )}
+                            {row.name || "N/A"}
+                          </div>
+                        </td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">{row.email || "N/A"}</td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">{row.profession || "N/A"}</td>
+                        <td className="p-4 text-xs"><span className="px-2.5 py-1 bg-purple-50 border border-purple-100/50 text-purple-700 font-bold rounded-lg text-[10px]">{row.specification || "N/A"}</span></td>
+                        <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ) : activeTab === "pending_events" ? (
+            /* Pending Events Table */
+            <div className="w-full overflow-x-auto rounded-2xl">
+              {filteredPendingEvents.length === 0 ? (
+                <div className="text-center py-20">
+                  <div className="text-slate-400 font-bold text-sm">No pending events found.</div>
+                </div>
+              ) : (
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-amber-100/50 bg-amber-50/20">
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Host</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Type / Title</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Date/Time</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Submitted</th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredPendingEvents.map((row) => (
+                      <tr key={row.id} className="border-b border-white/20 hover:bg-white/30 transition-colors">
+                        <td className="p-4 text-xs font-bold text-slate-900">
+                          {row.hostName || "N/A"} <br />
+                          <span className="text-[10px] text-slate-500 font-medium">{row.hostEmail}</span>
+                        </td>
                         <td className="p-4 text-xs font-semibold text-slate-700">
-                          {row.email || "N/A"}
+                          <span className="uppercase text-[10px] tracking-wider text-indigo-600 font-bold">{row.type}</span><br />
+                          {row.title || "N/A"}
                         </td>
-                        <td className="p-4 text-xs">
-                          <span className="px-2.5 py-1 bg-indigo-50 border border-indigo-100/50 text-indigo-700 font-bold rounded-lg text-[10px]">
-                            {row.level || "Level 1: Novice"}
-                          </span>
+                        <td className="p-4 text-xs font-semibold text-slate-700">
+                          {row.date} {row.time}
                         </td>
-                        <td className="p-4 text-xs font-mono font-bold text-slate-600">
-                          {row.xp || 0}
-                        </td>
-                        <td className="p-4 text-xs font-bold text-slate-600">
-                          {formatDate(row.createdAt)}
+                        <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.createdAt)}</td>
+                        <td className="p-4 text-right whitespace-nowrap">
+                          <button
+                            onClick={async () => {
+                              if (window.confirm("Approve this event and make it public?")) {
+                                try {
+                                  await updateDoc(doc(db, "mentor_events", row.id), { approved: true });
+                                  
+                                  if (row.type === "webinar") {
+                                    await addDoc(collection(db, "webinars"), {
+                                      title: row.title || "Untitled Webinar",
+                                      presenter: row.hostName || "Guest Mentor",
+                                      date: row.date || "",
+                                      time: row.time || "",
+                                      status: "upcoming",
+                                      link: "https://your-graphy-link.com/webinar",
+                                      timestamp: new Date()
+                                    });
+                                  }
+                                } catch (err) {
+                                  console.error(err);
+                                  alert("Failed to approve event.");
+                                }
+                              }
+                            }}
+                            className="inline-flex items-center gap-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors mr-2"
+                          >
+                            <CheckCircle2 className="w-3 h-3" /> Approve
+                          </button>
+                          <button
+                            onClick={() => handleDelete("mentor_events", row.id)}
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+                            title="Reject/Delete"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
                         </td>
                       </tr>
                     ))}

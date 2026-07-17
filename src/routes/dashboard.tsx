@@ -1,11 +1,12 @@
 import { createFileRoute, redirect, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/AuthContext";
-import { LogOut, Calendar, Video, GraduationCap, Home, Mail, Phone, Building } from "lucide-react";
+import { LogOut, Calendar, Video, GraduationCap, Home, Mail, Phone, Building, Plus, Users } from "lucide-react";
 import { auth, db } from "@/lib/firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { ProfileAvatarUpload } from "@/components/site/ProfileAvatarUpload";
 import { EditProfileModal } from "@/components/site/EditProfileModal";
+import { MentorHostEventModal } from "@/components/site/MentorHostEventModal";
 import {
   Radar,
   RadarChart,
@@ -33,6 +34,8 @@ function DashboardComponent() {
   const navigate = useNavigate();
   const [myWorkshops, setMyWorkshops] = useState<any[]>([]);
   const [myWebinars, setMyWebinars] = useState<any[]>([]);
+  const [hostedEvents, setHostedEvents] = useState<any[]>([]);
+  const [isHostModalOpen, setIsHostModalOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -43,6 +46,7 @@ function DashboardComponent() {
   useEffect(() => {
     if (!user || !db) return;
 
+    // Student queries
     const wq = query(collection(db, "reservations"), where("email", "==", user.email));
     const unsubW = onSnapshot(wq, (snap) =>
       setMyWorkshops(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
@@ -53,9 +57,16 @@ function DashboardComponent() {
       setMyWebinars(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
     );
 
+    // Mentor queries
+    const hostq = query(collection(db, "mentor_events"), where("hostUid", "==", user.uid));
+    const unsubHost = onSnapshot(hostq, (snap) =>
+      setHostedEvents(snap.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    );
+
     return () => {
       unsubW();
       unsubWeb();
+      unsubHost();
     };
   }, [user]);
 
@@ -69,6 +80,8 @@ function DashboardComponent() {
 
   if (!user) return null;
 
+  const isMentor = userData?.role === "mentor";
+
   return (
     <div className="min-h-screen bg-transparent text-slate-800 p-4 md:p-8">
       <div className="mx-auto max-w-6xl relative z-10">
@@ -76,15 +89,22 @@ function DashboardComponent() {
         <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 pointer-events-none" />
           <div className="flex items-start gap-5">
-            <ProfileAvatarUpload />
+            <ProfileAvatarUpload size="lg" />
             <div className="flex flex-col justify-center min-h-[80px]">
-              <h1 className="font-display text-2xl font-bold uppercase tracking-wide text-ink leading-none">
+              <h1 className="font-display text-2xl font-bold uppercase tracking-wide text-ink leading-none flex items-center gap-2">
                 {userData?.name || user.displayName || "User"}
+                {isMentor && (
+                  <span className="text-[10px] bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                    Mentor
+                  </span>
+                )}
+                {!isMentor && (
+                  <span className="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                    Student
+                  </span>
+                )}
               </h1>
               <div className="flex items-center gap-3 mt-2 flex-wrap">
-                <span className="text-xs font-extrabold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  {userData?.level || "Level 1: Novice"}
-                </span>
                 <span className="text-sm font-medium text-slate-600 flex items-center gap-1.5 ml-2">
                   <Mail className="w-3.5 h-3.5 text-indigo-400" />
                   {user.email}
@@ -94,30 +114,23 @@ function DashboardComponent() {
                     <span className="text-slate-300 mx-1">•</span>
                     <Phone className="w-3.5 h-3.5 text-indigo-400" />
                     {userData.phone}
-                    {userData.phoneVerified ? (
-                      <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ml-1">
-                        Verified
-                      </span>
-                    ) : (
-                      <span className="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ml-1">
-                        Unverified
-                      </span>
-                    )}
                   </span>
                 )}
-                {userData?.institution && (
+                {userData?.college && (
                   <span className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
                     <span className="text-slate-300 mx-1">•</span>
                     <Building className="w-3.5 h-3.5 text-indigo-400" />
-                    {userData.institution}
+                    {userData.college}
+                  </span>
+                )}
+                {userData?.profession && (
+                  <span className="text-sm font-medium text-slate-600 flex items-center gap-1.5">
+                    <span className="text-slate-300 mx-1">•</span>
+                    <Building className="w-3.5 h-3.5 text-indigo-400" />
+                    {userData.profession}
                   </span>
                 )}
               </div>
-              {userData?.bio && (
-                <p className="text-sm font-medium text-slate-600 mt-3 max-w-xl leading-relaxed">
-                  {userData.bio}
-                </p>
-              )}
             </div>
           </div>
 
@@ -140,111 +153,206 @@ function DashboardComponent() {
           </div>
         </header>
 
-        {/* XP Progress Bar */}
-        <div className="sticky top-4 z-10 mb-8 bg-white/40 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-6">
-          <div className="mb-2 flex items-baseline justify-between">
-            <span className="font-display text-sm font-bold uppercase tracking-wider text-indigo-600">
-              Industry XP
-            </span>
-            <span className="font-mono text-sm font-bold text-indigo-600">
-              {userData?.xp || 0} / 1000
-            </span>
-          </div>
-          <div className="h-4 w-full bg-white/20 border border-white/40 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-1000"
-              style={{ width: `${Math.min(((userData?.xp || 0) / 1000) * 100, 100)}%` }}
-            />
-          </div>
-        </div>
-
         {/* Bento Grid */}
         <div className="grid gap-6 md:grid-cols-3">
           {/* Main Column */}
           <div className="flex flex-col gap-6 md:col-span-2">
-            {/* Stats Overview */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 hover:shadow-[0_15px_40px_rgba(31,38,135,0.15)] transition-all duration-300 group">
-                <div className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Registered Workshops
-                </div>
-                <div className="mt-4 flex items-center gap-4">
-                  <div className="p-3 bg-indigo-100 text-indigo-600 rounded-2xl group-hover:scale-110 transition-transform duration-300">
-                    <GraduationCap className="h-6 w-6" />
-                  </div>
-                  <div className="text-4xl font-display font-bold text-indigo-600">
-                    {myWorkshops.length}
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 hover:shadow-[0_15px_40px_rgba(31,38,135,0.15)] transition-all duration-300 group">
-                <div className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
-                  Registered Webinars
-                </div>
-                <div className="mt-4 flex items-center gap-4">
-                  <div className="p-3 bg-purple-100 text-purple-600 rounded-2xl group-hover:scale-110 transition-transform duration-300">
-                    <Video className="h-6 w-6" />
-                  </div>
-                  <div className="text-4xl font-display font-bold text-purple-600">
-                    {myWebinars.length}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Registered Events */}
-            <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 md:p-8">
-              <h2 className="font-display text-xl font-bold uppercase tracking-wider mb-6 text-ink">
-                My Schedule
-              </h2>
-
-              {myWorkshops.length === 0 && myWebinars.length === 0 && (
-                <div className="text-center py-8">
-                  <div className="text-slate-400 font-bold text-sm">No events booked yet.</div>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Register for a workshop or webinar to see it here.
-                  </p>
-                </div>
-              )}
-
-              <div className="grid gap-4">
-                {myWorkshops.map((w, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-4 bg-white/80 border border-white hover:border-indigo-200 p-4 rounded-2xl shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
-                  >
-                    <div className="h-12 w-12 shrink-0 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center">
-                      <GraduationCap className="h-6 w-6" />
+            
+            {isMentor ? (
+              <>
+                {/* Mentor Overview */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6">
+                    <div className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                      Total Hosted Events
                     </div>
+                    <div className="mt-4 flex items-center gap-4">
+                      <div className="p-3 bg-purple-100 text-purple-600 rounded-2xl">
+                        <Video className="h-6 w-6" />
+                      </div>
+                      <div className="text-4xl font-display font-bold text-purple-600">
+                        {hostedEvents.length}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 flex flex-col justify-center items-center text-center hover:bg-purple-50 cursor-pointer transition-colors" onClick={() => setIsHostModalOpen(true)}>
+                    <div className="p-4 bg-purple-600 text-white rounded-full shadow-lg hover:scale-105 transition-transform mb-3">
+                      <Plus className="h-8 w-8" />
+                    </div>
+                    <span className="font-bold text-purple-800 text-sm">Host an Event</span>
+                  </div>
+                </div>
+
+                {/* Hosted Events List */}
+                <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 md:p-8">
+                  <h2 className="font-display text-xl font-bold uppercase tracking-wider mb-6 text-ink">
+                    My Hosted Events
+                  </h2>
+
+                  <div className="grid gap-8">
+                    {/* Active Events */}
                     <div>
-                      <div className="text-[11px] font-extrabold text-indigo-600 uppercase tracking-widest mb-1">
-                        Workshop • {w.status || "Pending"}
-                      </div>
-                      <div className="font-bold text-slate-800 text-lg">
-                        {w.track || "Reserved Workshop"}
-                      </div>
+                      <h3 className="text-sm font-extrabold text-slate-500 uppercase tracking-wider mb-4">Active Events</h3>
+                      {hostedEvents.filter(e => e.approved).length > 0 ? (
+                        <div className="grid gap-4">
+                          {hostedEvents.filter(e => e.approved).map((w, i) => (
+                            <div
+                              key={`active-${i}`}
+                              className="flex items-center justify-between gap-4 bg-white/80 border border-white hover:border-purple-200 p-4 rounded-2xl shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                            >
+                              <div className="flex items-center gap-4">
+                                <div className="h-12 w-12 shrink-0 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center">
+                                  <Video className="h-6 w-6" />
+                                </div>
+                                <div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className="text-[11px] font-extrabold text-purple-600 uppercase tracking-widest">
+                                      {w.type} • {w.date}
+                                    </div>
+                                  </div>
+                                  <div className="font-bold text-slate-800 text-lg">{w.title}</div>
+                                </div>
+                              </div>
+                              <div className="flex flex-col items-center justify-center bg-slate-50 p-2 rounded-xl min-w-[80px]">
+                                <Users className="w-5 h-5 text-slate-400 mb-1" />
+                                <span className="font-bold text-slate-700 text-sm">{w.enrollmentCount || 0}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-6 bg-white/50 border border-slate-100 rounded-2xl">
+                          <div className="text-slate-400 font-bold text-sm">No active events yet.</div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                ))}
 
-                {myWebinars.map((w, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-4 bg-white/80 border border-white hover:border-purple-200 p-4 rounded-2xl shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
-                  >
-                    <div className="h-12 w-12 shrink-0 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center">
-                      <Video className="h-6 w-6" />
-                    </div>
+                    {/* Pending Events */}
                     <div>
-                      <div className="text-[11px] font-extrabold text-purple-600 uppercase tracking-widest mb-1">
-                        Webinar • {w.webinarDate} {w.webinarTime}
-                      </div>
-                      <div className="font-bold text-slate-800 text-lg">{w.webinarTitle}</div>
+                      <h3 className="text-sm font-extrabold text-amber-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        Pending Requests
+                      </h3>
+                      {hostedEvents.filter(e => !e.approved).length > 0 ? (
+                        <div className="grid gap-4 opacity-70 grayscale-[30%]">
+                          {hostedEvents.filter(e => !e.approved).map((w, i) => (
+                            <div
+                              key={`pending-${i}`}
+                              className="flex items-center justify-between gap-4 bg-amber-50/50 border border-amber-100 p-4 rounded-2xl shadow-sm transition-all"
+                            >
+                              <div className="flex items-center gap-4">
+                                <div className="h-12 w-12 shrink-0 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
+                                  <Video className="h-6 w-6" />
+                                </div>
+                                <div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className="text-[11px] font-extrabold text-amber-600 uppercase tracking-widest">
+                                      {w.type} • {w.date}
+                                    </div>
+                                  </div>
+                                  <div className="font-bold text-slate-700 text-lg">{w.title}</div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-6 bg-amber-50/50 border border-amber-100/50 rounded-2xl">
+                          <div className="text-slate-400 font-bold text-sm">No pending requests.</div>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Student Overview */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 hover:shadow-[0_15px_40px_rgba(31,38,135,0.15)] transition-all duration-300 group">
+                    <div className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                      Registered Workshops
+                    </div>
+                    <div className="mt-4 flex items-center gap-4">
+                      <div className="p-3 bg-indigo-100 text-indigo-600 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+                        <GraduationCap className="h-6 w-6" />
+                      </div>
+                      <div className="text-4xl font-display font-bold text-indigo-600">
+                        {myWorkshops.length}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 hover:shadow-[0_15px_40px_rgba(31,38,135,0.15)] transition-all duration-300 group">
+                    <div className="text-xs font-extrabold text-slate-500 uppercase tracking-wider">
+                      Registered Webinars
+                    </div>
+                    <div className="mt-4 flex items-center gap-4">
+                      <div className="p-3 bg-purple-100 text-purple-600 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+                        <Video className="h-6 w-6" />
+                      </div>
+                      <div className="text-4xl font-display font-bold text-purple-600">
+                        {myWebinars.length}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Registered Events */}
+                <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 md:p-8">
+                  <h2 className="font-display text-xl font-bold uppercase tracking-wider mb-6 text-ink">
+                    My Schedule
+                  </h2>
+
+                  {myWorkshops.length === 0 && myWebinars.length === 0 && (
+                    <div className="text-center py-8">
+                      <div className="text-slate-400 font-bold text-sm">No events booked yet.</div>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Register for a workshop or webinar to see it here.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="grid gap-4">
+                    {myWorkshops.map((w, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-4 bg-white/80 border border-white hover:border-indigo-200 p-4 rounded-2xl shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                      >
+                        <div className="h-12 w-12 shrink-0 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center">
+                          <GraduationCap className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <div className="text-[11px] font-extrabold text-indigo-600 uppercase tracking-widest mb-1">
+                            Workshop • {w.status || "Pending"}
+                          </div>
+                          <div className="font-bold text-slate-800 text-lg">
+                            {w.track || "Reserved Workshop"}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {myWebinars.map((w, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-4 bg-white/80 border border-white hover:border-purple-200 p-4 rounded-2xl shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                      >
+                        <div className="h-12 w-12 shrink-0 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center">
+                          <Video className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <div className="text-[11px] font-extrabold text-purple-600 uppercase tracking-widest mb-1">
+                            Webinar • {w.webinarDate} {w.webinarTime}
+                          </div>
+                          <div className="font-bold text-slate-800 text-lg">{w.webinarTitle}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+
           </div>
 
           {/* Sidebar Column */}
@@ -264,7 +372,7 @@ function DashboardComponent() {
                     />
                     <PolarRadiusAxis angle={30} domain={[0, 150]} tick={false} axisLine={false} />
                     <Radar
-                      name="Student"
+                      name="Skills"
                       dataKey="A"
                       stroke="#6366F1"
                       strokeWidth={2}
@@ -278,6 +386,9 @@ function DashboardComponent() {
           </div>
         </div>
       </div>
+      
+      {/* Mentor Modals */}
+      <MentorHostEventModal isOpen={isHostModalOpen} onClose={() => setIsHostModalOpen(false)} />
     </div>
   );
 }
