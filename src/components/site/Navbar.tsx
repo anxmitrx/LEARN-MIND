@@ -3,6 +3,7 @@ import { Menu, X, ChevronDown, User, LogIn, LayoutDashboard } from "lucide-react
 import { useState, useEffect } from "react";
 import { useReservation } from "./ReservationContext";
 import { useAuth } from "@/lib/AuthContext";
+import { tracks } from "@/lib/tracks";
 
 type NavLink = {
   to?: string;
@@ -20,9 +21,9 @@ const links: NavLink[] = [
       { to: "/webinars", label: "Webinars" },
     ],
   },
-  { to: "/class-12-consult", label: "Class 12 Consultation", badge: "NEW" },
   { to: "/mentors", label: "Mentors" },
   { to: "/about", label: "About" },
+  { to: "/class-12-consult", label: "Class 12 Consultation", badge: "NEW" },
 ];
 
 export function Navbar() {
@@ -134,12 +135,35 @@ export function Navbar() {
 
           {/* Reserve Seat (Students only) */}
           {user && userData?.role === "student" && (
-            <button
-              onClick={() => openModal()}
-              className="hidden sm:flex items-center px-5 py-2 text-sm font-bold rounded-full transition-colors cursor-pointer mr-1 bg-[#f39c12] text-white hover:bg-[#d68910] shadow-sm focus-visible:ring-2 focus-visible:ring-[#f39c12] focus-visible:outline-none"
-            >
-              Reserve Seat
-            </button>
+            <div className="relative group hidden sm:block mr-1">
+              <button
+                onClick={() => openModal()}
+                className="flex items-center px-5 py-2 text-sm font-bold rounded-full transition-all duration-300 cursor-pointer bg-[#f39c12] text-white hover:bg-[#d68910] hover:shadow-lg hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[#f39c12] focus-visible:outline-none"
+              >
+                Reserve Seat
+              </button>
+              
+              <div className="absolute right-0 top-full pt-3 w-72 opacity-0 invisible translate-y-3 scale-95 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:scale-100 transition-all duration-300 ease-out z-50 origin-top-right">
+                <div className="bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.1)] border border-white p-2.5 flex flex-col gap-1 relative overflow-hidden">
+                  {/* Subtle shine effect */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+
+                  <div className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest px-3 pt-2 pb-1.5 relative z-10">
+                    Upcoming Tracks
+                  </div>
+                  {tracks.slice(0, 3).map((track, i) => (
+                    <Link
+                      key={i}
+                      to={`/workshops/${track.slug}`}
+                      className="flex flex-col gap-0.5 p-3 rounded-2xl hover:bg-white/80 transition-all duration-200 cursor-pointer relative z-10 group/item hover:shadow-sm"
+                    >
+                      <span className="text-sm font-bold text-slate-800 line-clamp-1 group-hover/item:text-blue-600 transition-colors">{track.title}</span>
+                      <span className="text-[11px] font-semibold text-slate-500 line-clamp-1">{track.short}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Login / Dashboard */}

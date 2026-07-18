@@ -50,9 +50,9 @@ function Index() {
       <HowItWorks />
       <PathfinderQuiz />
       <TopBanner />
+      <MentorsMarquee />
       <TracksGrid />
       <HiringPartners />
-      <MentorsMarquee />
       <InteractiveBentoGrid />
       <FloatingTestimonials />
       <FAQ />
