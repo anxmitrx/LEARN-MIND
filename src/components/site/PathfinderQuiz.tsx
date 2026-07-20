@@ -167,7 +167,7 @@ export function PathfinderQuiz() {
           </div>
           <h2 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
             Find your perfect{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+            <span className="text-indigo-600">
               mentoring track.
             </span>
           </h2>

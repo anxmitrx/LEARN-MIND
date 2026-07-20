@@ -210,10 +210,21 @@ export function GlobalAuthModal() {
     setAuthError("");
     setIsAuthenticating(true);
 
+    const sanitizedInput = phoneInput.replace(/[\s\-()]/g, "");
+    let formattedPhone = sanitizedInput;
+    if (sanitizedInput.length === 10 && !sanitizedInput.startsWith("+")) {
+      formattedPhone = `+91${sanitizedInput}`;
+    } else if (!sanitizedInput.startsWith("+")) {
+      formattedPhone = `+${sanitizedInput}`;
+    }
+
+    if (!/^\+[1-9]\d{1,14}$/.test(formattedPhone)) {
+      setAuthError("Invalid phone number format. Must be E.164 (e.g., +919876543210).");
+      setIsAuthenticating(false);
+      return;
+    }
+
     try {
-      const formattedPhone = phoneInput.startsWith("+")
-        ? phoneInput
-        : `+91${phoneInput.replace(/\D/g, "")}`;
       const confResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
@@ -223,11 +234,7 @@ export function GlobalAuthModal() {
       setPhoneStep("otp");
     } catch (err: any) {
       console.error("Error sending OTP:", err);
-      if (err.code === "auth/too-many-requests") {
-        setAuthError("Too many attempts. Please try again later or use a different number.");
-      } else {
-        setAuthError("Failed to send verification code. Check number format.");
-      }
+      setAuthError(`SMS Failed: ${err.code || err.message}`);
       
       // Reset ReCAPTCHA so the user can try again without reloading the page
       if ((window as any).recaptchaVerifier) {
@@ -289,8 +296,8 @@ export function GlobalAuthModal() {
         }
       }
     } catch (err: any) {
-      console.error("Error verifying OTP:", err);
-      setAuthError("Invalid verification code.");
+      console.error("CRITICAL ERROR: Failed to verify OTP via Firebase:", err.code, err.message);
+      setAuthError(`Verification Failed: ${err.code || err.message}`);
     } finally {
       setIsAuthenticating(false);
     }

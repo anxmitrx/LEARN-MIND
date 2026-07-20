@@ -32,7 +32,7 @@ export function HowItWorks() {
           <span className="eyebrow text-ink">How it works · 04 Steps</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
             Four steps from <br /> classroom to{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+            <span className="text-indigo-600">
               career.
             </span>
           </h2>

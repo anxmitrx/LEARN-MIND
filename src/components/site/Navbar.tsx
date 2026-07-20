@@ -154,7 +154,7 @@ export function Navbar() {
                   {tracks.slice(0, 3).map((track, i) => (
                     <Link
                       key={i}
-                      to={`/workshops/${track.slug}`}
+                      to={`/workshops/${track.slug}` as any}
                       className="flex flex-col gap-0.5 p-3 rounded-2xl hover:bg-white/80 transition-all duration-200 cursor-pointer relative z-10 group/item hover:shadow-sm"
                     >
                       <span className="text-sm font-bold text-slate-800 line-clamp-1 group-hover/item:text-blue-600 transition-colors">{track.title}</span>

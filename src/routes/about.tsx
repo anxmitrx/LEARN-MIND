@@ -29,7 +29,7 @@ function AboutPage() {
           <span className="eyebrow text-ink">Our Mission</span>
           <h1 className="font-display text-5xl font-bold leading-[1.2] md:leading-[1.2] tracking-wide text-ink sm:text-6xl">
             A guided journey{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg box-decoration-slice">
+            <span className="text-indigo-600 box-decoration-slice">
               from campus
             </span>{" "}
             to corporate.

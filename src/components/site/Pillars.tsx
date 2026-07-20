@@ -38,7 +38,7 @@ export function Pillars() {
           <span className="eyebrow text-ink">Beyond Workshops</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
             The full{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+            <span className="text-indigo-600">
               industry stack.
             </span>
           </h2>

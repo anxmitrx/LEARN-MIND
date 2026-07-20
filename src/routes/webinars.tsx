@@ -118,6 +118,16 @@ function WebinarCard({ webinar, type }: { webinar: Webinar; type: "upcoming" | "
     }
 
     if (type === "upcoming") {
+      const isMentor = userData?.role === "mentor";
+      const hasCompletedProfile = isMentor 
+        ? Boolean(userData?.profession && userData?.specification && userData?.photoURL)
+        : Boolean(userData?.college || userData?.institution);
+
+      if (!hasCompletedProfile) {
+        alert("Please complete your profile details (via Dashboard -> Edit Profile) before registering for an event.");
+        return;
+      }
+
       requestPhoneVerification(async () => {
         setIsRegistering(true);
         try {

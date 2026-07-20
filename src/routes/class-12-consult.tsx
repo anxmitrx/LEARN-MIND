@@ -106,7 +106,7 @@ function Class12ConsultPage() {
             </span>
             <h1 className="mt-6 font-display text-4xl font-bold leading-[1.1] tracking-wide text-ink sm:text-6xl drop-shadow-sm">
               Class 12{" "}
-              <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg box-decoration-slice">
+              <span className="text-indigo-600 box-decoration-slice">
                 Roadmap.
               </span>
             </h1>

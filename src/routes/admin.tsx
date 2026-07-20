@@ -28,12 +28,15 @@ import {
   Edit2,
   X,
   Save,
+  Plus,
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { WorkshopEditor } from "@/components/admin/WorkshopEditor";
 import { WebinarEditor } from "@/components/admin/WebinarEditor";
+
 import { tracks as localTracks } from "@/lib/tracks";
 import { webinars as localWebinars } from "@/lib/webinars";
+import { mentors as localMentors } from "@/lib/mentors";
 import { addDoc } from "firebase/firestore";
 
 const MASTER_ADMIN_EMAIL = "wavelet2026@gmail.com";
@@ -59,9 +62,10 @@ function AdminComponent() {
   const [webinars, setWebinars] = useState<any[]>([]);
   const [usersList, setUsersList] = useState<any[]>([]);
   const [mentorEvents, setMentorEvents] = useState<any[]>([]);
+  const [publicMentors, setPublicMentors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
-    "waitlist" | "quiz" | "consult" | "workshops" | "webinars" | "students" | "mentors" | "pending_events"
+    "waitlist" | "quiz" | "consult" | "workshops" | "webinars" | "students" | "mentors" | "pending_events" | "public_mentors"
   >("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -121,6 +125,21 @@ function AdminComponent() {
     try {
       for (const w of localWebinars) {
         await addDoc(collection(db, "webinars"), { ...w, timestamp: new Date() });
+      }
+      alert("Seeded successfully!");
+    } catch (e) {
+      console.error(e);
+      alert("Failed to seed.");
+    }
+    setLoading(false);
+  };
+
+  const seedPublicMentors = async () => {
+    if (!window.confirm("Seed default mentors into Firestore?")) return;
+    setLoading(true);
+    try {
+      for (const m of localMentors) {
+        await addDoc(collection(db, "public_mentors"), { ...m, photoURL: "", timestamp: new Date() });
       }
       alert("Seeded successfully!");
     } catch (e) {
@@ -257,6 +276,21 @@ function AdminComponent() {
       },
     );
 
+    const publicMentorsQuery = query(collection(db, "public_mentors"));
+    const unsubscribePublicMentors = onSnapshot(
+      publicMentorsQuery,
+      (snap) => {
+        const pList = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setPublicMentors(pList);
+      },
+      (err) => {
+        console.error("Error fetching public mentors:", err);
+      },
+    );
+
     // We store these unsubscribers to clean them up when auth changes
     return () => {
       unsubscribeRes();
@@ -266,6 +300,7 @@ function AdminComponent() {
       unsubscribeWebinars();
       unsubscribeUsers();
       unsubscribeEvents();
+      unsubscribePublicMentors();
     };
   }, [db]);
 
@@ -396,6 +431,10 @@ function AdminComponent() {
 
   const filteredPendingEvents = mentorEvents.filter(
     (e) => !e.approved && (matchesSearch(e.title) || matchesSearch(e.hostName)),
+  );
+
+  const filteredPublicMentors = publicMentors.filter(
+    (m) => matchesSearch(m.name) || matchesSearch(m.title)
   );
 
   return (
@@ -1237,6 +1276,7 @@ function AdminComponent() {
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Profession</th>
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Expertise</th>
                       <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Joined</th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1258,6 +1298,33 @@ function AdminComponent() {
                         <td className="p-4 text-xs font-semibold text-slate-700">{row.profession || "N/A"}</td>
                         <td className="p-4 text-xs"><span className="px-2.5 py-1 bg-purple-50 border border-purple-100/50 text-purple-700 font-bold rounded-lg text-[10px]">{row.specification || "N/A"}</span></td>
                         <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.createdAt)}</td>
+                        <td className="p-4 text-right whitespace-nowrap">
+                          <button
+                            onClick={async () => {
+                              if (window.confirm(`Add ${row.name || "this mentor"} to public mentors?`)) {
+                                try {
+                                  await addDoc(collection(db, "public_mentors"), {
+                                    name: row.name || "",
+                                    title: row.profession || "Mentor",
+                                    photoURL: row.photoURL || "",
+                                    initials: row.name ? row.name.split(" ").map((n: string) => n[0]).join("").substring(0,2).toUpperCase() : "M",
+                                    hue: Math.floor(Math.random() * 360),
+                                    bio: row.specification || "",
+                                    topics: row.specification ? [row.specification] : [],
+                                    timestamp: new Date()
+                                  });
+                                  alert("Successfully added to public mentors!");
+                                } catch (err) {
+                                  console.error(err);
+                                  alert("Failed to add public mentor.");
+                                }
+                              }
+                            }}
+                            className="inline-flex items-center gap-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors shadow-sm hover:scale-[1.02]"
+                          >
+                            <Plus className="w-3 h-3" /> Make Public
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -1312,6 +1379,24 @@ function AdminComponent() {
                                       time: row.time || "",
                                       status: "upcoming",
                                       link: "https://your-graphy-link.com/webinar",
+                                      timestamp: new Date()
+                                    });
+                                  } else if (row.type === "workshop") {
+                                    await addDoc(collection(db, "workshops"), {
+                                      title: row.title || "Untitled Workshop",
+                                      slug: row.title ? row.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') : "untitled",
+                                      number: "NEW",
+                                      short: "Mentor Track",
+                                      tagline: row.description || "",
+                                      description: row.description || "",
+                                      timeCommitment: `${row.date} ${row.time}`,
+                                      whoItsFor: [],
+                                      youWillLearn: [],
+                                      exampleSessions: [],
+                                      outcomes: [],
+                                      topics: [],
+                                      radar: [],
+                                      agenda: [],
                                       timestamp: new Date()
                                     });
                                   }

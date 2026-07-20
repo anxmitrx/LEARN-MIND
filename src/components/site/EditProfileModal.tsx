@@ -26,13 +26,19 @@ export function EditProfileModal() {
   const [name, setName] = useState(userData?.name || user?.displayName || "");
   const [phone, setPhone] = useState(userData?.phone || "");
   const [institution, setInstitution] = useState(userData?.institution || "");
+  const [profession, setProfession] = useState(userData?.profession || "");
+  const [specification, setSpecification] = useState(userData?.specification || "");
   const [bio, setBio] = useState(userData?.bio || "");
+
+  const isMentor = userData?.role === "mentor";
 
   useEffect(() => {
     if (open) {
       setName(userData?.name || user?.displayName || "");
       setPhone(userData?.phone || "");
       setInstitution(userData?.institution || "");
+      setProfession(userData?.profession || "");
+      setSpecification(userData?.specification || "");
       setBio(userData?.bio || "");
     }
   }, [open, userData, user]);
@@ -46,9 +52,15 @@ export function EditProfileModal() {
       const updateData: any = {
         name,
         phone,
-        institution,
         bio,
       };
+
+      if (isMentor) {
+        updateData.profession = profession;
+        updateData.specification = specification;
+      } else {
+        updateData.institution = institution;
+      }
 
       if (phone !== userData?.phone) {
         updateData.phoneVerified = false;
@@ -114,22 +126,58 @@ export function EditProfileModal() {
                 placeholder="e.g. 555-123-4567"
               />
             </div>
+            {isMentor ? (
+              <div className="grid gap-2">
+                <Label
+                  htmlFor="profession"
+                  className="text-xs font-bold uppercase tracking-wider text-slate-500"
+                >
+                  Profession / Title *
+                </Label>
+                <Input
+                  id="profession"
+                  value={profession}
+                  onChange={(e) => setProfession(e.target.value)}
+                  className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl"
+                  placeholder="e.g. Senior Software Engineer"
+                />
+              </div>
+            ) : (
+              <div className="grid gap-2">
+                <Label
+                  htmlFor="institution"
+                  className="text-xs font-bold uppercase tracking-wider text-slate-500"
+                >
+                  Institution / College
+                </Label>
+                <Input
+                  id="institution"
+                  value={institution}
+                  onChange={(e) => setInstitution(e.target.value)}
+                  className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl"
+                  placeholder="e.g. University Name"
+                />
+              </div>
+            )}
+          </div>
+
+          {isMentor && (
             <div className="grid gap-2">
               <Label
-                htmlFor="institution"
+                htmlFor="specification"
                 className="text-xs font-bold uppercase tracking-wider text-slate-500"
               >
-                Institution / Company
+                Expertise / Topics *
               </Label>
               <Input
-                id="institution"
-                value={institution}
-                onChange={(e) => setInstitution(e.target.value)}
+                id="specification"
+                value={specification}
+                onChange={(e) => setSpecification(e.target.value)}
                 className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl"
-                placeholder="e.g. FFF"
+                placeholder="e.g. System Design, Product Management"
               />
             </div>
-          </div>
+          )}
           <div className="grid gap-2">
             <Label
               htmlFor="bio"

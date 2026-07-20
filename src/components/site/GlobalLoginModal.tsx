@@ -37,14 +37,22 @@ export function GlobalLoginModal() {
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
   const [phoneError, setPhoneError] = useState("");
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
-  const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
-
   useEffect(() => {
     if (showLoginModal && mode === "phone") {
-      if (!recaptchaVerifierRef.current && auth) {
+      if (auth) {
         try {
-          recaptchaVerifierRef.current = new RecaptchaVerifier(auth, "login-recaptcha-container", {
+          if ((window as any).recaptchaVerifier) {
+            (window as any).recaptchaVerifier.clear();
+            (window as any).recaptchaVerifier = null;
+          }
+          (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, "login-recaptcha-container", {
             size: "invisible",
+            callback: (response: any) => {
+              console.log("reCAPTCHA solved:", response);
+            },
+            "expired-callback": () => {
+              setPhoneError("reCAPTCHA expired. Please try again.");
+            }
           });
         } catch (e) {
           console.error("Recaptcha init error:", e);
@@ -53,8 +61,11 @@ export function GlobalLoginModal() {
     }
 
     return () => {
-      // We don't necessarily clear it here because component might just re-render,
-      // but it's good practice. We'll leave it attached to avoid re-init issues.
+      // Clear on unmount or mode change to prevent memory leaks
+      if ((window as any).recaptchaVerifier) {
+        (window as any).recaptchaVerifier.clear();
+        (window as any).recaptchaVerifier = null;
+      }
     };
   }, [showLoginModal, mode]);
 
@@ -105,28 +116,44 @@ export function GlobalLoginModal() {
 
   const handleSendPhoneOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phoneInput || !auth || !recaptchaVerifierRef.current) return;
+    if (!phoneInput || !auth || !(window as any).recaptchaVerifier) return;
 
     setPhoneError("");
     setIsSendingOtp(true);
 
+    const sanitizedInput = phoneInput.replace(/[\s\-()]/g, "");
+    let formattedPhone = sanitizedInput;
+    if (sanitizedInput.length === 10 && !sanitizedInput.startsWith("+")) {
+      formattedPhone = `+91${sanitizedInput}`;
+    } else if (!sanitizedInput.startsWith("+")) {
+      formattedPhone = `+${sanitizedInput}`;
+    }
+
+    if (!/^\+[1-9]\d{1,14}$/.test(formattedPhone)) {
+      setPhoneError("Invalid phone number format. Must be E.164 (e.g. +919876543210).");
+      setIsSendingOtp(false);
+      return;
+    }
+
     try {
-      const formattedPhone = phoneInput.startsWith("+")
-        ? phoneInput
-        : `+91${phoneInput.replace(/\D/g, "")}`;
       const confResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
-        recaptchaVerifierRef.current,
+        (window as any).recaptchaVerifier
       );
       setConfirmationResult(confResult);
       setPhoneStep("otp");
     } catch (err: any) {
       console.error("Error sending OTP:", err);
-      if (err.code === "auth/invalid-phone-number") {
-        setPhoneError("Invalid phone number format. Please include country code (e.g. +91).");
-      } else {
-        setPhoneError(err.message || "Failed to send verification code. Try again.");
+      setPhoneError(`SMS Failed: ${err.code || err.message}`);
+      if ((window as any).recaptchaVerifier) {
+        try {
+          (window as any).recaptchaVerifier.render().then((widgetId: any) => {
+            (window as any).grecaptcha.reset(widgetId);
+          });
+        } catch (e) {
+          console.error("Error resetting recaptcha", e);
+        }
       }
     } finally {
       setIsSendingOtp(false);
@@ -160,10 +187,10 @@ export function GlobalLoginModal() {
       }
 
       handleClose();
-      navigate({ to: "/dashboard" });
+      window.location.href = "/dashboard";
     } catch (err: any) {
       console.error("Error verifying OTP:", err);
-      setPhoneError("Invalid verification code. Please try again.");
+      setPhoneError(`Verification Failed: ${err.code || err.message}`);
     } finally {
       setIsVerifyingOtp(false);
     }

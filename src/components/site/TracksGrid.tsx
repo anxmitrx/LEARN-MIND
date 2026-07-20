@@ -36,7 +36,7 @@ export function TracksGrid() {
           <span className="eyebrow text-ink">5 Mentoring Tracks</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[1.1] md:leading-tight tracking-wide text-ink sm:text-6xl">
             Everything you need <br /> to walk in{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+            <span className="text-indigo-600">
               ready.
             </span>
           </h2>

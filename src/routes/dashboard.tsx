@@ -1,7 +1,7 @@
 import { createFileRoute, redirect, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/AuthContext";
-import { LogOut, Calendar, Video, GraduationCap, Home, Mail, Phone, Building, Plus, Users } from "lucide-react";
+import { LogOut, Calendar, Video, GraduationCap, Home, Mail, Phone, Building, Plus, Users, ShieldAlert } from "lucide-react";
 import { auth, db } from "@/lib/firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { ProfileAvatarUpload } from "@/components/site/ProfileAvatarUpload";
@@ -81,6 +81,7 @@ function DashboardComponent() {
   if (!user) return null;
 
   const isMentor = userData?.role === "mentor";
+  const hasCompletedProfile = isMentor ? Boolean(userData?.profession && userData?.specification && userData?.photoURL) : true;
 
   return (
     <div className="min-h-screen bg-transparent text-slate-800 p-4 md:p-8">
@@ -160,6 +161,22 @@ function DashboardComponent() {
             
             {isMentor ? (
               <>
+                {!hasCompletedProfile && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 md:p-6 flex items-start gap-4 shadow-sm mb-4">
+                    <div className="p-2 bg-amber-100 text-amber-600 rounded-xl shrink-0 mt-1">
+                      <ShieldAlert className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-amber-900 text-base md:text-lg mb-1">
+                        Profile Incomplete
+                      </h3>
+                      <p className="text-sm text-amber-700 font-medium leading-relaxed">
+                        As long as you do not complete your profile (Profession, Expertise, and Photo), your event hosting requests will not be seen or granted. Even if granted, they cannot be hosted on the main page.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Mentor Overview */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6">
@@ -175,11 +192,16 @@ function DashboardComponent() {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 flex flex-col justify-center items-center text-center hover:bg-purple-50 cursor-pointer transition-colors" onClick={() => setIsHostModalOpen(true)}>
+                  <div 
+                    className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 flex flex-col justify-center items-center text-center hover:bg-purple-50 cursor-pointer transition-colors"
+                    onClick={() => setIsHostModalOpen(true)}
+                  >
                     <div className="p-4 bg-purple-600 text-white rounded-full shadow-lg hover:scale-105 transition-transform mb-3">
                       <Plus className="h-8 w-8" />
                     </div>
-                    <span className="font-bold text-purple-800 text-sm">Host an Event</span>
+                    <span className="font-bold text-purple-800 text-sm">
+                      Host an Event
+                    </span>
                   </div>
                 </div>
 

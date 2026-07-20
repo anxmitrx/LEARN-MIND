@@ -39,7 +39,7 @@ export function FAQ() {
           <span className="eyebrow text-ink">FAQ</span>
           <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
             Quick answers,{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+            <span className="text-indigo-600">
               straight up.
             </span>
           </h2>

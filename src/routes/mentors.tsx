@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
-import { mentors } from "@/lib/mentors";
+import { useEffect, useState } from "react";
+import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { MentorBenefitsBento } from "@/components/site/MentorBenefitsBento";
 import { FloatingSuccessMetrics } from "@/components/site/FloatingSuccessMetrics";
 import { motion } from "framer-motion";
@@ -37,6 +39,18 @@ export const Route = createFileRoute("/mentors")({
 });
 
 function MentorsPage() {
+  const [mentors, setMentors] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!db) return;
+    const q = query(collection(db, "public_mentors"), orderBy("timestamp", "asc"));
+    const unsubscribe = onSnapshot(q, (snap) => {
+      const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setMentors(list);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <main className="min-h-screen bg-transparent text-slate-800">
       <Navbar />
@@ -45,7 +59,7 @@ function MentorsPage() {
           <span className="eyebrow text-ink">Premium Mentors</span>
           <h1 className="mt-4 max-w-3xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-6xl">
             Learn from people who{" "}
-            <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+            <span className="text-indigo-600">
               hire people.
             </span>
           </h1>
@@ -72,18 +86,24 @@ function MentorsPage() {
                 className="bento-card group bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform h-full flex flex-col"
               >
                 <div className="flex-grow flex flex-col">
-                  <div
-                    className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0"
-                    style={{
-                      background: `linear-gradient(135deg, hsl(${m.hue}, 70%, 88%), hsl(${m.hue}, 60%, 75%))`,
-                    }}
-                  >
-                    <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
-                      <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-500 group-hover:scale-105">
-                        {m.initials}
-                      </span>
+                  {m.photoURL ? (
+                    <div className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0 bg-slate-100 flex items-center justify-center">
+                      <img src={m.photoURL} alt={m.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     </div>
-                  </div>
+                  ) : (
+                    <div
+                      className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0"
+                      style={{
+                        background: `linear-gradient(135deg, hsl(${m.hue || 45}, 70%, 88%), hsl(${m.hue || 45}, 60%, 75%))`,
+                      }}
+                    >
+                      <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
+                        <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-500 group-hover:scale-105">
+                          {m.initials}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   <h3 className="mt-6 font-display text-xl md:text-2xl font-bold text-ink">
                     {m.name}
                   </h3>
@@ -96,7 +116,7 @@ function MentorsPage() {
                   </p>
                 </div>
                 <div className="mt-6 mt-auto flex flex-wrap gap-2">
-                  {m.topics.map((t) => (
+                  {m.topics?.map((t: string) => (
                     <span
                       key={t}
                       className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-xs font-bold rounded-full shadow-sm"

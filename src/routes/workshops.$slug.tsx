@@ -105,7 +105,7 @@ function TrackPage() {
             <span className="eyebrow text-ink">Inside the Track</span>
             <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
               The{" "}
-              <span className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-2 rounded-lg">
+              <span className="text-indigo-600">
                 bento.
               </span>
             </h2>
