@@ -166,10 +166,7 @@ export function PathfinderQuiz() {
             </span>
           </div>
           <h2 className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-            Find your perfect{" "}
-            <span className="text-indigo-600">
-              mentoring track.
-            </span>
+            Find your perfect <span className="text-indigo-600">mentoring track.</span>
           </h2>
           <p className="mt-3 text-slate-600 font-semibold">
             Answer 2 quick questions to get a personalized recommendation based on your profile and

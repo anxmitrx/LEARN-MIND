@@ -44,19 +44,23 @@ export function GlobalPhoneVerificationModal() {
         if (!document.getElementById("recaptcha-container-phone")) return;
         if (!(window as any).phoneRecaptchaVerifier) {
           try {
-            (window as any).phoneRecaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container-phone", {
-              size: "normal",
-              callback: (response: any) => {
-                console.log("Phone Recaptcha solved");
+            (window as any).phoneRecaptchaVerifier = new RecaptchaVerifier(
+              auth,
+              "recaptcha-container-phone",
+              {
+                size: "normal",
+                callback: (response: any) => {
+                  console.log("Phone Recaptcha solved");
+                },
+                "expired-callback": () => {
+                  setError("reCAPTCHA expired. Please solve it again.");
+                  if ((window as any).phoneRecaptchaVerifier) {
+                    (window as any).phoneRecaptchaVerifier.clear();
+                    (window as any).phoneRecaptchaVerifier = null;
+                  }
+                },
               },
-              "expired-callback": () => {
-                setError("reCAPTCHA expired. Please solve it again.");
-                if ((window as any).phoneRecaptchaVerifier) {
-                  (window as any).phoneRecaptchaVerifier.clear();
-                  (window as any).phoneRecaptchaVerifier = null;
-                }
-              }
-            });
+            );
             (window as any).phoneRecaptchaVerifier.render();
           } catch (e) {
             console.error("Recaptcha init error:", e);
@@ -94,11 +98,7 @@ export function GlobalPhoneVerificationModal() {
         ? phoneInput
         : `+91${phoneInput.replace(/\D/g, "")}`;
 
-      const confResult = await linkWithPhoneNumber(
-        user,
-        formattedPhone,
-        appVerifier,
-      );
+      const confResult = await linkWithPhoneNumber(user, formattedPhone, appVerifier);
       setConfirmationResult(confResult);
       setStep("otp");
     } catch (err: any) {
@@ -123,13 +123,17 @@ export function GlobalPhoneVerificationModal() {
           (window as any).phoneRecaptchaVerifier.clear();
         } catch (e) {}
         (window as any).phoneRecaptchaVerifier = null;
-        
+
         setTimeout(() => {
           if (!document.getElementById("recaptcha-container-phone")) return;
           try {
-            (window as any).phoneRecaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container-phone", {
-              size: "normal"
-            });
+            (window as any).phoneRecaptchaVerifier = new RecaptchaVerifier(
+              auth,
+              "recaptcha-container-phone",
+              {
+                size: "normal",
+              },
+            );
             (window as any).phoneRecaptchaVerifier.render();
           } catch (e) {}
         }, 100);

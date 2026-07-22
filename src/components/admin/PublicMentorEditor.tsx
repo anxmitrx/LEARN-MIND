@@ -33,7 +33,10 @@ export function PublicMentorEditor({
 
   const handleTopicsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    const topicsArray = val.split(",").map((t) => t.trim()).filter((t) => t !== "");
+    const topicsArray = val
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t !== "");
     handleChange("topics", topicsArray);
   };
 
@@ -106,7 +109,9 @@ export function PublicMentorEditor({
               {uploading && (
                 <div className="absolute inset-0 bg-white/80 flex items-center justify-center flex-col gap-2">
                   <div className="h-5 w-5 border-2 border-indigo-600 border-t-transparent animate-spin rounded-full"></div>
-                  <span className="text-[10px] font-bold text-indigo-600">{Math.round(uploadProgress)}%</span>
+                  <span className="text-[10px] font-bold text-indigo-600">
+                    {Math.round(uploadProgress)}%
+                  </span>
                 </div>
               )}
             </div>
@@ -128,7 +133,8 @@ export function PublicMentorEditor({
                 {data.photoURL ? "Change Photo" : "Upload Photo"}
               </button>
               <p className="text-xs text-slate-500 font-semibold">
-                Upload a professional headshot. Recommended size: 400x400px (1:1 aspect ratio). Max size: 2MB.
+                Upload a professional headshot. Recommended size: 400x400px (1:1 aspect ratio). Max
+                size: 2MB.
               </p>
               {data.photoURL && (
                 <button

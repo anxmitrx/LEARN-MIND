@@ -1,5 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { X, LogIn, Loader2, Phone, Check, GraduationCap, Briefcase, ArrowLeft, Mail } from "lucide-react";
+import {
+  X,
+  LogIn,
+  Loader2,
+  Phone,
+  Check,
+  GraduationCap,
+  Briefcase,
+  ArrowLeft,
+  Mail,
+} from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 import { signInWithGoogle, auth, db } from "@/lib/firebase";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -28,7 +38,7 @@ export function GlobalAuthModal() {
   const [authMethod, setAuthMethod] = useState<"initial" | "phone" | "email">("initial");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [authError, setAuthError] = useState("");
-  
+
   // Phone Auth State
   const [phoneInput, setPhoneInput] = useState("");
   const [otp, setOtp] = useState("");
@@ -70,19 +80,23 @@ export function GlobalAuthModal() {
         if (!document.getElementById("signup-recaptcha-container")) return;
         if (!(window as any).recaptchaVerifier) {
           try {
-            (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, "signup-recaptcha-container", {
-              size: "normal",
-              callback: (response: any) => {
-                console.log("Recaptcha solved");
+            (window as any).recaptchaVerifier = new RecaptchaVerifier(
+              auth,
+              "signup-recaptcha-container",
+              {
+                size: "normal",
+                callback: (response: any) => {
+                  console.log("Recaptcha solved");
+                },
+                "expired-callback": () => {
+                  setAuthError("reCAPTCHA expired. Please solve it again.");
+                  if ((window as any).recaptchaVerifier) {
+                    (window as any).recaptchaVerifier.clear();
+                    (window as any).recaptchaVerifier = null;
+                  }
+                },
               },
-              "expired-callback": () => {
-                setAuthError("reCAPTCHA expired. Please solve it again.");
-                if ((window as any).recaptchaVerifier) {
-                  (window as any).recaptchaVerifier.clear();
-                  (window as any).recaptchaVerifier = null;
-                }
-              }
-            });
+            );
             (window as any).recaptchaVerifier.render();
           } catch (e) {
             console.error("Recaptcha init error:", e);
@@ -225,30 +239,30 @@ export function GlobalAuthModal() {
     }
 
     try {
-      const confResult = await signInWithPhoneNumber(
-        auth,
-        formattedPhone,
-        appVerifier
-      );
+      const confResult = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
       setConfirmationResult(confResult);
       setPhoneStep("otp");
     } catch (err: any) {
       console.error("Error sending OTP:", err);
       setAuthError(`SMS Failed: ${err.code || err.message}`);
-      
+
       // Reset ReCAPTCHA so the user can try again without reloading the page
       if ((window as any).recaptchaVerifier) {
         try {
           (window as any).recaptchaVerifier.clear();
         } catch (e) {}
         (window as any).recaptchaVerifier = null;
-        
+
         setTimeout(() => {
           if (!document.getElementById("signup-recaptcha-container")) return;
           try {
-            (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, "signup-recaptcha-container", {
-              size: "normal"
-            });
+            (window as any).recaptchaVerifier = new RecaptchaVerifier(
+              auth,
+              "signup-recaptcha-container",
+              {
+                size: "normal",
+              },
+            );
             (window as any).recaptchaVerifier.render();
           } catch (e) {}
         }, 100);
@@ -375,8 +389,8 @@ export function GlobalAuthModal() {
                     step === s
                       ? "w-8 bg-blue-600"
                       : step > s
-                      ? "w-4 bg-blue-400"
-                      : "w-4 bg-slate-200"
+                        ? "w-4 bg-blue-400"
+                        : "w-4 bg-slate-200"
                   }`}
                 />
               ))}
@@ -450,7 +464,7 @@ export function GlobalAuthModal() {
                 >
                   <ArrowLeft className="w-5 h-5" />
                 </button>
-                
+
                 <h3 className="font-display text-2xl font-bold text-ink">Sign In / Sign Up</h3>
                 <p className="mt-2 text-sm font-semibold text-slate-600 mb-6">
                   Continue as <span className="font-bold capitalize text-blue-600">{role}</span>
@@ -491,10 +505,22 @@ export function GlobalAuthModal() {
                         <Loader2 className="h-5 w-5 animate-spin" />
                       ) : (
                         <svg className="h-5 w-5" viewBox="0 0 24 24">
-                          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                          <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                            fill="#4285F4"
+                          />
+                          <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                            fill="#34A853"
+                          />
+                          <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                            fill="#FBBC05"
+                          />
+                          <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                            fill="#EA4335"
+                          />
                         </svg>
                       )}
                       Continue with Google
@@ -511,11 +537,14 @@ export function GlobalAuthModal() {
                     >
                       <ArrowLeft className="w-5 h-5" />
                     </button>
-                    
+
                     {authMethod === "phone" && (
                       <>
                         {phoneStep === "phone" ? (
-                          <form onSubmit={handleSendPhoneOtp} className="flex flex-col gap-3 text-left mt-2">
+                          <form
+                            onSubmit={handleSendPhoneOtp}
+                            className="flex flex-col gap-3 text-left mt-2"
+                          >
                             <input
                               type="tel"
                               autoFocus
@@ -529,11 +558,18 @@ export function GlobalAuthModal() {
                               disabled={!phoneInput || isAuthenticating}
                               className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-md flex justify-center"
                             >
-                              {isAuthenticating ? <Loader2 className="w-5 h-5 animate-spin" /> : "Send Code"}
+                              {isAuthenticating ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                              ) : (
+                                "Send Code"
+                              )}
                             </button>
                           </form>
                         ) : (
-                          <form onSubmit={handleVerifyPhoneOtp} className="flex flex-col gap-3 text-left mt-2">
+                          <form
+                            onSubmit={handleVerifyPhoneOtp}
+                            className="flex flex-col gap-3 text-left mt-2"
+                          >
                             <input
                               type="text"
                               autoFocus
@@ -548,7 +584,11 @@ export function GlobalAuthModal() {
                               disabled={otp.length !== 6 || isAuthenticating}
                               className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-md flex justify-center"
                             >
-                              {isAuthenticating ? <Loader2 className="w-5 h-5 animate-spin" /> : "Verify & Continue"}
+                              {isAuthenticating ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                              ) : (
+                                "Verify & Continue"
+                              )}
                             </button>
                             <button
                               type="button"
@@ -571,12 +611,16 @@ export function GlobalAuthModal() {
                             </div>
                             <h4 className="font-bold text-lg text-slate-800">Check your email</h4>
                             <p className="mt-2 text-sm text-slate-600">
-                              We sent a magic link to <span className="font-bold">{emailInput}</span>.<br/>
+                              We sent a magic link to{" "}
+                              <span className="font-bold">{emailInput}</span>.<br />
                               Click it to securely log in.
                             </p>
                           </div>
                         ) : (
-                          <form onSubmit={handleSendEmailLink} className="flex flex-col gap-3 text-left mt-2">
+                          <form
+                            onSubmit={handleSendEmailLink}
+                            className="flex flex-col gap-3 text-left mt-2"
+                          >
                             <input
                               type="email"
                               autoFocus
@@ -591,7 +635,11 @@ export function GlobalAuthModal() {
                               disabled={!emailInput || isAuthenticating}
                               className="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-md flex justify-center"
                             >
-                              {isAuthenticating ? <Loader2 className="w-5 h-5 animate-spin" /> : "Send Magic Link"}
+                              {isAuthenticating ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                              ) : (
+                                "Send Magic Link"
+                              )}
                             </button>
                           </form>
                         )}
@@ -626,7 +674,10 @@ export function GlobalAuthModal() {
                   <ProfileAvatarUpload size="lg" />
                 </div>
 
-                <form onSubmit={handleProfileSubmit} className="text-left grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form
+                  onSubmit={handleProfileSubmit}
+                  className="text-left grid grid-cols-1 md:grid-cols-2 gap-4"
+                >
                   <div className="flex flex-col gap-1">
                     <label className="text-xs font-bold text-slate-600">Age *</label>
                     <input
@@ -670,7 +721,9 @@ export function GlobalAuthModal() {
                   {role === "student" ? (
                     <>
                       <div className="flex flex-col gap-1 md:col-span-2">
-                        <label className="text-xs font-bold text-slate-600">College / School *</label>
+                        <label className="text-xs font-bold text-slate-600">
+                          College / School *
+                        </label>
                         <input
                           type="text"
                           required
@@ -681,7 +734,9 @@ export function GlobalAuthModal() {
                         />
                       </div>
                       <div className="flex flex-col gap-1 md:col-span-2">
-                        <label className="text-xs font-bold text-slate-600">Stream / Course *</label>
+                        <label className="text-xs font-bold text-slate-600">
+                          Stream / Course *
+                        </label>
                         <input
                           type="text"
                           required
@@ -706,18 +761,24 @@ export function GlobalAuthModal() {
                         />
                       </div>
                       <div className="flex flex-col gap-1 md:col-span-2">
-                        <label className="text-xs font-bold text-slate-600">Specification / Expertise *</label>
+                        <label className="text-xs font-bold text-slate-600">
+                          Specification / Expertise *
+                        </label>
                         <input
                           type="text"
                           required
                           value={formData.specification}
-                          onChange={(e) => setFormData({ ...formData, specification: e.target.value })}
+                          onChange={(e) =>
+                            setFormData({ ...formData, specification: e.target.value })
+                          }
                           className={inputCls}
                           placeholder="e.g. System Design, React"
                         />
                       </div>
                       <div className="flex flex-col gap-1 md:col-span-2">
-                        <label className="text-xs font-bold text-slate-600">Years of Experience *</label>
+                        <label className="text-xs font-bold text-slate-600">
+                          Years of Experience *
+                        </label>
                         <input
                           type="text"
                           required
@@ -736,13 +797,17 @@ export function GlobalAuthModal() {
                       disabled={isAuthenticating}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 font-display text-sm font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-md shadow-blue-500/20 flex justify-center items-center gap-2"
                     >
-                      {isAuthenticating ? <Loader2 className="w-5 h-5 animate-spin" /> : "Complete Registration"}
+                      {isAuthenticating ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        "Complete Registration"
+                      )}
                     </button>
                   </div>
                 </form>
               </motion.div>
             )}
-            
+
             {/* Always render recaptcha container so it doesn't unmount and break the verifier */}
             <div id="signup-recaptcha-container" className="mt-4 flex justify-center"></div>
           </motion.div>

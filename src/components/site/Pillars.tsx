@@ -37,10 +37,7 @@ export function Pillars() {
         <div className="max-w-3xl">
           <span className="eyebrow text-ink">Beyond Workshops</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            The full{" "}
-            <span className="text-indigo-600">
-              industry stack.
-            </span>
+            The full <span className="text-indigo-600">industry stack.</span>
           </h2>
         </div>
 

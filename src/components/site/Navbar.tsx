@@ -142,7 +142,7 @@ export function Navbar() {
               >
                 Reserve Seat
               </button>
-              
+
               <div className="absolute right-0 top-full pt-3 w-72 opacity-0 invisible translate-y-3 scale-95 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:scale-100 transition-all duration-300 ease-out z-50 origin-top-right">
                 <div className="bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.1)] border border-white p-2.5 flex flex-col gap-1 relative overflow-hidden">
                   {/* Subtle shine effect */}
@@ -157,8 +157,12 @@ export function Navbar() {
                       to={`/workshops/${track.slug}` as any}
                       className="flex flex-col gap-0.5 p-3 rounded-2xl hover:bg-white/80 transition-all duration-200 cursor-pointer relative z-10 group/item hover:shadow-sm"
                     >
-                      <span className="text-sm font-bold text-slate-800 line-clamp-1 group-hover/item:text-blue-600 transition-colors">{track.title}</span>
-                      <span className="text-[11px] font-semibold text-slate-500 line-clamp-1">{track.short}</span>
+                      <span className="text-sm font-bold text-slate-800 line-clamp-1 group-hover/item:text-blue-600 transition-colors">
+                        {track.title}
+                      </span>
+                      <span className="text-[11px] font-semibold text-slate-500 line-clamp-1">
+                        {track.short}
+                      </span>
                     </Link>
                   ))}
                 </div>

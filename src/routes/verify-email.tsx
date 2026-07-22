@@ -13,13 +13,15 @@ export const Route = createFileRoute("/verify-email")({
 function VerifyEmail() {
   const navigate = useNavigate();
   const { setShowLoginModal } = useAuth();
-  const [status, setStatus] = useState<"verifying" | "prompt-email" | "success" | "error">("verifying");
+  const [status, setStatus] = useState<"verifying" | "prompt-email" | "success" | "error">(
+    "verifying",
+  );
   const [errorMsg, setErrorMsg] = useState("");
   const [emailInput, setEmailInput] = useState("");
 
   useEffect(() => {
     if (isSignInWithEmailLink(auth, window.location.href)) {
-      let email = window.localStorage.getItem("emailForSignIn");
+      const email = window.localStorage.getItem("emailForSignIn");
       if (!email) {
         setStatus("prompt-email");
       } else {
@@ -36,7 +38,7 @@ function VerifyEmail() {
     try {
       const result = await signInWithEmailLink(auth, email, window.location.href);
       window.localStorage.removeItem("emailForSignIn");
-      
+
       const role = window.localStorage.getItem("roleForSignIn") || "student";
       window.localStorage.removeItem("roleForSignIn");
 
@@ -69,14 +71,13 @@ function VerifyEmail() {
       }
 
       setStatus("success");
-      
+
       setTimeout(() => {
         if (needsOnboarding) {
           setShowLoginModal(true);
         }
         navigate({ to: "/dashboard" });
       }, 1500);
-
     } catch (error: any) {
       console.error("Error signing in with email link:", error);
       setStatus("error");
@@ -98,7 +99,9 @@ function VerifyEmail() {
           <div className="flex flex-col items-center">
             <Loader2 className="h-12 w-12 text-blue-600 animate-spin mb-4" />
             <h2 className="text-2xl font-display font-bold text-ink">Verifying Email</h2>
-            <p className="text-slate-600 mt-2 font-medium">Please wait while we log you in securely...</p>
+            <p className="text-slate-600 mt-2 font-medium">
+              Please wait while we log you in securely...
+            </p>
           </div>
         )}
 
@@ -107,9 +110,13 @@ function VerifyEmail() {
             <MailCheck className="h-12 w-12 text-purple-600 mb-4" />
             <h2 className="text-2xl font-display font-bold text-ink">Confirm your Email</h2>
             <p className="text-slate-600 mt-2 font-medium mb-6">
-              You opened this link on a different device or browser. Please confirm your email to continue.
+              You opened this link on a different device or browser. Please confirm your email to
+              continue.
             </p>
-            <form onSubmit={handleManualEmailSubmit} className="w-full text-left flex flex-col gap-3">
+            <form
+              onSubmit={handleManualEmailSubmit}
+              className="w-full text-left flex flex-col gap-3"
+            >
               <input
                 type="email"
                 required
@@ -136,7 +143,9 @@ function VerifyEmail() {
               <MailCheck className="h-8 w-8" />
             </div>
             <h2 className="text-2xl font-display font-bold text-ink">Success!</h2>
-            <p className="text-slate-600 mt-2 font-medium">You have been successfully authenticated. Redirecting...</p>
+            <p className="text-slate-600 mt-2 font-medium">
+              You have been successfully authenticated. Redirecting...
+            </p>
           </div>
         )}
 

@@ -52,7 +52,7 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
           },
           () => {
             resolve();
-          }
+          },
         );
       });
 
@@ -69,9 +69,9 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
       } catch (err) {
         console.warn("Could not update auth profile photoURL:", err);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving profile picture:", error);
-      alert("Failed to save profile picture. Please try again.");
+      alert(`Failed to save profile picture: ${error?.message || "Unknown error"}. Please try again.`);
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {
@@ -88,7 +88,8 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
   const displayUrl = userData?.photoURL || user.photoURL;
 
   return (
-    <div
+    <>
+      <div
       className={`relative group cursor-pointer overflow-hidden bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-sm flex items-center justify-center font-bold transition-all hover:scale-105 active:scale-95 ${containerClasses} ${className}`}
       onClick={() => fileInputRef.current?.click()}
     >
@@ -113,6 +114,8 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
         </div>
       )}
 
+      </div>
+
       {/* Hidden file input */}
       <input
         type="file"
@@ -121,6 +124,6 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
         accept="image/*"
         className="hidden"
       />
-    </div>
+    </>
   );
 }

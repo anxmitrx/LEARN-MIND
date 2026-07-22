@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { useEffect, useState } from "react";
@@ -45,7 +45,7 @@ function MentorsPage() {
     if (!db) return;
     const q = query(collection(db, "public_mentors"), orderBy("timestamp", "asc"));
     const unsubscribe = onSnapshot(q, (snap) => {
-      const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const list = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setMentors(list);
     });
     return () => unsubscribe();
@@ -58,10 +58,7 @@ function MentorsPage() {
         <div className="container mx-auto max-w-7xl px-4 sm:px-6">
           <span className="eyebrow text-ink">Premium Mentors</span>
           <h1 className="mt-4 max-w-3xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-6xl">
-            Learn from people who{" "}
-            <span className="text-indigo-600">
-              hire people.
-            </span>
+            Learn from people who <span className="text-indigo-600">hire people.</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-slate-600 font-semibold">
             MNC managers, IIM/IIT alumni, startup founders, and senior engineers — mentoring you
@@ -80,15 +77,24 @@ function MentorsPage() {
             className="grid gap-8 sm:grid-cols-2 max-w-4xl mx-auto"
           >
             {mentors.map((m) => (
-              <motion.div
+              <Link
                 key={m.name}
-                variants={cardVariants}
-                className="bento-card group bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform h-full flex flex-col"
+                to="/u/$uid"
+                params={{ uid: m.id }}
+                className="block"
               >
-                <div className="flex-grow flex flex-col">
-                  {m.photoURL ? (
-                    <div className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0 bg-slate-100 flex items-center justify-center">
-                      <img src={m.photoURL} alt={m.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <motion.div
+                  variants={cardVariants}
+                  className="bento-card group bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform h-full flex flex-col"
+                >
+                  <div className="flex-grow flex flex-col">
+                    {m.photoURL ? (
+                      <div className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0 bg-slate-100 flex items-center justify-center">
+                        <img
+                        src={m.photoURL}
+                        alt={m.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
                     </div>
                   ) : (
                     <div
@@ -126,6 +132,7 @@ function MentorsPage() {
                   ))}
                 </div>
               </motion.div>
+              </Link>
             ))}
           </motion.div>
         </div>

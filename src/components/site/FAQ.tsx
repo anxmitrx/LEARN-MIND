@@ -38,10 +38,7 @@ export function FAQ() {
         <div>
           <span className="eyebrow text-ink">FAQ</span>
           <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            Quick answers,{" "}
-            <span className="text-indigo-600">
-              straight up.
-            </span>
+            Quick answers, <span className="text-indigo-600">straight up.</span>
           </h2>
         </div>
 

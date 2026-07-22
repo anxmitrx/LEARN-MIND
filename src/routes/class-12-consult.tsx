@@ -105,10 +105,7 @@ function Class12ConsultPage() {
               ✨ The Ultimate Guide
             </span>
             <h1 className="mt-6 font-display text-4xl font-bold leading-[1.1] tracking-wide text-ink sm:text-6xl drop-shadow-sm">
-              Class 12{" "}
-              <span className="text-indigo-600 box-decoration-slice">
-                Roadmap.
-              </span>
+              Class 12 <span className="text-indigo-600 box-decoration-slice">Roadmap.</span>
             </h1>
             <p className="mt-6 text-base font-bold leading-relaxed text-slate-700 sm:text-lg">
               Stop guessing your future. Get expert, personalized guidance on choosing the right

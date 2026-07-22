@@ -1,12 +1,26 @@
 import { createFileRoute, redirect, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/AuthContext";
-import { LogOut, Calendar, Video, GraduationCap, Home, Mail, Phone, Building, Plus, Users, ShieldAlert } from "lucide-react";
+import {
+  LogOut,
+  Calendar,
+  Video,
+  GraduationCap,
+  Home,
+  Mail,
+  Phone,
+  Building,
+  Plus,
+  Users,
+  ShieldAlert,
+  ExternalLink,
+} from "lucide-react";
 import { auth, db } from "@/lib/firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { ProfileAvatarUpload } from "@/components/site/ProfileAvatarUpload";
 import { EditProfileModal } from "@/components/site/EditProfileModal";
 import { MentorHostEventModal } from "@/components/site/MentorHostEventModal";
+import { SuggestedMentors } from "@/components/site/SuggestedMentors";
 import {
   Radar,
   RadarChart,
@@ -81,7 +95,9 @@ function DashboardComponent() {
   if (!user) return null;
 
   const isMentor = userData?.role === "mentor";
-  const hasCompletedProfile = isMentor ? Boolean(userData?.profession && userData?.specification && userData?.photoURL) : true;
+  const hasCompletedProfile = isMentor
+    ? Boolean(userData?.profession && userData?.specification && userData?.photoURL)
+    : true;
 
   return (
     <div className="min-h-screen bg-transparent text-slate-800 p-4 md:p-8">
@@ -136,6 +152,14 @@ function DashboardComponent() {
           </div>
 
           <div className="flex items-center gap-3 self-start md:self-auto mt-4 md:mt-0">
+            <Link
+              to="/u/$uid"
+              params={{ uid: user.uid }}
+              className="flex items-center gap-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-full font-display text-[10px] font-extrabold uppercase tracking-wider transition-all shadow-sm"
+            >
+              <ExternalLink className="h-3 w-3" />
+              View Profile
+            </Link>
             <EditProfileModal />
             <Link
               to="/"
@@ -158,7 +182,6 @@ function DashboardComponent() {
         <div className="grid gap-6 md:grid-cols-3">
           {/* Main Column */}
           <div className="flex flex-col gap-6 md:col-span-2">
-            
             {isMentor ? (
               <>
                 {!hasCompletedProfile && (
@@ -171,7 +194,9 @@ function DashboardComponent() {
                         Profile Incomplete
                       </h3>
                       <p className="text-sm text-amber-700 font-medium leading-relaxed">
-                        As long as you do not complete your profile (Profession, Expertise, and Photo), your event hosting requests will not be seen or granted. Even if granted, they cannot be hosted on the main page.
+                        As long as you do not complete your profile (Profession, Expertise, and
+                        Photo), your event hosting requests will not be seen or granted. Even if
+                        granted, they cannot be hosted on the main page.
                       </p>
                     </div>
                   </div>
@@ -192,16 +217,24 @@ function DashboardComponent() {
                       </div>
                     </div>
                   </div>
-                  <div 
-                    className="bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 flex flex-col justify-center items-center text-center hover:bg-purple-50 cursor-pointer transition-colors"
-                    onClick={() => setIsHostModalOpen(true)}
+                  <div
+                    className={`bg-white/60 backdrop-blur-2xl border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.1)] rounded-[2rem] p-6 flex flex-col justify-center items-center text-center transition-colors ${
+                      hasCompletedProfile
+                        ? "hover:bg-purple-50 cursor-pointer"
+                        : "opacity-50 cursor-not-allowed"
+                    }`}
+                    onClick={() => {
+                      if (hasCompletedProfile) {
+                        setIsHostModalOpen(true);
+                      } else {
+                        alert("Please complete your profile first.");
+                      }
+                    }}
                   >
                     <div className="p-4 bg-purple-600 text-white rounded-full shadow-lg hover:scale-105 transition-transform mb-3">
                       <Plus className="h-8 w-8" />
                     </div>
-                    <span className="font-bold text-purple-800 text-sm">
-                      Host an Event
-                    </span>
+                    <span className="font-bold text-purple-800 text-sm">Host an Event</span>
                   </div>
                 </div>
 
@@ -214,37 +247,47 @@ function DashboardComponent() {
                   <div className="grid gap-8">
                     {/* Active Events */}
                     <div>
-                      <h3 className="text-sm font-extrabold text-slate-500 uppercase tracking-wider mb-4">Active Events</h3>
-                      {hostedEvents.filter(e => e.approved).length > 0 ? (
+                      <h3 className="text-sm font-extrabold text-slate-500 uppercase tracking-wider mb-4">
+                        Active Events
+                      </h3>
+                      {hostedEvents.filter((e) => e.approved).length > 0 ? (
                         <div className="grid gap-4">
-                          {hostedEvents.filter(e => e.approved).map((w, i) => (
-                            <div
-                              key={`active-${i}`}
-                              className="flex items-center justify-between gap-4 bg-white/80 border border-white hover:border-purple-200 p-4 rounded-2xl shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
-                            >
-                              <div className="flex items-center gap-4">
-                                <div className="h-12 w-12 shrink-0 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center">
-                                  <Video className="h-6 w-6" />
-                                </div>
-                                <div>
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <div className="text-[11px] font-extrabold text-purple-600 uppercase tracking-widest">
-                                      {w.type} • {w.date}
+                          {hostedEvents
+                            .filter((e) => e.approved)
+                            .map((w, i) => (
+                              <div
+                                key={`active-${i}`}
+                                className="flex items-center justify-between gap-4 bg-white/80 border border-white hover:border-purple-200 p-4 rounded-2xl shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5"
+                              >
+                                <div className="flex items-center gap-4">
+                                  <div className="h-12 w-12 shrink-0 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center">
+                                    <Video className="h-6 w-6" />
+                                  </div>
+                                  <div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <div className="text-[11px] font-extrabold text-purple-600 uppercase tracking-widest">
+                                        {w.type} • {w.date}
+                                      </div>
+                                    </div>
+                                    <div className="font-bold text-slate-800 text-lg">
+                                      {w.title}
                                     </div>
                                   </div>
-                                  <div className="font-bold text-slate-800 text-lg">{w.title}</div>
+                                </div>
+                                <div className="flex flex-col items-center justify-center bg-slate-50 p-2 rounded-xl min-w-[80px]">
+                                  <Users className="w-5 h-5 text-slate-400 mb-1" />
+                                  <span className="font-bold text-slate-700 text-sm">
+                                    {w.enrollmentCount || 0}
+                                  </span>
                                 </div>
                               </div>
-                              <div className="flex flex-col items-center justify-center bg-slate-50 p-2 rounded-xl min-w-[80px]">
-                                <Users className="w-5 h-5 text-slate-400 mb-1" />
-                                <span className="font-bold text-slate-700 text-sm">{w.enrollmentCount || 0}</span>
-                              </div>
-                            </div>
-                          ))}
+                            ))}
                         </div>
                       ) : (
                         <div className="text-center py-6 bg-white/50 border border-slate-100 rounded-2xl">
-                          <div className="text-slate-400 font-bold text-sm">No active events yet.</div>
+                          <div className="text-slate-400 font-bold text-sm">
+                            No active events yet.
+                          </div>
                         </div>
                       )}
                     </div>
@@ -255,32 +298,38 @@ function DashboardComponent() {
                         <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
                         Pending Requests
                       </h3>
-                      {hostedEvents.filter(e => !e.approved).length > 0 ? (
+                      {hostedEvents.filter((e) => !e.approved).length > 0 ? (
                         <div className="grid gap-4 opacity-70 grayscale-[30%]">
-                          {hostedEvents.filter(e => !e.approved).map((w, i) => (
-                            <div
-                              key={`pending-${i}`}
-                              className="flex items-center justify-between gap-4 bg-amber-50/50 border border-amber-100 p-4 rounded-2xl shadow-sm transition-all"
-                            >
-                              <div className="flex items-center gap-4">
-                                <div className="h-12 w-12 shrink-0 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
-                                  <Video className="h-6 w-6" />
-                                </div>
-                                <div>
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <div className="text-[11px] font-extrabold text-amber-600 uppercase tracking-widest">
-                                      {w.type} • {w.date}
+                          {hostedEvents
+                            .filter((e) => !e.approved)
+                            .map((w, i) => (
+                              <div
+                                key={`pending-${i}`}
+                                className="flex items-center justify-between gap-4 bg-amber-50/50 border border-amber-100 p-4 rounded-2xl shadow-sm transition-all"
+                              >
+                                <div className="flex items-center gap-4">
+                                  <div className="h-12 w-12 shrink-0 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
+                                    <Video className="h-6 w-6" />
+                                  </div>
+                                  <div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <div className="text-[11px] font-extrabold text-amber-600 uppercase tracking-widest">
+                                        {w.type} • {w.date}
+                                      </div>
+                                    </div>
+                                    <div className="font-bold text-slate-700 text-lg">
+                                      {w.title}
                                     </div>
                                   </div>
-                                  <div className="font-bold text-slate-700 text-lg">{w.title}</div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
                         </div>
                       ) : (
                         <div className="text-center py-6 bg-amber-50/50 border border-amber-100/50 rounded-2xl">
-                          <div className="text-slate-400 font-bold text-sm">No pending requests.</div>
+                          <div className="text-slate-400 font-bold text-sm">
+                            No pending requests.
+                          </div>
                         </div>
                       )}
                     </div>
@@ -374,7 +423,6 @@ function DashboardComponent() {
                 </div>
               </>
             )}
-
           </div>
 
           {/* Sidebar Column */}
@@ -405,10 +453,12 @@ function DashboardComponent() {
                 </ResponsiveContainer>
               </div>
             </div>
+            
+            <SuggestedMentors />
           </div>
         </div>
       </div>
-      
+
       {/* Mentor Modals */}
       <MentorHostEventModal isOpen={isHostModalOpen} onClose={() => setIsHostModalOpen(false)} />
     </div>

@@ -8,7 +8,7 @@ import { BentoCard } from "@/components/site/BentoCard";
 import { useWorkshops, fetchWorkshopBySlug } from "@/hooks/useWorkshops";
 import { MagneticButton } from "@/components/site/MagneticButton";
 import { useReservation } from "@/components/site/ReservationContext";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { getIcon } from "@/lib/icons";
 
@@ -56,17 +56,48 @@ function TrackPage() {
           </Link>
           <div className="mt-8 grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
             <div>
+              {(track as any).bannerUrl && (
+                <div className="mb-6 rounded-2xl overflow-hidden shadow-lg border border-slate-200/50">
+                  <img src={(track as any).bannerUrl} alt="Workshop Banner" className="w-full h-48 object-cover" />
+                </div>
+              )}
               <span className="inline-block bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3.5 py-1 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-sm">
                 Track {track.number} · {track.short}
               </span>
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="mt-5 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl lg:text-7xl"
-              >
-                {isEngineering ? <ScrambleText text={track.title} duration={900} /> : track.title}
-              </motion.h1>
+              <div className="flex items-center gap-6 mt-5">
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl lg:text-7xl flex-1"
+                >
+                  {isEngineering ? <ScrambleText text={track.title} duration={900} /> : track.title}
+                </motion.h1>
+                {(track as any).hostPhotoURL && (
+                  <div className="flex flex-col items-center shrink-0">
+                    <img 
+                      src={(track as any).hostPhotoURL} 
+                      alt={(track as any).hostName} 
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-white shadow-[0_8px_16px_rgba(0,0,0,0.1)] object-cover bg-white" 
+                    />
+                    <span className="mt-2 text-[10px] sm:text-xs font-extrabold text-slate-700 uppercase tracking-wider text-center max-w-[90px] leading-tight">
+                      {(track as any).hostName}
+                    </span>
+                    {(track as any).hostProfession && (
+                      <span className="mt-0.5 text-[9px] font-medium text-slate-500 text-center max-w-[90px] leading-tight line-clamp-2">
+                        {(track as any).hostProfession}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+              
+              {(track as any).date && (
+                <div className="mt-6 flex items-center gap-2 text-sm font-bold text-indigo-700 bg-indigo-50 inline-flex px-4 py-2 rounded-xl border border-indigo-100">
+                  <Calendar className="w-4 h-4" /> {(track as any).date} at {(track as any).time}
+                </div>
+              )}
+
               <p className="mt-6 max-w-xl text-lg text-slate-600 font-semibold">
                 {track.description}
               </p>
@@ -91,7 +122,7 @@ function TrackPage() {
                 What you'll be measurably better at by the end.
               </p>
               <div className="mt-4 grid place-items-center">
-                <SkillRadar data={track.radar} />
+                <SkillRadar data={track.radar || []} />
               </div>
             </div>
           </div>
@@ -104,10 +135,7 @@ function TrackPage() {
           <div className="max-w-2xl">
             <span className="eyebrow text-ink">Inside the Track</span>
             <h2 className="mt-3 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-              The{" "}
-              <span className="text-indigo-600">
-                bento.
-              </span>
+              The <span className="text-indigo-600">bento.</span>
             </h2>
           </div>
 
@@ -119,7 +147,7 @@ function TrackPage() {
               </div>
               <h3 className="mt-2 font-display text-3xl font-bold text-ink">Topics covered</h3>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                {track.topics.map((topic, i) => {
+                {(track.topics || []).map((topic, i) => {
                   const Icon = getIcon(topic.icon);
                   return (
                     <motion.li
@@ -145,7 +173,7 @@ function TrackPage() {
               <div className="font-mono text-xs font-bold text-indigo-600/70">// B · OUTCOMES</div>
               <h3 className="mt-2 font-display text-3xl font-bold text-ink">You'll be able to</h3>
               <ul className="mt-5 space-y-4">
-                {track.outcomes.map((o, i) => (
+                {(track.outcomes || []).map((o, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 rounded-full shadow-sm">
                       <Check className="h-3.5 w-3.5 text-indigo-600" strokeWidth={3} />
@@ -167,7 +195,7 @@ function TrackPage() {
                 A typical workshop
               </h3>
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {track.agenda.map((a, i) => (
+                {(track.agenda || []).map((a, i) => (
                   <div
                     key={i}
                     className="relative bg-indigo-950/60 backdrop-blur-md border border-white/20 p-5 rounded-2xl shadow-sm text-white"
@@ -208,8 +236,8 @@ function TrackPage() {
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {tracks
-              .filter((t) => t.slug !== track.slug)
-              .map((t) => (
+              .filter((t: Track) => t.slug !== track.slug)
+              .map((t: Track) => (
                 <Link
                   key={t.slug}
                   to="/workshops/$slug"

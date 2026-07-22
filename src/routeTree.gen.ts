@@ -19,6 +19,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkshopsIndexRouteImport } from './routes/workshops.index'
 import { Route as WorkshopsSlugRouteImport } from './routes/workshops.$slug'
+import { Route as UUidRouteImport } from './routes/u.$uid'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const WebinarsRoute = WebinarsRouteImport.update({
@@ -71,6 +72,11 @@ const WorkshopsSlugRoute = WorkshopsSlugRouteImport.update({
   path: '/workshops/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UUidRoute = UUidRouteImport.update({
+  id: '/u/$uid',
+  path: '/u/$uid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/verify-email': typeof VerifyEmailRoute
   '/webinars': typeof WebinarsRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/u/$uid': typeof UUidRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops/': typeof WorkshopsIndexRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/verify-email': typeof VerifyEmailRoute
   '/webinars': typeof WebinarsRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/u/$uid': typeof UUidRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops': typeof WorkshopsIndexRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/verify-email': typeof VerifyEmailRoute
   '/webinars': typeof WebinarsRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/u/$uid': typeof UUidRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops/': typeof WorkshopsIndexRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/webinars'
     | '/blog/$slug'
+    | '/u/$uid'
     | '/workshops/$slug'
     | '/workshops/'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/webinars'
     | '/blog/$slug'
+    | '/u/$uid'
     | '/workshops/$slug'
     | '/workshops'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/webinars'
     | '/blog/$slug'
+    | '/u/$uid'
     | '/workshops/$slug'
     | '/workshops/'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   VerifyEmailRoute: typeof VerifyEmailRoute
   WebinarsRoute: typeof WebinarsRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  UUidRoute: typeof UUidRoute
   WorkshopsSlugRoute: typeof WorkshopsSlugRoute
   WorkshopsIndexRoute: typeof WorkshopsIndexRoute
 }
@@ -245,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkshopsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/u/$uid': {
+      id: '/u/$uid'
+      path: '/u/$uid'
+      fullPath: '/u/$uid'
+      preLoaderRoute: typeof UUidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   VerifyEmailRoute: VerifyEmailRoute,
   WebinarsRoute: WebinarsRoute,
   BlogSlugRoute: BlogSlugRoute,
+  UUidRoute: UUidRoute,
   WorkshopsSlugRoute: WorkshopsSlugRoute,
   WorkshopsIndexRoute: WorkshopsIndexRoute,
 }

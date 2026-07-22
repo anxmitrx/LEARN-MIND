@@ -14,21 +14,31 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/AuthContext";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import { Loader2, Edit3 } from "lucide-react";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { db, storage } from "@/lib/firebase";
+import { Loader2, Edit3, Plus, Trash2, Upload, Camera } from "lucide-react";
 
 export function EditProfileModal() {
   const { user, userData } = useAuth();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [uploadingBanner, setUploadingBanner] = useState(false);
 
   // Form states
-  const [name, setName] = useState(userData?.name || user?.displayName || "");
-  const [phone, setPhone] = useState(userData?.phone || "");
-  const [institution, setInstitution] = useState(userData?.institution || "");
-  const [profession, setProfession] = useState(userData?.profession || "");
-  const [specification, setSpecification] = useState(userData?.specification || "");
-  const [bio, setBio] = useState(userData?.bio || "");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [bio, setBio] = useState("");
+  const [profileBannerUrl, setProfileBannerUrl] = useState("");
+  
+  // Student specific
+  const [college, setCollege] = useState("");
+  const [school, setSchool] = useState("");
+
+  // Mentor specific
+  const [profession, setProfession] = useState("");
+  const [expertise, setExpertise] = useState("");
+  const [experience, setExperience] = useState<any[]>([]);
+  const [education, setEducation] = useState<any[]>([]);
 
   const isMentor = userData?.role === "mentor";
 
@@ -36,14 +46,44 @@ export function EditProfileModal() {
     if (open) {
       setName(userData?.name || user?.displayName || "");
       setPhone(userData?.phone || "");
-      setInstitution(userData?.institution || "");
-      setProfession(userData?.profession || "");
-      setSpecification(userData?.specification || "");
       setBio(userData?.bio || "");
+      setProfileBannerUrl(userData?.profileBannerUrl || "");
+      
+      if (isMentor) {
+        setProfession(userData?.profession || "");
+        setExpertise((userData?.expertise || []).join(", ") || userData?.specification || "");
+        setExperience(userData?.experience || []);
+        setEducation(userData?.education || []);
+      } else {
+        setCollege(userData?.college || userData?.institution || "");
+        setSchool(userData?.school || "");
+      }
     }
-  }, [open, userData, user]);
+  }, [open, userData, user, isMentor]);
 
   if (!user) return null;
+
+  const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      setUploadingBanner(true);
+      const filename = `${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, `banners/${user.uid}/${filename}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      
+      await new Promise<void>((resolve, reject) => {
+        uploadTask.on("state_changed", null, reject, resolve);
+      });
+      
+      const downloadURL = await getDownloadURL(storageRef);
+      setProfileBannerUrl(downloadURL);
+    } catch (error) {
+      console.error("Upload failed", error);
+    } finally {
+      setUploadingBanner(false);
+    }
+  };
 
   const handleSave = async () => {
     setLoading(true);
@@ -53,13 +93,17 @@ export function EditProfileModal() {
         name,
         phone,
         bio,
+        profileBannerUrl
       };
 
       if (isMentor) {
         updateData.profession = profession;
-        updateData.specification = specification;
+        updateData.expertise = expertise.split(",").map(s => s.trim()).filter(Boolean);
+        updateData.experience = experience;
+        updateData.education = education;
       } else {
-        updateData.institution = institution;
+        updateData.college = college;
+        updateData.school = school;
       }
 
       if (phone !== userData?.phone) {
@@ -75,6 +119,23 @@ export function EditProfileModal() {
     }
   };
 
+  // Add handlers
+  const addExperience = () => setExperience([...experience, { company: "", role: "", duration: "", description: "" }]);
+  const removeExperience = (index: number) => setExperience(experience.filter((_, i) => i !== index));
+  const updateExperience = (index: number, field: string, value: string) => {
+    const newExp = [...experience];
+    newExp[index][field] = value;
+    setExperience(newExp);
+  };
+
+  const addEducation = () => setEducation([...education, { institution: "", degree: "", year: "" }]);
+  const removeEducation = (index: number) => setEducation(education.filter((_, i) => i !== index));
+  const updateEducation = (index: number, field: string, value: string) => {
+    const newEdu = [...education];
+    newEdu[index][field] = value;
+    setEducation(newEdu);
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -83,134 +144,121 @@ export function EditProfileModal() {
           Edit Profile
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] border-white/40 bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl">
+      <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto border-white/40 bg-white/95 backdrop-blur-xl shadow-2xl rounded-3xl p-6">
         <DialogHeader>
           <DialogTitle className="font-display uppercase tracking-wide text-ink text-xl">
             Edit Profile
           </DialogTitle>
           <DialogDescription className="text-slate-500 font-medium text-sm">
-            Update your personal information below. This will be displayed on your dashboard.
+            Update your public profile information.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-5 py-4">
-          <div className="grid gap-2">
-            <Label
-              htmlFor="name"
-              className="text-xs font-bold uppercase tracking-wider text-slate-500"
-            >
-              Full Name
-            </Label>
-            <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl"
-              placeholder="e.g. Jane Doe"
-            />
+        <div className="grid gap-6 py-4">
+          
+          {/* Banner Upload */}
+          <div className="flex flex-col gap-2">
+            <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">Profile Banner</Label>
+            <div className="relative h-32 bg-slate-100 rounded-xl border-2 border-dashed border-slate-300 overflow-hidden group flex items-center justify-center">
+              {profileBannerUrl ? (
+                <img src={profileBannerUrl} className="w-full h-full object-cover" alt="Banner" />
+              ) : (
+                <span className="text-sm font-medium text-slate-400">No banner uploaded</span>
+              )}
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+                <input type="file" className="hidden" id="banner-upload" accept="image/*" onChange={handleBannerUpload} disabled={uploadingBanner} />
+                <label htmlFor="banner-upload" className="cursor-pointer text-white flex items-center gap-2 font-semibold">
+                  {uploadingBanner ? <Loader2 className="w-5 h-5 animate-spin" /> : <Camera className="w-5 h-5" />}
+                  {uploadingBanner ? "Uploading..." : "Change Banner"}
+                </label>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label
-                htmlFor="phone"
-                className="text-xs font-bold uppercase tracking-wider text-slate-500"
-              >
-                Phone Number
-              </Label>
-              <Input
-                id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl"
-                placeholder="e.g. 555-123-4567"
-              />
+              <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">Full Name</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} className="bg-white/50 rounded-xl" />
             </div>
-            {isMentor ? (
-              <div className="grid gap-2">
-                <Label
-                  htmlFor="profession"
-                  className="text-xs font-bold uppercase tracking-wider text-slate-500"
-                >
-                  Profession / Title *
-                </Label>
-                <Input
-                  id="profession"
-                  value={profession}
-                  onChange={(e) => setProfession(e.target.value)}
-                  className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl"
-                  placeholder="e.g. Senior Software Engineer"
-                />
-              </div>
-            ) : (
-              <div className="grid gap-2">
-                <Label
-                  htmlFor="institution"
-                  className="text-xs font-bold uppercase tracking-wider text-slate-500"
-                >
-                  Institution / College
-                </Label>
-                <Input
-                  id="institution"
-                  value={institution}
-                  onChange={(e) => setInstitution(e.target.value)}
-                  className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl"
-                  placeholder="e.g. University Name"
-                />
-              </div>
-            )}
+            <div className="grid gap-2">
+              <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">Phone</Label>
+              <Input value={phone} onChange={(e) => setPhone(e.target.value)} className="bg-white/50 rounded-xl" />
+            </div>
           </div>
 
-          {isMentor && (
-            <div className="grid gap-2">
-              <Label
-                htmlFor="specification"
-                className="text-xs font-bold uppercase tracking-wider text-slate-500"
-              >
-                Expertise / Topics *
-              </Label>
-              <Input
-                id="specification"
-                value={specification}
-                onChange={(e) => setSpecification(e.target.value)}
-                className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl"
-                placeholder="e.g. System Design, Product Management"
-              />
+          <div className="grid gap-2">
+            <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">About / Bio</Label>
+            <Textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={4} className="bg-white/50 rounded-xl resize-none" />
+          </div>
+
+          {!isMentor && (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">College</Label>
+                <Input value={college} onChange={(e) => setCollege(e.target.value)} className="bg-white/50 rounded-xl" placeholder="e.g. State University" />
+              </div>
+              <div className="grid gap-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">School</Label>
+                <Input value={school} onChange={(e) => setSchool(e.target.value)} className="bg-white/50 rounded-xl" placeholder="e.g. High School Name" />
+              </div>
             </div>
           )}
-          <div className="grid gap-2">
-            <Label
-              htmlFor="bio"
-              className="text-xs font-bold uppercase tracking-wider text-slate-500"
-            >
-              Short Bio
-            </Label>
-            <Textarea
-              id="bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              className="bg-white/50 border-slate-200 focus-visible:ring-indigo-500 rounded-xl resize-none"
-              placeholder="Tell us a little bit about yourself..."
-              rows={3}
-            />
-          </div>
+
+          {isMentor && (
+            <>
+              <div className="grid gap-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">Current Role / Tagline</Label>
+                <Input value={profession} onChange={(e) => setProfession(e.target.value)} className="bg-white/50 rounded-xl" placeholder="e.g. Senior SWE @ Google" />
+              </div>
+              <div className="grid gap-2">
+                <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">Expertise (Comma separated)</Label>
+                <Input value={expertise} onChange={(e) => setExpertise(e.target.value)} className="bg-white/50 rounded-xl" placeholder="e.g. System Design, React, Node.js" />
+              </div>
+
+              {/* Experience */}
+              <div className="grid gap-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">Experience</Label>
+                  <Button variant="ghost" size="sm" onClick={addExperience} className="h-8 text-indigo-600"><Plus className="w-4 h-4 mr-1" /> Add</Button>
+                </div>
+                {experience.map((exp, index) => (
+                  <div key={index} className="grid gap-3 relative bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <button onClick={() => removeExperience(index)} className="absolute top-2 right-2 p-1 text-slate-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
+                    <div className="grid grid-cols-2 gap-3 mt-2">
+                      <Input placeholder="Company" value={exp.company} onChange={e => updateExperience(index, "company", e.target.value)} className="h-9 text-sm" />
+                      <Input placeholder="Role" value={exp.role} onChange={e => updateExperience(index, "role", e.target.value)} className="h-9 text-sm" />
+                      <Input placeholder="Duration (e.g. 2020 - Present)" value={exp.duration} onChange={e => updateExperience(index, "duration", e.target.value)} className="h-9 text-sm col-span-2" />
+                    </div>
+                    <Textarea placeholder="Description of your work..." value={exp.description} onChange={e => updateExperience(index, "description", e.target.value)} className="text-sm h-20 resize-none" />
+                  </div>
+                ))}
+              </div>
+
+              {/* Education */}
+              <div className="grid gap-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-bold uppercase tracking-wider text-slate-500">Education (Colleges/Universities)</Label>
+                  <Button variant="ghost" size="sm" onClick={addEducation} className="h-8 text-indigo-600"><Plus className="w-4 h-4 mr-1" /> Add</Button>
+                </div>
+                {education.map((edu, index) => (
+                  <div key={index} className="grid grid-cols-2 gap-3 relative bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <button onClick={() => removeEducation(index)} className="absolute top-2 right-2 p-1 text-slate-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
+                    <Input placeholder="Institution" value={edu.institution} onChange={e => updateEducation(index, "institution", e.target.value)} className="h-9 text-sm col-span-2 mt-2" />
+                    <Input placeholder="Degree" value={edu.degree} onChange={e => updateEducation(index, "degree", e.target.value)} className="h-9 text-sm" />
+                    <Input placeholder="Year (e.g. 2018 - 2022)" value={edu.year} onChange={e => updateEducation(index, "year", e.target.value)} className="h-9 text-sm" />
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
         </div>
 
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setOpen(false)}
-            className="rounded-full font-display uppercase tracking-wider font-bold text-xs bg-white hover:bg-slate-50"
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSave}
-            disabled={loading}
-            className="rounded-full bg-indigo-600 hover:bg-indigo-700 font-display uppercase tracking-wider font-bold text-xs"
-          >
+        <DialogFooter className="sticky bottom-0 bg-white/95 backdrop-blur py-4 border-t border-slate-100 mt-2">
+          <Button variant="outline" onClick={() => setOpen(false)} className="rounded-full">Cancel</Button>
+          <Button onClick={handleSave} disabled={loading} className="rounded-full bg-indigo-600 hover:bg-indigo-700">
             {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Save Changes
+            Save Profile
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -20,6 +20,7 @@ import { GlobalAuthModal } from "@/components/site/GlobalAuthModal";
 import { GlobalOnboardingModal } from "@/components/site/GlobalOnboardingModal";
 import { DashboardDrawer } from "@/components/site/DashboardDrawer";
 import { GlobalPhoneVerificationModal } from "@/components/site/GlobalPhoneVerificationModal";
+import { RecentActivityPopup } from "@/components/site/RecentActivityPopup";
 
 function NotFoundComponent() {
   return (
@@ -171,6 +172,7 @@ function RootComponent() {
           <GlobalAuthModal />
           <GlobalOnboardingModal />
           <GlobalPhoneVerificationModal />
+          <RecentActivityPopup />
         </ReservationProvider>
       </AuthProvider>
     </QueryClientProvider>

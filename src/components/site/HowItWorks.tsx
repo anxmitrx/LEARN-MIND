@@ -31,10 +31,7 @@ export function HowItWorks() {
         <div className="max-w-3xl">
           <span className="eyebrow text-ink">How it works · 04 Steps</span>
           <h2 className="mt-4 font-display text-5xl font-bold leading-[0.95] tracking-wide text-ink sm:text-6xl">
-            Four steps from <br /> classroom to{" "}
-            <span className="text-indigo-600">
-              career.
-            </span>
+            Four steps from <br /> classroom to <span className="text-indigo-600">career.</span>
           </h2>
         </div>
 

@@ -23,7 +23,11 @@ function MentorCard({ m }: { m: any }) {
       <div className="flex-grow flex flex-col">
         {m.photoURL ? (
           <div className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0 bg-slate-100 flex items-center justify-center">
-             <img src={m.photoURL} alt={m.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            <img
+              src={m.photoURL}
+              alt={m.name}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
           </div>
         ) : (
           <div
@@ -69,7 +73,7 @@ export function MentorsMarquee() {
     if (!db) return;
     const q = query(collection(db, "public_mentors"), orderBy("timestamp", "asc"));
     const unsubscribe = onSnapshot(q, (snap) => {
-      const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const list = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setMentors(list);
     });
     return () => unsubscribe();
@@ -82,10 +86,7 @@ export function MentorsMarquee() {
           <div>
             <span className="eyebrow text-ink">Premium Mentors</span>
             <h2 className="mt-3 max-w-2xl font-display text-5xl font-bold leading-[1.15] md:leading-tight tracking-wide text-ink sm:text-6xl">
-              Learn from people <br /> who{" "}
-              <span className="text-indigo-600">
-                hire people.
-              </span>
+              Learn from people <br /> who <span className="text-indigo-600">hire people.</span>
             </h2>
           </div>
           <p className="max-w-2xl text-lg text-slate-700 leading-relaxed">

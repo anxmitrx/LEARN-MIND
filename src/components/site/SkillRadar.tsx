@@ -6,6 +6,8 @@ export function SkillRadar({ data, size = 320 }: { data: Datum[]; size?: number 
   const r = size / 2 - 44;
   const n = data.length;
 
+  if (n === 0) return null;
+
   const point = (i: number, v: number) => {
     const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
     const rr = (r * v) / 100;

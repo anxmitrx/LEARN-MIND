@@ -45,15 +45,19 @@ export function GlobalLoginModal() {
             (window as any).recaptchaVerifier.clear();
             (window as any).recaptchaVerifier = null;
           }
-          (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, "login-recaptcha-container", {
-            size: "invisible",
-            callback: (response: any) => {
-              console.log("reCAPTCHA solved:", response);
+          (window as any).recaptchaVerifier = new RecaptchaVerifier(
+            auth,
+            "login-recaptcha-container",
+            {
+              size: "invisible",
+              callback: (response: any) => {
+                console.log("reCAPTCHA solved:", response);
+              },
+              "expired-callback": () => {
+                setPhoneError("reCAPTCHA expired. Please try again.");
+              },
             },
-            "expired-callback": () => {
-              setPhoneError("reCAPTCHA expired. Please try again.");
-            }
-          });
+          );
         } catch (e) {
           console.error("Recaptcha init error:", e);
         }
@@ -139,7 +143,7 @@ export function GlobalLoginModal() {
       const confResult = await signInWithPhoneNumber(
         auth,
         formattedPhone,
-        (window as any).recaptchaVerifier
+        (window as any).recaptchaVerifier,
       );
       setConfirmationResult(confResult);
       setPhoneStep("otp");

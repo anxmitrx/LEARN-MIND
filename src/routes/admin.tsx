@@ -65,7 +65,15 @@ function AdminComponent() {
   const [publicMentors, setPublicMentors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
-    "waitlist" | "quiz" | "consult" | "workshops" | "webinars" | "students" | "mentors" | "pending_events" | "public_mentors"
+    | "waitlist"
+    | "quiz"
+    | "consult"
+    | "workshops"
+    | "webinars"
+    | "students"
+    | "mentors"
+    | "pending_events"
+    | "public_mentors"
   >("waitlist");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -139,7 +147,11 @@ function AdminComponent() {
     setLoading(true);
     try {
       for (const m of localMentors) {
-        await addDoc(collection(db, "public_mentors"), { ...m, photoURL: "", timestamp: new Date() });
+        await addDoc(collection(db, "public_mentors"), {
+          ...m,
+          photoURL: "",
+          timestamp: new Date(),
+        });
       }
       alert("Seeded successfully!");
     } catch (e) {
@@ -259,7 +271,7 @@ function AdminComponent() {
       },
     );
 
-  // ... previous effects ...
+    // ... previous effects ...
 
     const eventsQuery = query(collection(db, "mentor_events"), orderBy("createdAt", "desc"));
     const unsubscribeEvents = onSnapshot(
@@ -382,7 +394,10 @@ function AdminComponent() {
   };
 
   // Filter lists based on search query
-  const matchesSearch = (val: any) => String(val || "").toLowerCase().includes(searchQuery.toLowerCase());
+  const matchesSearch = (val: any) =>
+    String(val || "")
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
 
   const filteredReservations = reservations.filter(
     (r) =>
@@ -434,7 +449,7 @@ function AdminComponent() {
   );
 
   const filteredPublicMentors = publicMentors.filter(
-    (m) => matchesSearch(m.name) || matchesSearch(m.title)
+    (m) => matchesSearch(m.name) || matchesSearch(m.title),
   );
 
   return (
@@ -1228,20 +1243,37 @@ function AdminComponent() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-indigo-100/50 bg-indigo-50/20">
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Name</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Email</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">College</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Stream</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Joined</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Name
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Email
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        College
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Stream
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Joined
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredStudents.map((row) => (
-                      <tr key={row.id} className="border-b border-white/20 hover:bg-white/30 transition-colors">
+                      <tr
+                        key={row.id}
+                        className="border-b border-white/20 hover:bg-white/30 transition-colors"
+                      >
                         <td className="p-4 text-xs font-bold text-slate-900">
                           <div className="flex items-center gap-3">
                             {row.photoURL ? (
-                              <img src={row.photoURL} alt={row.name} className="h-8 w-8 rounded-full border border-slate-200" />
+                              <img
+                                src={row.photoURL}
+                                alt={row.name}
+                                className="h-8 w-8 rounded-full border border-slate-200"
+                              />
                             ) : (
                               <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center border border-indigo-200">
                                 {row.name?.charAt(0) || "U"}
@@ -1250,10 +1282,20 @@ function AdminComponent() {
                             {row.name || "N/A"}
                           </div>
                         </td>
-                        <td className="p-4 text-xs font-semibold text-slate-700">{row.email || "N/A"}</td>
-                        <td className="p-4 text-xs font-semibold text-slate-700">{row.college || "N/A"}</td>
-                        <td className="p-4 text-xs"><span className="px-2.5 py-1 bg-indigo-50 border border-indigo-100/50 text-indigo-700 font-bold rounded-lg text-[10px]">{row.stream || "N/A"}</span></td>
-                        <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.createdAt)}</td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">
+                          {row.email || "N/A"}
+                        </td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">
+                          {row.college || "N/A"}
+                        </td>
+                        <td className="p-4 text-xs">
+                          <span className="px-2.5 py-1 bg-indigo-50 border border-indigo-100/50 text-indigo-700 font-bold rounded-lg text-[10px]">
+                            {row.stream || "N/A"}
+                          </span>
+                        </td>
+                        <td className="p-4 text-xs font-bold text-slate-600">
+                          {formatDate(row.createdAt)}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -1271,21 +1313,40 @@ function AdminComponent() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-indigo-100/50 bg-indigo-50/20">
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Name</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Email</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Profession</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Expertise</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Joined</th>
-                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Name
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Email
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Profession
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Expertise
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Joined
+                      </th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredMentors.map((row) => (
-                      <tr key={row.id} className="border-b border-white/20 hover:bg-white/30 transition-colors">
+                      <tr
+                        key={row.id}
+                        className="border-b border-white/20 hover:bg-white/30 transition-colors"
+                      >
                         <td className="p-4 text-xs font-bold text-slate-900">
                           <div className="flex items-center gap-3">
                             {row.photoURL ? (
-                              <img src={row.photoURL} alt={row.name} className="h-8 w-8 rounded-full border border-slate-200" />
+                              <img
+                                src={row.photoURL}
+                                alt={row.name}
+                                className="h-8 w-8 rounded-full border border-slate-200"
+                              />
                             ) : (
                               <div className="h-8 w-8 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center border border-purple-200">
                                 {row.name?.charAt(0) || "M"}
@@ -1294,24 +1355,45 @@ function AdminComponent() {
                             {row.name || "N/A"}
                           </div>
                         </td>
-                        <td className="p-4 text-xs font-semibold text-slate-700">{row.email || "N/A"}</td>
-                        <td className="p-4 text-xs font-semibold text-slate-700">{row.profession || "N/A"}</td>
-                        <td className="p-4 text-xs"><span className="px-2.5 py-1 bg-purple-50 border border-purple-100/50 text-purple-700 font-bold rounded-lg text-[10px]">{row.specification || "N/A"}</span></td>
-                        <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.createdAt)}</td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">
+                          {row.email || "N/A"}
+                        </td>
+                        <td className="p-4 text-xs font-semibold text-slate-700">
+                          {row.profession || "N/A"}
+                        </td>
+                        <td className="p-4 text-xs">
+                          <span className="px-2.5 py-1 bg-purple-50 border border-purple-100/50 text-purple-700 font-bold rounded-lg text-[10px]">
+                            {row.specification || "N/A"}
+                          </span>
+                        </td>
+                        <td className="p-4 text-xs font-bold text-slate-600">
+                          {formatDate(row.createdAt)}
+                        </td>
                         <td className="p-4 text-right whitespace-nowrap">
                           <button
                             onClick={async () => {
-                              if (window.confirm(`Add ${row.name || "this mentor"} to public mentors?`)) {
+                              if (
+                                window.confirm(
+                                  `Add ${row.name || "this mentor"} to public mentors?`,
+                                )
+                              ) {
                                 try {
                                   await addDoc(collection(db, "public_mentors"), {
                                     name: row.name || "",
                                     title: row.profession || "Mentor",
                                     photoURL: row.photoURL || "",
-                                    initials: row.name ? row.name.split(" ").map((n: string) => n[0]).join("").substring(0,2).toUpperCase() : "M",
+                                    initials: row.name
+                                      ? row.name
+                                          .split(" ")
+                                          .map((n: string) => n[0])
+                                          .join("")
+                                          .substring(0, 2)
+                                          .toUpperCase()
+                                      : "M",
                                     hue: Math.floor(Math.random() * 360),
                                     bio: row.specification || "",
                                     topics: row.specification ? [row.specification] : [],
-                                    timestamp: new Date()
+                                    timestamp: new Date(),
                                   });
                                   alert("Successfully added to public mentors!");
                                 } catch (err) {
@@ -1342,35 +1424,57 @@ function AdminComponent() {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-amber-100/50 bg-amber-50/20">
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Host</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Type / Title</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Date/Time</th>
-                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">Submitted</th>
-                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">Actions</th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Host
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Type / Title
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Date/Time
+                      </th>
+                      <th className="p-4 text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Submitted
+                      </th>
+                      <th className="p-4 text-right text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredPendingEvents.map((row) => (
-                      <tr key={row.id} className="border-b border-white/20 hover:bg-white/30 transition-colors">
+                      <tr
+                        key={row.id}
+                        className="border-b border-white/20 hover:bg-white/30 transition-colors"
+                      >
                         <td className="p-4 text-xs font-bold text-slate-900">
                           {row.hostName || "N/A"} <br />
-                          <span className="text-[10px] text-slate-500 font-medium">{row.hostEmail}</span>
+                          <span className="text-[10px] text-slate-500 font-medium">
+                            {row.hostEmail}
+                          </span>
                         </td>
                         <td className="p-4 text-xs font-semibold text-slate-700">
-                          <span className="uppercase text-[10px] tracking-wider text-indigo-600 font-bold">{row.type}</span><br />
+                          <span className="uppercase text-[10px] tracking-wider text-indigo-600 font-bold">
+                            {row.type}
+                          </span>
+                          <br />
                           {row.title || "N/A"}
                         </td>
                         <td className="p-4 text-xs font-semibold text-slate-700">
                           {row.date} {row.time}
                         </td>
-                        <td className="p-4 text-xs font-bold text-slate-600">{formatDate(row.createdAt)}</td>
+                        <td className="p-4 text-xs font-bold text-slate-600">
+                          {formatDate(row.createdAt)}
+                        </td>
                         <td className="p-4 text-right whitespace-nowrap">
                           <button
                             onClick={async () => {
                               if (window.confirm("Approve this event and make it public?")) {
                                 try {
-                                  await updateDoc(doc(db, "mentor_events", row.id), { approved: true });
-                                  
+                                  await updateDoc(doc(db, "mentor_events", row.id), {
+                                    approved: true,
+                                  });
+
                                   if (row.type === "webinar") {
                                     await addDoc(collection(db, "webinars"), {
                                       title: row.title || "Untitled Webinar",
@@ -1379,12 +1483,50 @@ function AdminComponent() {
                                       time: row.time || "",
                                       status: "upcoming",
                                       link: "https://your-graphy-link.com/webinar",
-                                      timestamp: new Date()
+                                      timestamp: new Date(),
                                     });
                                   } else if (row.type === "workshop") {
+                                    // Parse topics
+                                    const parsedTopics = (row.topics || "")
+                                      .split(",")
+                                      .map((t: string) => t.trim())
+                                      .filter(Boolean)
+                                      .map((t: string) => ({ title: t, icon: "Target" })); // Default icon
+
+                                    // Parse outcomes
+                                    const parsedOutcomes = (row.outcomes || "")
+                                      .split(",")
+                                      .map((o: string) => o.trim())
+                                      .filter(Boolean);
+
+                                    // Parse agenda (Time - Title - Detail)
+                                    const parsedAgenda = (row.agenda || "")
+                                      .split("\n")
+                                      .map((line: string) => line.trim())
+                                      .filter(Boolean)
+                                      .map((line: string) => {
+                                        const parts = line.split("-").map((p) => p.trim());
+                                        return {
+                                          time: parts[0] || "00:00",
+                                          title: parts[1] || "Session",
+                                          detail: parts[2] || "",
+                                        };
+                                      });
+
+                                    // Parse Radar
+                                    const parsedRadar = [
+                                      { label: "Technical", value: row.radarTechnical || 0 },
+                                      { label: "Soft Skills", value: row.radarSoftSkills || 0 },
+                                      { label: "Strategy", value: row.radarStrategy || 0 },
+                                      { label: "Hands-on", value: row.radarHandsOn || 0 },
+                                      { label: "Theory", value: row.radarTheory || 0 },
+                                    ];
+
                                     await addDoc(collection(db, "workshops"), {
                                       title: row.title || "Untitled Workshop",
-                                      slug: row.title ? row.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') : "untitled",
+                                      slug: row.title
+                                        ? row.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+                                        : "untitled",
                                       number: "NEW",
                                       short: "Mentor Track",
                                       tagline: row.description || "",
@@ -1393,11 +1535,22 @@ function AdminComponent() {
                                       whoItsFor: [],
                                       youWillLearn: [],
                                       exampleSessions: [],
-                                      outcomes: [],
-                                      topics: [],
-                                      radar: [],
-                                      agenda: [],
-                                      timestamp: new Date()
+                                      
+                                      // Mentor additions
+                                      date: row.date || "",
+                                      time: row.time || "",
+                                      hostUid: row.hostUid || "",
+                                      hostName: row.hostName || "Mentor",
+                                      hostPhotoURL: row.hostPhotoURL || "",
+                                      hostProfession: row.hostProfession || "",
+                                      bannerUrl: row.bannerUrl || "",
+                                      
+                                      // Parsed lists
+                                      outcomes: parsedOutcomes,
+                                      topics: parsedTopics,
+                                      radar: parsedRadar,
+                                      agenda: parsedAgenda,
+                                      timestamp: new Date(),
                                     });
                                   }
                                 } catch (err) {

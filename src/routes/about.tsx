@@ -29,10 +29,7 @@ function AboutPage() {
           <span className="eyebrow text-ink">Our Mission</span>
           <h1 className="font-display text-5xl font-bold leading-[1.2] md:leading-[1.2] tracking-wide text-ink sm:text-6xl">
             A guided journey{" "}
-            <span className="text-indigo-600 box-decoration-slice">
-              from campus
-            </span>{" "}
-            to corporate.
+            <span className="text-indigo-600 box-decoration-slice">from campus</span> to corporate.
           </h1>
           <p className="text-lg leading-relaxed text-slate-700 font-semibold">
             At Learn & Shine, we believe the transition from campus to corporate shouldn't be a leap
