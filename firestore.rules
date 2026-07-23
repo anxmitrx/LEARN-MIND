@@ -27,8 +27,17 @@ service cloud.firestore {
                     && (request.resource.data.source == 'website' || request.resource.data.source == 'CLI_SMOKE_TEST')
                     && request.resource.data.timestamp is timestamp;
 
-      // Only admin can read, update, or delete reservations
-      allow read, update, delete: if isAdmin();
+      // Allow anyone to read (needed to display attended events on public profiles)
+      // Note: In production, consider Cloud Functions or Data Connect for secure aggregation.
+      allow read: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Rules for 'webinar_registrations' collection
+    match /webinar_registrations/{registrationId} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if isAdmin();
     }
 
     // Rules for 'consultations' collection

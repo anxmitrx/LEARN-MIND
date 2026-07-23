@@ -9,6 +9,8 @@ import { useAuth } from "@/lib/AuthContext";
 import { FollowListModal } from "@/components/site/FollowListModal";
 import { useState } from "react";
 import { EventPostCard } from "@/components/site/EventPostCard";
+import { tracks as localTracks } from "@/lib/tracks";
+import { webinars as localWebinars } from "@/lib/webinars";
 
 export const Route = createFileRoute("/profile/$userId")({
   component: ProfilePage,
@@ -27,55 +29,90 @@ export const Route = createFileRoute("/profile/$userId")({
 
       // Fetch recent activity (Hosted workshops/webinars if mentor, Attended if student)
       let activity: any[] = [];
-      if (profileData.role === "mentor") {
-        const eventsRef = collection(db, "workshops");
-        const q = query(eventsRef, where("hostUid", "==", params.userId));
-        const eventsSnap = await getDocs(q);
+      try {
+        if (profileData.role === "mentor") {
+          const eventsRef = collection(db, "workshops");
+          const q = query(eventsRef, where("hostUid", "==", params.userId));
+          const eventsSnap = await getDocs(q);
 
-        const webinarsRef = collection(db, "webinars");
-        const wq = query(webinarsRef, where("hostUid", "==", params.userId));
-        const webinarsSnap = await getDocs(wq);
+          const webinarsRef = collection(db, "webinars");
+          const wq = query(webinarsRef, where("hostUid", "==", params.userId));
+          const webinarsSnap = await getDocs(wq);
 
-        const wData = eventsSnap.docs.map((d) => ({
-          id: d.id,
-          ...d.data(),
-          activityType: "hosted_workshop",
-        }));
-        const webData = webinarsSnap.docs.map((d) => ({
-          id: d.id,
-          title: d.data().title || "Webinar",
-          slug: d.id,
-          ...d.data(),
-          activityType: "hosted_webinar",
-        }));
-        activity = [...wData, ...webData];
-      } else {
-        if (profileData.email) {
-          const resRef = collection(db, "reservations");
-          const rq = query(resRef, where("email", "==", profileData.email));
-          const resSnap = await getDocs(rq);
-
-          const webRegRef = collection(db, "webinar_registrations");
-          const webq = query(webRegRef, where("email", "==", profileData.email));
-          const webSnap = await getDocs(webq);
-
-          const attendedW = resSnap.docs.map((d) => ({
+          const wData = eventsSnap.docs.map((d) => ({
             id: d.id,
-            title: d.data().track || "Workshop",
-            slug: d.data().track,
-            activityType: "attended_workshop",
-            timestamp: d.data().timestamp,
+            ...d.data(),
+            activityType: "hosted_workshop",
           }));
-          const attendedWeb = webSnap.docs.map((d) => ({
+          const webData = webinarsSnap.docs.map((d) => ({
             id: d.id,
-            title: d.data().webinarTitle || "Webinar",
-            slug: d.data().webinarId,
-            activityType: "attended_webinar",
-            timestamp: d.data().timestamp,
+            title: d.data().title || "Webinar",
+            slug: d.id,
+            ...d.data(),
+            activityType: "hosted_webinar",
           }));
+          activity = [...wData, ...webData];
+        } else {
+          if (profileData.email) {
+            const resRef = collection(db, "reservations");
+            const rq = query(resRef, where("email", "==", profileData.email));
+            
+            const webRegRef = collection(db, "webinar_registrations");
+            const webq = query(webRegRef, where("email", "==", profileData.email));
+            
+            const [resSnap, webSnap, allWSnap, allWebSnap] = await Promise.all([
+              getDocs(rq),
+              getDocs(webq),
+              getDocs(collection(db, "workshops")),
+              getDocs(collection(db, "webinars")),
+            ]);
 
-          activity = [...attendedW, ...attendedWeb];
+            const wMap = new Map();
+            // Seed local tracks first, firestore can overwrite them if they have same ID
+            localTracks.forEach((t) => wMap.set(t.slug, t));
+            allWSnap.forEach((d) => wMap.set(d.data().slug || d.id, d.data()));
+
+            const webMap = new Map();
+            localWebinars.forEach((w) => webMap.set(w.id || w.title, w));
+            allWebSnap.forEach((d) => webMap.set(d.id, d.data()));
+
+            const attendedW = resSnap.docs.map((d) => {
+              const trackSlug = d.data().track;
+              const wData = wMap.get(trackSlug);
+              return {
+                id: d.id,
+                title: wData?.title || trackSlug || "Workshop",
+                slug: trackSlug,
+                activityType: "attended_workshop",
+                timestamp: d.data().timestamp,
+                hostUid: wData?.hostUid,
+                hostName: wData?.hostName,
+                hostPhotoURL: wData?.hostPhotoURL,
+                description: wData?.description || wData?.oneLinerPromise,
+              };
+            });
+
+            const attendedWeb = webSnap.docs.map((d) => {
+              const webId = d.data().webinarId;
+              const webData = webMap.get(webId);
+              return {
+                id: d.id,
+                title: webData?.title || d.data().webinarTitle || "Webinar",
+                slug: webId,
+                activityType: "attended_webinar",
+                timestamp: d.data().timestamp,
+                hostUid: webData?.hostUid,
+                hostName: webData?.hostName || webData?.presenter,
+                hostPhotoURL: webData?.hostPhotoURL,
+                description: webData?.description,
+              };
+            });
+
+            activity = [...attendedW, ...attendedWeb];
+          }
         }
+      } catch (err) {
+        console.error("Error fetching activity for profile:", err);
       }
 
       return {
@@ -84,6 +121,7 @@ export const Route = createFileRoute("/profile/$userId")({
         activity,
       };
     } catch (e) {
+      console.error("Profile Load Error:", e);
       throw notFound();
     }
   },
@@ -240,9 +278,9 @@ function ProfilePage() {
                 <EventPostCard
                   key={act.id || idx}
                   host={{
-                    uid: userId,
-                    name: profile.name,
-                    photoURL: profile.photoURL,
+                    uid: act.hostUid || (isHosted ? userId : "unknown"),
+                    name: act.hostName || (isHosted ? profile.name : "L&S Mentor"),
+                    photoURL: act.hostPhotoURL || (isHosted ? profile.photoURL : "https://api.dicebear.com/7.x/shapes/svg?seed=mentor"),
                   }}
                   date={act.date || "Past Event"}
                   time={act.time || ""}

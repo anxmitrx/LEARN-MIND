@@ -11,6 +11,7 @@ import { TopBanner } from "@/components/site/TopBanner";
 import { HiringPartners } from "@/components/site/HiringPartners";
 import { GeometricFeatures } from "@/components/site/GeometricFeatures";
 import { InteractiveBentoGrid } from "@/components/site/InteractiveBentoGrid";
+import { SuggestedFollowMarquee } from "@/components/site/SuggestedFollowMarquee";
 import { FloatingTestimonials } from "@/components/site/FloatingTestimonials";
 
 export const Route = createFileRoute("/")({
@@ -54,6 +55,7 @@ function Index() {
       <TracksGrid />
       <HiringPartners />
       <InteractiveBentoGrid />
+      <SuggestedFollowMarquee />
       <FloatingTestimonials />
       <FAQ />
       <CtaFooter />
