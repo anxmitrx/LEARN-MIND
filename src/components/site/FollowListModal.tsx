@@ -47,20 +47,33 @@ function FollowListItem({ uid, onClose }: { uid: string; onClose: () => void }) 
 
   return (
     <div className="flex items-center justify-between gap-3 p-3 hover:bg-slate-50 rounded-xl transition-all">
-      <Link to="/u/$uid" params={{ uid }} onClick={onClose} className="flex items-center gap-3 flex-1 min-w-0">
+      <Link
+        to="/u/$uid"
+        params={{ uid }}
+        onClick={onClose}
+        className="flex items-center gap-3 flex-1 min-w-0"
+      >
         <div className="shrink-0 w-10 h-10 rounded-full overflow-hidden bg-indigo-100 flex items-center justify-center">
           {userProfile.photoURL ? (
-            <img src={userProfile.photoURL} alt={userProfile.name} className="w-full h-full object-cover" />
+            <img
+              src={userProfile.photoURL}
+              alt={userProfile.name}
+              className="w-full h-full object-cover"
+            />
           ) : (
-            <span className="font-bold text-indigo-500 uppercase">{(userProfile.name || "U")[0]}</span>
+            <span className="font-bold text-indigo-500 uppercase">
+              {(userProfile.name || "U")[0]}
+            </span>
           )}
         </div>
         <div className="flex-1 min-w-0">
           <h4 className="text-sm font-bold text-slate-900 truncate">{userProfile.name}</h4>
-          <p className="text-xs text-slate-500 truncate">{userProfile.profession || (userProfile.role === "mentor" ? "Mentor" : "Student")}</p>
+          <p className="text-xs text-slate-500 truncate">
+            {userProfile.profession || (userProfile.role === "mentor" ? "Mentor" : "Student")}
+          </p>
         </div>
       </Link>
-      
+
       {user && user.uid !== uid && (
         <button
           onClick={toggleFollow}
@@ -68,25 +81,30 @@ function FollowListItem({ uid, onClose }: { uid: string; onClose: () => void }) 
           className="shrink-0 p-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all shadow-sm"
           title="Follow"
         >
-          {followLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : isFollowing ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+          {followLoading ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : isFollowing ? (
+            <Check className="w-4 h-4" />
+          ) : (
+            <Plus className="w-4 h-4" />
+          )}
         </button>
       )}
     </div>
   );
 }
 
-export function FollowListModal({ 
-  isOpen, 
-  onClose, 
-  title, 
-  uidList 
-}: { 
-  isOpen: boolean; 
-  onClose: () => void; 
-  title: string; 
+export function FollowListModal({
+  isOpen,
+  onClose,
+  title,
+  uidList,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
   uidList: string[];
 }) {
-  
   if (!isOpen) return null;
 
   return (

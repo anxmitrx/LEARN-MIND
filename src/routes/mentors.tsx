@@ -77,12 +77,7 @@ function MentorsPage() {
             className="grid gap-8 sm:grid-cols-2 max-w-4xl mx-auto"
           >
             {mentors.map((m) => (
-              <Link
-                key={m.name}
-                to="/u/$uid"
-                params={{ uid: m.id }}
-                className="block"
-              >
+              <Link key={m.name} to="/u/$uid" params={{ uid: m.id }} className="block">
                 <motion.div
                   variants={cardVariants}
                   className="bento-card group bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform h-full flex flex-col"
@@ -91,47 +86,47 @@ function MentorsPage() {
                     {m.photoURL ? (
                       <div className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0 bg-slate-100 flex items-center justify-center">
                         <img
-                        src={m.photoURL}
-                        alt={m.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  ) : (
-                    <div
-                      className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0"
-                      style={{
-                        background: `linear-gradient(135deg, hsl(${m.hue || 45}, 70%, 88%), hsl(${m.hue || 45}, 60%, 75%))`,
-                      }}
-                    >
-                      <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
-                        <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-500 group-hover:scale-105">
-                          {m.initials}
-                        </span>
+                          src={m.photoURL}
+                          alt={m.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
                       </div>
-                    </div>
-                  )}
-                  <h3 className="mt-6 font-display text-xl md:text-2xl font-bold text-ink">
-                    {m.name}
-                  </h3>
-                  <p className="text-sm md:text-base font-bold text-indigo-600 mt-1">{m.title}</p>
-                  <p
-                    className="mt-2 text-xs md:text-sm text-slate-700 font-semibold line-clamp-3 leading-relaxed flex-grow"
-                    title={m.bio}
-                  >
-                    {m.bio}
-                  </p>
-                </div>
-                <div className="mt-6 mt-auto flex flex-wrap gap-2">
-                  {m.topics?.map((t: string) => (
-                    <span
-                      key={t}
-                      className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-xs font-bold rounded-full shadow-sm"
+                    ) : (
+                      <div
+                        className="relative h-52 md:h-64 overflow-hidden rounded-2xl border border-white/40 shrink-0"
+                        style={{
+                          background: `linear-gradient(135deg, hsl(${m.hue || 45}, 70%, 88%), hsl(${m.hue || 45}, 60%, 75%))`,
+                        }}
+                      >
+                        <div className="absolute inset-0 grid place-items-center grayscale transition-all duration-500 group-hover:grayscale-0">
+                          <span className="font-display text-7xl md:text-8xl font-bold text-indigo-600/40 transition-transform duration-500 group-hover:scale-105">
+                            {m.initials}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    <h3 className="mt-6 font-display text-xl md:text-2xl font-bold text-ink">
+                      {m.name}
+                    </h3>
+                    <p className="text-sm md:text-base font-bold text-indigo-600 mt-1">{m.title}</p>
+                    <p
+                      className="mt-2 text-xs md:text-sm text-slate-700 font-semibold line-clamp-3 leading-relaxed flex-grow"
+                      title={m.bio}
                     >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
+                      {m.bio}
+                    </p>
+                  </div>
+                  <div className="mt-6 mt-auto flex flex-wrap gap-2">
+                    {m.topics?.map((t: string) => (
+                      <span
+                        key={t}
+                        className="bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3 py-1 text-xs font-bold rounded-full shadow-sm"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
               </Link>
             ))}
           </motion.div>

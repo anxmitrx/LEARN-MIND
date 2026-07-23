@@ -16,6 +16,7 @@ export type Track = {
   youWillLearn: string[];
   exampleSessions: string[];
   timeCommitment: string;
+  bannerUrl?: string;
 };
 
 export const tracks: Track[] = [

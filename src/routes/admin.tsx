@@ -29,10 +29,12 @@ import {
   X,
   Save,
   Plus,
+  Image,
 } from "lucide-react";
 import { Navbar } from "@/components/site/Navbar";
 import { WorkshopEditor } from "@/components/admin/WorkshopEditor";
 import { WebinarEditor } from "@/components/admin/WebinarEditor";
+import { AdminBannerUploadModal } from "@/components/admin/AdminBannerUploadModal";
 
 import { tracks as localTracks } from "@/lib/tracks";
 import { webinars as localWebinars } from "@/lib/webinars";
@@ -83,6 +85,12 @@ function AdminComponent() {
     data: any;
   } | null>(null);
   const [editFormData, setEditFormData] = useState<any>({});
+  const [uploadBannerEvent, setUploadBannerEvent] = useState<{
+    id: string;
+    collection: "workshops" | "webinars" | "mentor_events";
+    title: string;
+    bannerUrl?: string;
+  } | null>(null);
 
   const handleDelete = async (collectionName: string, id: string) => {
     if (
@@ -1064,6 +1072,26 @@ function AdminComponent() {
                           <button
                             onClick={() => {
                               if (!row.id) {
+                                alert("Please seed initial data before uploading banners.");
+                                return;
+                              }
+                              setUploadBannerEvent({
+                                id: row.id,
+                                collection: "workshops",
+                                title: row.title,
+                                bannerUrl: row.bannerUrl,
+                              });
+                            }}
+                            className={`inline-flex items-center justify-center h-8 w-8 rounded-lg transition-colors mr-1 ${!row.id ? "text-slate-400 cursor-not-allowed" : "text-emerald-600 hover:bg-emerald-50"}`}
+                            title={
+                              !row.id ? "Cannot upload banner for fallback data" : "Upload Banner"
+                            }
+                          >
+                            <Image className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              if (!row.id) {
                                 alert(
                                   "Please click 'Seed Initial Data' before editing to prevent other tracks from disappearing.",
                                 );
@@ -1196,6 +1224,26 @@ function AdminComponent() {
                               Unseeded Fallback Data
                             </span>
                           )}
+                          <button
+                            onClick={() => {
+                              if (!row.id) {
+                                alert("Please seed initial data before uploading banners.");
+                                return;
+                              }
+                              setUploadBannerEvent({
+                                id: row.id,
+                                collection: "webinars",
+                                title: row.title,
+                                bannerUrl: row.bannerUrl,
+                              });
+                            }}
+                            className={`inline-flex items-center justify-center h-8 w-8 rounded-lg transition-colors mr-1 ${!row.id ? "text-slate-400 cursor-not-allowed" : "text-emerald-600 hover:bg-emerald-50"}`}
+                            title={
+                              !row.id ? "Cannot upload banner for fallback data" : "Upload Banner"
+                            }
+                          >
+                            <Image className="h-4 w-4" />
+                          </button>
                           <button
                             onClick={() => {
                               if (!row.id) {
@@ -1468,6 +1516,20 @@ function AdminComponent() {
                         </td>
                         <td className="p-4 text-right whitespace-nowrap">
                           <button
+                            onClick={() => {
+                              setUploadBannerEvent({
+                                id: row.id,
+                                collection: "mentor_events",
+                                title: row.title,
+                                bannerUrl: row.bannerUrl,
+                              });
+                            }}
+                            className="inline-flex items-center gap-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors mr-2"
+                            title="Upload Banner"
+                          >
+                            <Image className="w-3 h-3" /> Banner
+                          </button>
+                          <button
                             onClick={async () => {
                               if (window.confirm("Approve this event and make it public?")) {
                                 try {
@@ -1483,6 +1545,7 @@ function AdminComponent() {
                                       time: row.time || "",
                                       status: "upcoming",
                                       link: "https://your-graphy-link.com/webinar",
+                                      bannerUrl: row.bannerUrl || "",
                                       timestamp: new Date(),
                                     });
                                   } else if (row.type === "workshop") {
@@ -1535,7 +1598,7 @@ function AdminComponent() {
                                       whoItsFor: [],
                                       youWillLearn: [],
                                       exampleSessions: [],
-                                      
+
                                       // Mentor additions
                                       date: row.date || "",
                                       time: row.time || "",
@@ -1544,7 +1607,7 @@ function AdminComponent() {
                                       hostPhotoURL: row.hostPhotoURL || "",
                                       hostProfession: row.hostProfession || "",
                                       bannerUrl: row.bannerUrl || "",
-                                      
+
                                       // Parsed lists
                                       outcomes: parsedOutcomes,
                                       topics: parsedTopics,
@@ -1559,7 +1622,7 @@ function AdminComponent() {
                                 }
                               }
                             }}
-                            className="inline-flex items-center gap-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors mr-2"
+                            className="inline-flex items-center gap-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors mr-2"
                           >
                             <CheckCircle2 className="w-3 h-3" /> Approve
                           </button>
@@ -1695,6 +1758,13 @@ function AdminComponent() {
           )}
         </div>
       )}
+
+      {/* Banner Upload Modal */}
+      <AdminBannerUploadModal
+        isOpen={!!uploadBannerEvent}
+        onClose={() => setUploadBannerEvent(null)}
+        event={uploadBannerEvent}
+      />
     </main>
   );
 }

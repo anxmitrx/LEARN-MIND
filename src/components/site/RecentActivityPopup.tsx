@@ -18,7 +18,14 @@ interface Activity {
 }
 
 const generateRandomTimeAgo = () => {
-  const times = ["Just now", "5 mins ago", "12 mins ago", "1 hour ago", "2 hours ago", "4 hours ago"];
+  const times = [
+    "Just now",
+    "5 mins ago",
+    "12 mins ago",
+    "1 hour ago",
+    "2 hours ago",
+    "4 hours ago",
+  ];
   return times[Math.floor(Math.random() * times.length)];
 };
 
@@ -26,17 +33,17 @@ const formatTimeAgo = (timestamp?: any, fallbackDate?: string) => {
   try {
     let dateObj: Date | null = null;
     if (timestamp) {
-      if (typeof timestamp.toDate === 'function') {
+      if (typeof timestamp.toDate === "function") {
         dateObj = timestamp.toDate();
       } else if (timestamp instanceof Date) {
         dateObj = timestamp;
-      } else if (typeof timestamp === 'string' || typeof timestamp === 'number') {
+      } else if (typeof timestamp === "string" || typeof timestamp === "number") {
         dateObj = new Date(timestamp);
       }
     } else if (fallbackDate) {
       dateObj = new Date(fallbackDate);
     }
-    
+
     if (dateObj && !isNaN(dateObj.getTime())) {
       // If the date is in the future, just say "Coming soon" or fallback to a standard relative format.
       // formatDistanceToNow will say "in 2 months" for future dates.
@@ -52,7 +59,7 @@ export function RecentActivityPopup() {
   const navigate = useNavigate();
   const { webinars } = useWebinars();
   const { workshops } = useWorkshops();
-  
+
   const [activities, setActivities] = useState<Activity[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -95,13 +102,12 @@ export function RecentActivityPopup() {
 
     const interval = setInterval(() => {
       setIsVisible(false);
-      
+
       // Wait for exit animation, then change index and show again
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % activities.length);
         if (!isDismissed) setIsVisible(true);
       }, 1000); // 1s pause between popups
-      
     }, 8000); // Show each popup for ~7 seconds
 
     return () => {
@@ -123,7 +129,7 @@ export function RecentActivityPopup() {
   const handleCardClick = () => {
     if (!currentActivity) return;
     if (currentActivity.isExternal) {
-      window.open(currentActivity.url, '_blank', 'noopener,noreferrer');
+      window.open(currentActivity.url, "_blank", "noopener,noreferrer");
     } else {
       navigate({ to: currentActivity.url });
     }
@@ -143,9 +149,9 @@ export function RecentActivityPopup() {
           >
             {/* Subtle animated background glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
+
             {/* Close button */}
-            <button 
+            <button
               onClick={handleDismiss}
               className="absolute top-2 right-2 text-slate-400 hover:text-slate-600 transition-colors bg-slate-50 hover:bg-slate-100 rounded-full p-1 opacity-0 group-hover:opacity-100 focus:opacity-100"
               aria-label="Close notification"
@@ -154,8 +160,14 @@ export function RecentActivityPopup() {
             </button>
 
             {/* Icon */}
-            <div className={`mt-0.5 shrink-0 flex items-center justify-center w-10 h-10 rounded-full border ${currentActivity.type === 'webinar' ? 'bg-indigo-50 border-indigo-100 text-indigo-600' : 'bg-purple-50 border-purple-100 text-purple-600'}`}>
-              {currentActivity.type === 'webinar' ? <Presentation className="w-5 h-5" /> : <BookOpen className="w-5 h-5" />}
+            <div
+              className={`mt-0.5 shrink-0 flex items-center justify-center w-10 h-10 rounded-full border ${currentActivity.type === "webinar" ? "bg-indigo-50 border-indigo-100 text-indigo-600" : "bg-purple-50 border-purple-100 text-purple-600"}`}
+            >
+              {currentActivity.type === "webinar" ? (
+                <Presentation className="w-5 h-5" />
+              ) : (
+                <BookOpen className="w-5 h-5" />
+              )}
             </div>
 
             {/* Content */}
@@ -166,9 +178,7 @@ export function RecentActivityPopup() {
               <p className="text-sm font-semibold text-slate-900 leading-tight line-clamp-2">
                 {currentActivity.title}
               </p>
-              <p className="text-xs font-medium text-slate-400 mt-1">
-                {currentActivity.timeAgo}
-              </p>
+              <p className="text-xs font-medium text-slate-400 mt-1">{currentActivity.timeAgo}</p>
             </div>
           </motion.div>
         )}

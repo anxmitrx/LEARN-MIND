@@ -58,7 +58,11 @@ function TrackPage() {
             <div>
               {(track as any).bannerUrl && (
                 <div className="mb-6 rounded-2xl overflow-hidden shadow-lg border border-slate-200/50">
-                  <img src={(track as any).bannerUrl} alt="Workshop Banner" className="w-full h-48 object-cover" />
+                  <img
+                    src={(track as any).bannerUrl}
+                    alt="Workshop Banner"
+                    className="w-full h-48 object-cover"
+                  />
                 </div>
               )}
               <span className="inline-block bg-white/60 backdrop-blur-md text-indigo-600 border border-white/50 px-3.5 py-1 text-xs font-display font-extrabold uppercase tracking-wider rounded-full shadow-sm">
@@ -75,10 +79,10 @@ function TrackPage() {
                 </motion.h1>
                 {(track as any).hostPhotoURL && (
                   <div className="flex flex-col items-center shrink-0">
-                    <img 
-                      src={(track as any).hostPhotoURL} 
-                      alt={(track as any).hostName} 
-                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-white shadow-[0_8px_16px_rgba(0,0,0,0.1)] object-cover bg-white" 
+                    <img
+                      src={(track as any).hostPhotoURL}
+                      alt={(track as any).hostName}
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-white shadow-[0_8px_16px_rgba(0,0,0,0.1)] object-cover bg-white"
                     />
                     <span className="mt-2 text-[10px] sm:text-xs font-extrabold text-slate-700 uppercase tracking-wider text-center max-w-[90px] leading-tight">
                       {(track as any).hostName}
@@ -91,7 +95,7 @@ function TrackPage() {
                   </div>
                 )}
               </div>
-              
+
               {(track as any).date && (
                 <div className="mt-6 flex items-center gap-2 text-sm font-bold text-indigo-700 bg-indigo-50 inline-flex px-4 py-2 rounded-xl border border-indigo-100">
                   <Calendar className="w-4 h-4" /> {(track as any).date} at {(track as any).time}

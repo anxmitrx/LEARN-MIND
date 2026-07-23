@@ -15,19 +15,19 @@ export function useFollow(targetUid: string) {
   // Listen to target user's document to get real-time follower count and status
   useEffect(() => {
     if (!targetUid || !db) return;
-    
+
     const targetRef = doc(db, "users", targetUid);
     const unsubscribe = onSnapshot(targetRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         const followers = data.followers || [];
         const following = data.following || [];
-        
+
         setFollowersCount(followers.length);
         setFollowingCount(following.length);
         setFollowersList(followers);
         setFollowingList(following);
-        
+
         if (user) {
           setIsFollowing(followers.includes(user.uid));
         }
@@ -61,18 +61,18 @@ export function useFollow(targetUid: string) {
         if (isCurrentlyFollowing) {
           // Unfollow
           transaction.update(currentUserRef, {
-            following: currentUserFollowing.filter((id: string) => id !== targetUid)
+            following: currentUserFollowing.filter((id: string) => id !== targetUid),
           });
           transaction.update(targetUserRef, {
-            followers: targetUserFollowers.filter((id: string) => id !== user.uid)
+            followers: targetUserFollowers.filter((id: string) => id !== user.uid),
           });
         } else {
           // Follow
           transaction.update(currentUserRef, {
-            following: [...currentUserFollowing, targetUid]
+            following: [...currentUserFollowing, targetUid],
           });
           transaction.update(targetUserRef, {
-            followers: [...targetUserFollowers, user.uid]
+            followers: [...targetUserFollowers, user.uid],
           });
         }
       });
@@ -82,5 +82,13 @@ export function useFollow(targetUid: string) {
     }
   };
 
-  return { isFollowing, followersCount, followingCount, followersList, followingList, loading, toggleFollow };
+  return {
+    isFollowing,
+    followersCount,
+    followingCount,
+    followersList,
+    followingList,
+    loading,
+    toggleFollow,
+  };
 }

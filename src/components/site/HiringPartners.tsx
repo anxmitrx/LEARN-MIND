@@ -20,10 +20,13 @@ export function HiringPartners() {
           </h3>
         </div>
 
-        <div className="relative w-full overflow-hidden marquee-pause">
-          {/* Left and Right Gradient Fades */}
-          <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-10 w-24 bg-gradient-to-r from-[#F8EDEB] to-transparent" />
-          <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 w-24 bg-gradient-to-l from-[#8EC5FC] to-transparent" />
+        <div 
+          className="relative w-full overflow-hidden marquee-pause"
+          style={{
+            maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+          }}
+        >
 
           <div className="flex w-max animate-marquee-reverse gap-8 py-4">
             {[...techCompanies, ...techCompanies, ...techCompanies].map((company, index) => (

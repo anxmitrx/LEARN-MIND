@@ -71,7 +71,9 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
       }
     } catch (error: any) {
       console.error("Error saving profile picture:", error);
-      alert(`Failed to save profile picture: ${error?.message || "Unknown error"}. Please try again.`);
+      alert(
+        `Failed to save profile picture: ${error?.message || "Unknown error"}. Please try again.`,
+      );
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {
@@ -90,30 +92,29 @@ export function ProfileAvatarUpload({ className = "", size = "sm" }: ProfileAvat
   return (
     <>
       <div
-      className={`relative group cursor-pointer overflow-hidden bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-sm flex items-center justify-center font-bold transition-all hover:scale-105 active:scale-95 ${containerClasses} ${className}`}
-      onClick={() => fileInputRef.current?.click()}
-    >
-      {isUploading ? (
-        <Loader2 className="w-1/2 h-1/2 animate-spin text-indigo-600" />
-      ) : displayUrl ? (
-        <img
-          src={displayUrl}
-          alt={userData?.name || user.displayName || "User"}
-          className="h-full w-full object-cover"
-        />
-      ) : (
-        <span className={`font-display uppercase ${textClasses}`}>
-          {(userData?.name || user.displayName || "U")[0].toUpperCase()}
-        </span>
-      )}
+        className={`relative group cursor-pointer overflow-hidden bg-indigo-500/20 text-indigo-700 border border-indigo-500/30 rounded-full shadow-sm flex items-center justify-center font-bold transition-all hover:scale-105 active:scale-95 ${containerClasses} ${className}`}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        {isUploading ? (
+          <Loader2 className="w-1/2 h-1/2 animate-spin text-indigo-600" />
+        ) : displayUrl ? (
+          <img
+            src={displayUrl}
+            alt={userData?.name || user.displayName || "User"}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <span className={`font-display uppercase ${textClasses}`}>
+            {(userData?.name || user.displayName || "U")[0].toUpperCase()}
+          </span>
+        )}
 
-      {/* Hover Overlay */}
-      {!isUploading && (
-        <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <Camera className="w-1/3 h-1/3 text-white" />
-        </div>
-      )}
-
+        {/* Hover Overlay */}
+        {!isUploading && (
+          <div className="absolute inset-0 bg-ink/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <Camera className="w-1/3 h-1/3 text-white" />
+          </div>
+        )}
       </div>
 
       {/* Hidden file input */}

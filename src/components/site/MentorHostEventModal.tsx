@@ -54,7 +54,7 @@ export function MentorHostEventModal({ isOpen, onClose }: MentorHostEventModalPr
           "state_changed",
           null,
           (error) => reject(error),
-          () => resolve()
+          () => resolve(),
         );
       });
 
@@ -204,37 +204,56 @@ export function MentorHostEventModal({ isOpen, onClose }: MentorHostEventModalPr
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-bold text-slate-600">Banner Image URL</label>
-                <div className="flex items-center gap-3">
+                <label className="text-xs font-bold text-slate-600">Event Banner</label>
+                <div className="relative">
                   <input
                     type="file"
                     accept="image/*"
                     id="banner-upload"
                     onChange={handleImageChange}
-                    className="hidden"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     disabled={uploadingImage}
                   />
-                  <label
-                    htmlFor="banner-upload"
-                    className="cursor-pointer inline-flex items-center gap-2 border border-slate-200 bg-white hover:bg-slate-50 px-4 py-2.5 text-sm font-semibold text-slate-700 transition-all rounded-xl focus-visible:ring-2 focus-visible:ring-purple-600 w-full"
+                  <div
+                    className={`flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-xl transition-all ${
+                      formData.bannerUrl
+                        ? "border-emerald-300 bg-emerald-50"
+                        : "border-slate-300 bg-slate-50 hover:bg-slate-100"
+                    }`}
                   >
                     {uploadingImage ? (
-                      <Loader2 className="w-4 h-4 animate-spin text-purple-600" />
+                      <div className="flex flex-col items-center text-purple-600">
+                        <Loader2 className="w-6 h-6 animate-spin mb-2" />
+                        <span className="text-sm font-semibold">Uploading...</span>
+                      </div>
+                    ) : formData.bannerUrl ? (
+                      <div className="flex flex-col items-center text-emerald-600">
+                        <img
+                          src={formData.bannerUrl}
+                          alt="Preview"
+                          className="h-20 object-cover rounded-lg mb-2 shadow-sm"
+                        />
+                        <span className="text-xs font-bold">
+                          Image uploaded successfully (Click to replace)
+                        </span>
+                      </div>
                     ) : (
-                      <Upload className="w-4 h-4 text-purple-600" />
+                      <div className="flex flex-col items-center text-slate-500">
+                        <Upload className="w-6 h-6 text-purple-600 mb-2" />
+                        <span className="text-sm font-semibold text-slate-700">
+                          Upload Event Banner
+                        </span>
+                        <span className="text-xs text-slate-400 mt-1">16:9 Recommended</span>
+                      </div>
                     )}
-                    {uploadingImage ? "Uploading..." : "Upload Image"}
-                  </label>
-                </div>
-                {formData.bannerUrl && (
-                  <div className="mt-2 text-xs font-semibold text-emerald-600 flex items-center gap-1">
-                    ✓ Image uploaded successfully
                   </div>
-                )}
+                </div>
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-bold text-slate-600">Topics Covered (comma separated)</label>
+                <label className="text-xs font-bold text-slate-600">
+                  Topics Covered (comma separated)
+                </label>
                 <input
                   type="text"
                   value={formData.topics}
@@ -245,7 +264,9 @@ export function MentorHostEventModal({ isOpen, onClose }: MentorHostEventModalPr
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-bold text-slate-600">Outcomes (comma separated)</label>
+                <label className="text-xs font-bold text-slate-600">
+                  Outcomes (comma separated)
+                </label>
                 <input
                   type="text"
                   value={formData.outcomes}
@@ -256,7 +277,9 @@ export function MentorHostEventModal({ isOpen, onClose }: MentorHostEventModalPr
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-bold text-slate-600">Agenda (One per line: "Time - Title - Detail")</label>
+                <label className="text-xs font-bold text-slate-600">
+                  Agenda (One per line: "Time - Title - Detail")
+                </label>
                 <textarea
                   rows={4}
                   value={formData.agenda}
@@ -267,26 +290,34 @@ export function MentorHostEventModal({ isOpen, onClose }: MentorHostEventModalPr
               </div>
 
               <div className="mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50">
-                <label className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-4 block">Skill Radar Rating (0-100)</label>
+                <label className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-4 block">
+                  Skill Radar Rating (0-100)
+                </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[
-                    { key: 'radarTechnical', label: 'Technical Depth' },
-                    { key: 'radarSoftSkills', label: 'Soft Skills & Comms' },
-                    { key: 'radarStrategy', label: 'Strategic Thinking' },
-                    { key: 'radarHandsOn', label: 'Practical Hands-on' },
-                    { key: 'radarTheory', label: 'Theory & Concepts' },
+                    { key: "radarTechnical", label: "Technical Depth" },
+                    { key: "radarSoftSkills", label: "Soft Skills & Comms" },
+                    { key: "radarStrategy", label: "Strategic Thinking" },
+                    { key: "radarHandsOn", label: "Practical Hands-on" },
+                    { key: "radarTheory", label: "Theory & Concepts" },
                   ].map((field) => (
                     <div key={field.key} className="flex flex-col gap-1">
                       <div className="flex justify-between">
-                        <label className="text-[10px] font-bold text-slate-600">{field.label}</label>
-                        <span className="text-[10px] font-bold text-purple-600">{(formData as any)[field.key]}</span>
+                        <label className="text-[10px] font-bold text-slate-600">
+                          {field.label}
+                        </label>
+                        <span className="text-[10px] font-bold text-purple-600">
+                          {(formData as any)[field.key]}
+                        </span>
                       </div>
                       <input
                         type="range"
                         min="0"
                         max="100"
                         value={(formData as any)[field.key]}
-                        onChange={(e) => setFormData({ ...formData, [field.key]: parseInt(e.target.value) })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, [field.key]: parseInt(e.target.value) })
+                        }
                         className="w-full accent-purple-600"
                       />
                     </div>
