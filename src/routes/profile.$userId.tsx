@@ -8,7 +8,7 @@ import { Loader2, UserPlus, Check, GraduationCap, Briefcase } from "lucide-react
 import { useAuth } from "@/lib/AuthContext";
 import { FollowListModal } from "@/components/site/FollowListModal";
 import { useState } from "react";
-import { EventPostCard } from "@/components/site/EventPostCard";
+import { LazyEventPostCard } from "@/components/site/LazyEventPostCard";
 import { tracks as localTracks } from "@/lib/tracks";
 import { webinars as localWebinars } from "@/lib/webinars";
 
@@ -89,6 +89,7 @@ export const Route = createFileRoute("/profile/$userId")({
                 hostName: wData?.hostName,
                 hostPhotoURL: wData?.hostPhotoURL,
                 description: wData?.description || wData?.oneLinerPromise,
+                bannerUrl: wData?.bannerUrl,
               };
             });
 
@@ -105,6 +106,7 @@ export const Route = createFileRoute("/profile/$userId")({
                 hostName: webData?.hostName || webData?.presenter,
                 hostPhotoURL: webData?.hostPhotoURL,
                 description: webData?.description,
+                bannerUrl: webData?.bannerUrl,
               };
             });
 
@@ -275,7 +277,7 @@ function ProfilePage() {
               const isWorkshop = act.activityType?.includes("workshop");
 
               return (
-                <EventPostCard
+                <LazyEventPostCard
                   key={act.id || idx}
                   host={{
                     uid: act.hostUid || (isHosted ? userId : "unknown"),
@@ -288,6 +290,7 @@ function ProfilePage() {
                   description={
                     act.description || (isWorkshop ? "Workshop Session" : "Webinar Session")
                   }
+                  bannerUrl={act.bannerUrl}
                   actionText={isHosted ? "View Details" : "Attended"}
                   onAction={() =>
                     window.open(

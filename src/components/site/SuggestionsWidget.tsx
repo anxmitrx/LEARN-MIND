@@ -49,7 +49,7 @@ export function SuggestionsWidget() {
 
   if (loading) {
     return (
-      <div className="bg-white/60 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200 p-6 animate-pulse hidden lg:block sticky top-24 h-fit">
+      <div className="bg-white/60 backdrop-blur-xl transform-gpu will-change-transform border border-white/80 shadow-[0_8px_32px_rgba(31,38,135,0.07)] rounded-[2rem] p-6 lg:p-8 animate-pulse hidden lg:block sticky top-24 h-fit">
         <div className="h-5 bg-slate-200 rounded w-1/2 mb-4"></div>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
@@ -107,7 +107,7 @@ export function SuggestionsWidget() {
       </div>
 
       {/* Desktop Sticky Sidebar */}
-      <div className="hidden lg:block bg-white/60 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-24 h-fit">
+      <div className="bg-white/60 backdrop-blur-md transform-gpu will-change-transform rounded-2xl shadow-[0_8px_32px_rgba(31,38,135,0.07)] border border-white/80 p-6 hidden lg:block sticky top-24 h-fit">
         <h2 className="text-base font-bold text-slate-900 mb-4">Suggestions for You</h2>
         <div className="flex flex-col gap-4">
           {suggestions.map((s) => (

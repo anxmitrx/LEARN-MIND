@@ -57,7 +57,7 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-[calc(var(--banner-height,0px)+1.5rem)] left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 rounded-full bg-white/20 backdrop-blur-lg border ${isDarkBg ? "border-white/20 shadow-[0_4px_30px_rgba(255,255,255,0.05)]" : "border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.04)]"} transition-all duration-300`}
+      className={`fixed top-[calc(var(--banner-height,0px)+1.5rem)] left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 rounded-full bg-white/20 backdrop-blur-lg transform-gpu will-change-transform border ${isDarkBg ? "border-white/20 shadow-[0_4px_30px_rgba(255,255,255,0.05)]" : "border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.04)]"} transition-all duration-300`}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-4 lg:gap-8">
         {/* Left: Logo */}

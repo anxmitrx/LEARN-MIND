@@ -42,3 +42,30 @@ export function useWebinars() {
 
   return { webinars, loading };
 }
+
+export async function fetchWebinarBySlug(slug: string): Promise<Webinar | null> {
+  if (!db) return localWebinars.find((w) => (w.id || w.title) === slug) || null;
+  try {
+    const { query, collection, where, getDocs, doc, getDoc } = await import("firebase/firestore");
+    
+    // Check if slug is a doc ID
+    try {
+        const docRef = doc(db, "webinars", slug);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return { id: docSnap.id, ...docSnap.data() } as Webinar;
+        }
+    } catch (e) {
+        // Not a valid doc path, continue to query
+    }
+
+    const q = query(collection(db, "webinars"), where("title", "==", slug));
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as Webinar;
+    
+    return localWebinars.find((w) => (w.id || w.title) === slug) || null;
+  } catch (error) {
+    console.error("Error fetching webinar by slug:", error);
+    return localWebinars.find((w) => (w.id || w.title) === slug) || null;
+  }
+}

@@ -19,6 +19,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkshopsIndexRouteImport } from './routes/workshops.index'
 import { Route as WorkshopsSlugRouteImport } from './routes/workshops.$slug'
+import { Route as WebinarsSlugRouteImport } from './routes/webinars.$slug'
 import { Route as ProfileUserIdRouteImport } from './routes/profile.$userId'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
@@ -72,6 +73,11 @@ const WorkshopsSlugRoute = WorkshopsSlugRouteImport.update({
   path: '/workshops/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WebinarsSlugRoute = WebinarsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => WebinarsRoute,
+} as any)
 const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
   id: '/profile/$userId',
   path: '/profile/$userId',
@@ -91,9 +97,10 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/webinars': typeof WebinarsRoute
+  '/webinars': typeof WebinarsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/profile/$userId': typeof ProfileUserIdRoute
+  '/webinars/$slug': typeof WebinarsSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops/': typeof WorkshopsIndexRoute
 }
@@ -105,9 +112,10 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/webinars': typeof WebinarsRoute
+  '/webinars': typeof WebinarsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/profile/$userId': typeof ProfileUserIdRoute
+  '/webinars/$slug': typeof WebinarsSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops': typeof WorkshopsIndexRoute
 }
@@ -120,9 +128,10 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/mentors': typeof MentorsRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/webinars': typeof WebinarsRoute
+  '/webinars': typeof WebinarsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/profile/$userId': typeof ProfileUserIdRoute
+  '/webinars/$slug': typeof WebinarsSlugRoute
   '/workshops/$slug': typeof WorkshopsSlugRoute
   '/workshops/': typeof WorkshopsIndexRoute
 }
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
     | '/webinars'
     | '/blog/$slug'
     | '/profile/$userId'
+    | '/webinars/$slug'
     | '/workshops/$slug'
     | '/workshops/'
   fileRoutesByTo: FileRoutesByTo
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/webinars'
     | '/blog/$slug'
     | '/profile/$userId'
+    | '/webinars/$slug'
     | '/workshops/$slug'
     | '/workshops'
   id:
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/webinars'
     | '/blog/$slug'
     | '/profile/$userId'
+    | '/webinars/$slug'
     | '/workshops/$slug'
     | '/workshops/'
   fileRoutesById: FileRoutesById
@@ -179,7 +191,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   MentorsRoute: typeof MentorsRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
-  WebinarsRoute: typeof WebinarsRoute
+  WebinarsRoute: typeof WebinarsRouteWithChildren
   BlogSlugRoute: typeof BlogSlugRoute
   ProfileUserIdRoute: typeof ProfileUserIdRoute
   WorkshopsSlugRoute: typeof WorkshopsSlugRoute
@@ -258,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkshopsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/webinars/$slug': {
+      id: '/webinars/$slug'
+      path: '/$slug'
+      fullPath: '/webinars/$slug'
+      preLoaderRoute: typeof WebinarsSlugRouteImport
+      parentRoute: typeof WebinarsRoute
+    }
     '/profile/$userId': {
       id: '/profile/$userId'
       path: '/profile/$userId'
@@ -275,6 +294,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface WebinarsRouteChildren {
+  WebinarsSlugRoute: typeof WebinarsSlugRoute
+}
+
+const WebinarsRouteChildren: WebinarsRouteChildren = {
+  WebinarsSlugRoute: WebinarsSlugRoute,
+}
+
+const WebinarsRouteWithChildren = WebinarsRoute._addFileChildren(
+  WebinarsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -283,7 +314,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   MentorsRoute: MentorsRoute,
   VerifyEmailRoute: VerifyEmailRoute,
-  WebinarsRoute: WebinarsRoute,
+  WebinarsRoute: WebinarsRouteWithChildren,
   BlogSlugRoute: BlogSlugRoute,
   ProfileUserIdRoute: ProfileUserIdRoute,
   WorkshopsSlugRoute: WorkshopsSlugRoute,

@@ -153,8 +153,8 @@ function DashboardComponent() {
 
           <div className="flex items-center gap-3 self-start md:self-auto mt-4 md:mt-0">
             <Link
-              to="/u/$uid"
-              params={{ uid: user.uid }}
+              to="/profile/$userId"
+              params={{ userId: user.uid }}
               className="flex items-center gap-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-full font-display text-[10px] font-extrabold uppercase tracking-wider transition-all shadow-sm"
             >
               <ExternalLink className="h-3 w-3" />

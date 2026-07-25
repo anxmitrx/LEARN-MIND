@@ -31,7 +31,7 @@ export function EventPostCard({
   isActionDisabled = false,
 }: EventPostCardProps) {
   return (
-    <article className="bg-white/80 backdrop-blur-md border border-slate-200 shadow-sm rounded-2xl p-0 overflow-hidden flex flex-col mb-6">
+    <article className="bg-white/80 backdrop-blur-md transform-gpu will-change-transform border border-slate-200 shadow-sm rounded-2xl p-0 overflow-hidden flex flex-col mb-6">
       {/* Header */}
       <div className="flex items-center gap-3 p-4">
         <Link
@@ -40,7 +40,7 @@ export function EventPostCard({
           className="shrink-0 w-10 h-10 rounded-full overflow-hidden bg-indigo-100 flex items-center justify-center border border-slate-200"
         >
           {host.photoURL ? (
-            <img src={host.photoURL} alt={host.name} className="w-full h-full object-cover" />
+            <img src={host.photoURL} alt={host.name} className="w-full h-full object-cover" loading="lazy" decoding="async" fetchPriority="low" />
           ) : (
             <span className="font-bold text-indigo-500 uppercase">{(host.name || "U")[0]}</span>
           )}
@@ -69,7 +69,7 @@ export function EventPostCard({
       {/* Body / Banner */}
       <div className="w-full aspect-[4/5] sm:aspect-square bg-slate-100 relative">
         {bannerUrl ? (
-          <img src={bannerUrl} alt={title} className="w-full h-full object-cover" loading="lazy" />
+          <img src={bannerUrl} alt={title} className="w-full h-full object-cover" loading="lazy" decoding="async" fetchPriority="low" />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center p-6 text-center">
             <h3 className="font-display text-2xl md:text-3xl font-extrabold text-indigo-900/50">

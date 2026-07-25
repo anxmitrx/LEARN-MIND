@@ -10,13 +10,13 @@ function SuggestedMentorItem({ mentor }: { mentor: any }) {
   const { isFollowing, toggleFollow, loading } = useFollow(mentor.uid);
   const { user } = useAuth();
 
-  if (isFollowing) return null; // Hide if already following (simplistic filtering)
+  // Instead of returning null and leaving an empty box, we display the followed mentor with a visual indicator.
 
   return (
     <div className="flex items-center justify-between gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 transition-all">
       <Link
-        to="/u/$uid"
-        params={{ uid: mentor.uid }}
+        to="/profile/$userId"
+        params={{ userId: mentor.uid }}
         className="flex items-center gap-3 flex-1 min-w-0"
       >
         <div className="shrink-0 w-10 h-10 rounded-full overflow-hidden bg-indigo-100 flex items-center justify-center">
@@ -36,8 +36,12 @@ function SuggestedMentorItem({ mentor }: { mentor: any }) {
         <button
           onClick={toggleFollow}
           disabled={loading}
-          className="shrink-0 p-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200 transition-all shadow-sm"
-          title="Follow"
+          className={`shrink-0 p-1.5 rounded-full border transition-all shadow-sm ${
+            isFollowing
+              ? "bg-indigo-50 border-indigo-200 text-indigo-600"
+              : "bg-white border-slate-200 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-200"
+          }`}
+          title={isFollowing ? "Unfollow" : "Follow"}
         >
           {loading ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -62,8 +66,8 @@ export function SuggestedMentors() {
 
     const fetchMentors = async () => {
       try {
-        // Fetch up to 10 mentors to have a pool to choose from
-        const q = query(collection(db, "users"), where("role", "==", "mentor"), limit(10));
+        // Fetch up to 10 mentors from public_mentors to have a pool to choose from
+        const q = query(collection(db, "public_mentors"), limit(10));
         const snap = await getDocs(q);
         const fetchedMentors = snap.docs
           .map((d) => ({ uid: d.id, ...d.data() }))

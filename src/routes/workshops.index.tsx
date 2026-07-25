@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { useWorkshops } from "@/hooks/useWorkshops";
 import { useReservation } from "@/components/site/ReservationContext";
-import { EventPostCard } from "@/components/site/EventPostCard";
+import { LazyEventPostCard } from "@/components/site/LazyEventPostCard";
 import { SuggestionsWidget } from "@/components/site/SuggestionsWidget";
 import { GlobalAuthModal } from "@/components/site/GlobalAuthModal";
 import { useAuth } from "@/lib/AuthContext";
@@ -30,13 +30,10 @@ function TracksIndex() {
   const { openModal } = useReservation();
   const { workshops: tracks } = useWorkshops();
   const { user, setShowLoginModal } = useAuth();
+  const navigate = useNavigate();
 
   const handleAction = (trackSlug: string) => {
-    if (!user) {
-      setShowLoginModal(true);
-      return;
-    }
-    openModal(trackSlug);
+    navigate({ to: "/workshops/$slug", params: { slug: trackSlug } });
   };
 
   return (
@@ -46,11 +43,11 @@ function TracksIndex() {
       {/* Aurora Mesh Blobs */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none">
         <div
-          className="absolute top-[20%] right-[10%] w-[45vw] h-[45vw] max-w-[500px] rounded-full bg-purple-200/20 blur-3xl animate-pulse"
+          className="absolute top-[20%] right-[10%] w-[45vw] h-[45vw] max-w-[500px] rounded-full bg-purple-200/20 blur-3xl animate-pulse transform-gpu will-change-transform"
           style={{ animationDuration: "12s" }}
         />
         <div
-          className="absolute top-[50%] left-[5%] w-[40vw] h-[40vw] max-w-[450px] rounded-full bg-indigo-200/20 blur-3xl animate-pulse"
+          className="absolute top-[50%] left-[5%] w-[40vw] h-[40vw] max-w-[450px] rounded-full bg-indigo-200/20 blur-3xl animate-pulse transform-gpu will-change-transform"
           style={{ animationDuration: "16s", animationDelay: "2s" }}
         />
       </div>
@@ -83,7 +80,7 @@ function TracksIndex() {
 
               <div className="flex flex-col gap-6">
                 {tracks.map((t) => (
-                  <EventPostCard
+                  <LazyEventPostCard
                     key={t.slug}
                     host={{
                       uid: t.slug, // Fallback since tracks don't have hosts explicitly defined in the hook by default

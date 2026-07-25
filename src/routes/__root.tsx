@@ -157,12 +157,14 @@ function RootComponent() {
         <ReservationProvider>
           {/* Animated Soothing Aurora Blobs */}
           <div className="pointer-events-none fixed inset-0 -z-50 overflow-hidden select-none">
-            <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] rounded-full bg-[#E0C3FC]/30 blur-3xl" />
+            <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] max-w-[600px] rounded-full bg-[#E0C3FC]/30 blur-3xl transform-gpu will-change-transform" />
             <div
-              className="absolute bottom-[10%] right-[-10%] w-[60vw] h-[60vw] max-w-[700px] rounded-full bg-[#8EC5FC]/30 blur-3xl"
+              className="absolute bottom-[10%] right-[-10%] w-[60vw] h-[60vw] max-w-[700px] rounded-full bg-[#8EC5FC]/30 blur-3xl transform-gpu will-change-transform"
+              style={{ animation: "float 20s ease-in-out infinite" }}
             />
             <div
-              className="absolute top-[35%] left-[25%] w-[40vw] h-[40vw] max-w-[500px] rounded-full bg-[#F8EDEB]/50 blur-3xl"
+              className="absolute top-[35%] left-[25%] w-[40vw] h-[40vw] max-w-[500px] rounded-full bg-[#F8EDEB]/50 blur-3xl transform-gpu will-change-transform"
+              style={{ animation: "float 25s ease-in-out infinite reverse" }}
             />
           </div>
           <CurtainReveal />

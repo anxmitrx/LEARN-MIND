@@ -7,8 +7,9 @@ import { useAuth } from "@/lib/AuthContext";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
-import { EventPostCard } from "@/components/site/EventPostCard";
+import { LazyEventPostCard } from "@/components/site/LazyEventPostCard";
 import { SuggestionsWidget } from "@/components/site/SuggestionsWidget";
+import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/webinars")({
   component: WebinarsPage,
@@ -118,54 +119,14 @@ function WebinarsPage() {
 }
 
 function WebinarFeedCard({ webinar, type }: { webinar: any; type: "upcoming" | "past" }) {
-  const { user, userData, setShowLoginModal, requestPhoneVerification } = useAuth();
-  const [isRegistering, setIsRegistering] = useState(false);
+  const navigate = useNavigate();
 
   const handleActionClick = async () => {
-    if (!user) {
-      setShowLoginModal(true);
-      return;
-    }
-
-    if (type === "upcoming") {
-      const isMentor = userData?.role === "mentor";
-      const hasCompletedProfile = isMentor
-        ? Boolean(userData?.profession && userData?.specification && userData?.photoURL)
-        : Boolean(userData?.college || userData?.institution);
-
-      if (!hasCompletedProfile) {
-        alert(
-          "Please complete your profile details (via Dashboard -> Edit Profile) before registering for an event.",
-        );
-        return;
-      }
-
-      requestPhoneVerification(async () => {
-        setIsRegistering(true);
-        try {
-          await addDoc(collection(db, "webinar_registrations"), {
-            email: user.email,
-            name: userData?.name || user.displayName || "User",
-            webinarTitle: webinar.title,
-            webinarId: webinar.id || webinar.title,
-            webinarDate: webinar.date,
-            webinarTime: webinar.time,
-            timestamp: serverTimestamp(),
-          });
-        } catch (err) {
-          console.error("Error registering for webinar:", err);
-        }
-        setIsRegistering(false);
-        window.open(webinar.link, "_blank");
-      });
-      return;
-    }
-
-    window.open(webinar.link, "_blank");
+    navigate({ to: "/webinars/$slug", params: { slug: webinar.id || webinar.title } });
   };
 
   return (
-    <EventPostCard
+    <LazyEventPostCard
       host={{
         uid: webinar.hostUid || webinar.presenter.toLowerCase().replace(/\s+/g, "-"),
         name: webinar.presenter,
@@ -178,15 +139,8 @@ function WebinarFeedCard({ webinar, type }: { webinar: any; type: "upcoming" | "
         `Join ${webinar.presenter} for an exclusive session on ${webinar.title}.`
       }
       bannerUrl={webinar.bannerUrl}
-      actionText={
-        isRegistering
-          ? "Registering..."
-          : type === "upcoming"
-            ? "Register & Join"
-            : "Watch Recording"
-      }
+      actionText="View Details"
       onAction={handleActionClick}
-      isActionDisabled={isRegistering}
       tags={type === "upcoming" ? ["Live"] : ["Recorded"]}
     />
   );

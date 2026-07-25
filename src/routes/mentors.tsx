@@ -77,7 +77,7 @@ function MentorsPage() {
             className="grid gap-8 sm:grid-cols-2 max-w-4xl mx-auto"
           >
             {mentors.map((m) => (
-              <Link key={m.name} to="/u/$uid" params={{ uid: m.id }} className="block">
+              <Link key={m.name} to="/profile/$userId" params={{ userId: m.id }} className="block">
                 <motion.div
                   variants={cardVariants}
                   className="bento-card group bg-white/50 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl p-4 sm:p-8 md:p-10 transition-all duration-500 ease-out hover:-translate-y-2 hover:bg-white/60 hover:shadow-[0_15px_40px_-5px_rgba(31,38,135,0.15)] hover:border-white/80 will-change-transform h-full flex flex-col"
