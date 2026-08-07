@@ -28,6 +28,7 @@ export function GlobalPhoneVerificationModal() {
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
 
   const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
     if (showPhoneVerificationModal) {
@@ -188,6 +189,48 @@ export function GlobalPhoneVerificationModal() {
     }
   };
 
+  const handleOtpChange = (index: number, value: string) => {
+    if (!/^\d*$/.test(value)) return;
+    
+    const paddedOtp = otp.padEnd(6, " ").split("");
+
+    // Handle multi-character input (e.g. autofill or fast typing)
+    if (value.length > 1) {
+      const cleanValue = value.replace(/\D/g, "").slice(0, 6 - index);
+      for (let i = 0; i < cleanValue.length; i++) {
+        if (index + i < 6) paddedOtp[index + i] = cleanValue[i];
+      }
+      setOtp(paddedOtp.join("").trimEnd());
+      const nextIndex = Math.min(index + cleanValue.length, 5);
+      inputRefs.current[nextIndex]?.focus();
+      return;
+    }
+
+    paddedOtp[index] = value || " ";
+    setOtp(paddedOtp.join("").trimEnd());
+
+    // Move to next input if a digit was entered
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text/plain").replace(/\D/g, "").slice(0, 6);
+    if (pastedData) {
+      setOtp(pastedData);
+      const nextIndex = Math.min(pastedData.length, 5);
+      inputRefs.current[nextIndex]?.focus();
+    }
+  };
+
   if (!showPhoneVerificationModal) return null;
 
   return (
@@ -268,28 +311,49 @@ export function GlobalPhoneVerificationModal() {
               </p>
 
               <form onSubmit={handleVerify} className="mt-6 space-y-5">
-                <label className="block">
-                  <div className="mb-1.5 flex items-baseline justify-between gap-2">
-                    <span className="text-xs font-display font-extrabold uppercase tracking-wider text-ink">
+                <div className="block">
+                  <div className="mb-2 flex items-baseline justify-center gap-2">
+                    <span className="text-xs font-display font-extrabold uppercase tracking-wider text-indigo-600">
                       Verification Code
                     </span>
                   </div>
-                  <input
-                    type="text"
-                    autoFocus
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    placeholder="123456"
-                    className={inputCls}
-                    maxLength={6}
-                  />
-                  {error && <p className="mt-2 text-xs font-bold text-red-500">{error}</p>}
-                </label>
+                  <div className="flex justify-center gap-2 sm:gap-3" dir="ltr">
+                    {[0, 1, 2, 3, 4, 5].map((index) => (
+                      <motion.input
+                        key={index}
+                        ref={(el) => (inputRefs.current[index] = el)}
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        autoFocus={index === 0}
+                        value={otp[index] === " " ? "" : (otp[index] || "")}
+                        onChange={(e) => handleOtpChange(index, e.target.value)}
+                        onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                        onPaste={handleOtpPaste}
+                        maxLength={6}
+                        className="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-white/25 border border-white/50 rounded-xl outline-none text-slate-800 focus:bg-white/45 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600 shadow-sm transition-colors"
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          scale: otp[index] ? [1, 1.1, 1] : 1,
+                        }}
+                        transition={{
+                          delay: index * 0.05,
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 20,
+                        }}
+                      />
+                    ))}
+                  </div>
+                  {error && <p className="mt-3 text-xs font-bold text-red-500 text-center">{error}</p>}
+                </div>
 
                 <div className="pt-4">
                   <button
                     type="submit"
-                    disabled={otp.length !== 6 || isLoading}
+                    disabled={otp.replace(/ /g, "").length !== 6 || isLoading}
                     className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:outline-none cursor-pointer"
                   >
                     {isLoading ? (

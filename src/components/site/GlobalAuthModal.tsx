@@ -45,6 +45,7 @@ export function GlobalAuthModal() {
   const [phoneStep, setPhoneStep] = useState<"phone" | "otp">("phone");
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   const recaptchaVerifierRef = useRef<RecaptchaVerifier | null>(null);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   // Email Auth State
   const [emailInput, setEmailInput] = useState("");
@@ -274,46 +275,100 @@ export function GlobalAuthModal() {
 
   const handleVerifyPhoneOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!otp || !confirmationResult) return;
+    if (!otp || !confirmationResult || isAuthenticating) return;
     setAuthError("");
     setIsAuthenticating(true);
 
     try {
-      const result = await confirmationResult.confirm(otp);
-      const authUser = result.user;
-      const userRef = doc(db, "users", authUser.uid);
-      const userSnap = await getDoc(userRef);
+      const cleanOtp = otp.replace(/\D/g, "");
+      if (cleanOtp.length !== 6) {
+        throw new Error("Please enter a valid 6-digit code.");
+      }
 
-      if (!userSnap.exists()) {
-        await setDoc(userRef, {
-          name: "User",
-          phone: phoneInput,
-          phoneVerified: true,
-          role: role || "student",
-          xp: 0,
-          level: "Level 1: Novice",
-          onboardingComplete: false,
-          createdAt: new Date().toISOString(),
-        });
-        setStep(3);
-      } else {
-        const data = userSnap.data();
-        if (!data.onboardingComplete) {
-          if (!data.role && role) {
-            await updateDoc(userRef, { role });
-          }
-          setRole(data.role || role || "student");
+      // Prevent infinite hanging by wrapping the Firebase calls in a 15-second timeout
+      const verifyPromise = async () => {
+        const result = await confirmationResult.confirm(cleanOtp);
+        const authUser = result.user;
+        const userRef = doc(db, "users", authUser.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          await setDoc(userRef, {
+            name: "User",
+            phone: phoneInput,
+            phoneVerified: true,
+            role: role || "student",
+            xp: 0,
+            level: "Level 1: Novice",
+            onboardingComplete: false,
+            createdAt: new Date().toISOString(),
+          });
           setStep(3);
         } else {
-          handleClose();
-          navigate({ to: "/dashboard" });
+          const data = userSnap.data();
+          if (!data.onboardingComplete) {
+            if (!data.role && role) {
+              await updateDoc(userRef, { role });
+            }
+            setRole(data.role || role || "student");
+            setStep(3);
+          } else {
+            handleClose();
+            navigate({ to: "/dashboard" });
+          }
         }
-      }
+      };
+
+      await Promise.race([
+        verifyPromise(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Verification timed out. Please check your connection and try again.")), 15000))
+      ]);
+
     } catch (err: any) {
       console.error("CRITICAL ERROR: Failed to verify OTP via Firebase:", err.code, err.message);
       setAuthError(`Verification Failed: ${err.code || err.message}`);
     } finally {
       setIsAuthenticating(false);
+    }
+  };
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (!/^\d*$/.test(value)) return;
+    
+    const paddedOtp = otp.padEnd(6, " ").split("");
+
+    if (value.length > 1) {
+      const cleanValue = value.replace(/\D/g, "").slice(0, 6 - index);
+      for (let i = 0; i < cleanValue.length; i++) {
+        if (index + i < 6) paddedOtp[index + i] = cleanValue[i];
+      }
+      setOtp(paddedOtp.join("").trimEnd());
+      const nextIndex = Math.min(index + cleanValue.length, 5);
+      inputRefs.current[nextIndex]?.focus();
+      return;
+    }
+
+    paddedOtp[index] = value || " ";
+    setOtp(paddedOtp.join("").trimEnd());
+
+    if (value && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text/plain").replace(/\D/g, "").slice(0, 6);
+    if (pastedData) {
+      setOtp(pastedData);
+      const nextIndex = Math.min(pastedData.length, 5);
+      inputRefs.current[nextIndex]?.focus();
     }
   };
 
@@ -570,18 +625,39 @@ export function GlobalAuthModal() {
                             onSubmit={handleVerifyPhoneOtp}
                             className="flex flex-col gap-3 text-left mt-2"
                           >
-                            <input
-                              type="text"
-                              autoFocus
-                              value={otp}
-                              onChange={(e) => setOtp(e.target.value)}
-                              placeholder="123456"
-                              maxLength={6}
-                              className={`${inputCls} text-center tracking-widest text-lg`}
-                            />
+                            <div className="flex justify-center gap-2 sm:gap-3 mb-4 mt-2" dir="ltr">
+                              {[0, 1, 2, 3, 4, 5].map((index) => (
+                                <motion.input
+                                  key={index}
+                                  ref={(el) => (inputRefs.current[index] = el)}
+                                  type="text"
+                                  inputMode="numeric"
+                                  autoComplete="one-time-code"
+                                  autoFocus={index === 0}
+                                  value={otp[index] === " " ? "" : (otp[index] || "")}
+                                  onChange={(e) => handleOtpChange(index, e.target.value)}
+                                  onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                                  onPaste={handleOtpPaste}
+                                  maxLength={6}
+                                  className="w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-bold bg-white border border-slate-200 rounded-xl outline-none text-slate-800 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600 shadow-sm transition-colors"
+                                  initial={{ opacity: 0, y: 15 }}
+                                  animate={{
+                                    opacity: 1,
+                                    y: 0,
+                                    scale: otp[index] && otp[index] !== " " ? [1, 1.1, 1] : 1,
+                                  }}
+                                  transition={{
+                                    delay: index * 0.05,
+                                    type: "spring",
+                                    stiffness: 300,
+                                    damping: 20,
+                                  }}
+                                />
+                              ))}
+                            </div>
                             <button
                               type="submit"
-                              disabled={otp.length !== 6 || isAuthenticating}
+                              disabled={otp.replace(/ /g, "").length !== 6 || isAuthenticating}
                               className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 font-display text-sm font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-md flex justify-center"
                             >
                               {isAuthenticating ? (
